@@ -33,8 +33,8 @@ export default function Hero() {
       </div>
       <div className="relative min-h-[28rem] lg:min-h-[36rem]">
         <img
-          src="https://images.pexels.com/photos/33627991/pexels-photo-33627991.jpeg?auto=compress&cs=tinysrgb&w=1600"
-          alt="Editorial fashion portrait on warm studio background"
+          src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fa0571368b4104835887bcada649dfca4?format=webp&width=800"
+          alt="Ali + Andy Z hero editorial"
           className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
