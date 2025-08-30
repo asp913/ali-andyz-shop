@@ -12,8 +12,8 @@ export default function Index() {
             className="group relative aspect-[4/3] overflow-hidden bg-secondary"
           >
             <img
-              src="https://images.pexels.com/photos/7014202/pexels-photo-7014202.jpeg?auto=compress&cs=tinysrgb&w=1200"
-              alt="Women's ready to wear editorial"
+              src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fee7b8ac9c32047f08d3b1dfb992057fb?format=webp&width=1200"
+              alt="Women's & Men's Ready to Wear"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black/20" />
@@ -41,8 +41,8 @@ export default function Index() {
           </a>
           <a href="/mens-ready-to-wear" className="group relative aspect-[4/3] overflow-hidden bg-secondary">
             <img
-              src="https://images.pexels.com/photos/6311628/pexels-photo-6311628.jpeg?auto=compress&cs=tinysrgb&w=1200"
-              alt="Men's ready to wear"
+              src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fee7b8ac9c32047f08d3b1dfb992057fb?format=webp&width=1200"
+              alt="Men's Ready to Wear"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black/20" />
