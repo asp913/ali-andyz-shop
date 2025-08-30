@@ -1,62 +1,59 @@
-import { DemoResponse } from "@shared/api";
-import { useEffect, useState } from "react";
+import Hero from "@/components/site/Hero";
 
 export default function Index() {
-  const [exampleFromServer, setExampleFromServer] = useState("");
-  // Fetch users on component mount
-  useEffect(() => {
-    fetchDemo();
-  }, []);
-
-  // Example of how to fetch data from the server (if needed)
-  const fetchDemo = async () => {
-    try {
-      const response = await fetch("/api/demo");
-      const data = (await response.json()) as DemoResponse;
-      setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: FUSION_GENERATION_APP_PLACEHOLDER replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
+    <main className="min-h-screen">
+      <Hero />
+
+      <section className="container mx-auto py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a
+            href="/womens-ready-to-wear"
+            className="group relative aspect-[4/3] overflow-hidden bg-secondary"
           >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
+            <img
+              src="https://images.pexels.com/photos/7014202/pexels-photo-7014202.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              alt="Women's ready to wear editorial"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
+            <div className="absolute inset-0 bg-black/20" />
+            <div className="absolute left-4 bottom-4">
+              <span className="inline-block bg-foreground text-primary-foreground px-4 py-2 text-xs tracking-widest uppercase">
+                Women's Ready to Wear
+              </span>
+            </div>
+          </a>
+          <a
+            href="/womens-activewear"
+            className="group relative aspect-[4/3] overflow-hidden bg-secondary"
+          >
+            <img
+              src="https://images.pexels.com/photos/7679450/pexels-photo-7679450.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              alt="Women's activewear"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-          </svg>
-          Generating your app...
-        </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-        <p className="mt-4 hidden max-w-md">{exampleFromServer}</p>
-      </div>
-    </div>
+            <div className="absolute inset-0 bg-black/20" />
+            <div className="absolute left-4 bottom-4">
+              <span className="inline-block bg-foreground text-primary-foreground px-4 py-2 text-xs tracking-widest uppercase">
+                Women's Activewear
+              </span>
+            </div>
+          </a>
+          <a href="/mens-ready-to-wear" className="group relative aspect-[4/3] overflow-hidden bg-secondary">
+            <img
+              src="https://images.pexels.com/photos/6311628/pexels-photo-6311628.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              alt="Men's ready to wear"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-black/20" />
+            <div className="absolute left-4 bottom-4">
+              <span className="inline-block bg-foreground text-primary-foreground px-4 py-2 text-xs tracking-widest uppercase">
+                Men's Ready to Wear
+              </span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
   );
 }
