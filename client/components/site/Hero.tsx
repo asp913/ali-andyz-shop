@@ -1,0 +1,43 @@
+import { Link } from "react-router-dom";
+
+const ctas = [
+  { to: "/womens-activewear", label: "Women's Activewear" },
+  { to: "/womens-ready-to-wear", label: "Women's Ready to Wear" },
+  { to: "/mens-activewear", label: "Men's Activewear" },
+  { to: "/mens-ready-to-wear", label: "Men's Ready to Wear" },
+];
+
+export default function Hero() {
+  return (
+    <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch pt-8">
+      <div className="bg-brand-sand/50 p-8 sm:p-12 flex flex-col justify-center">
+        <p className="uppercase tracking-[0.4em] text-xs text-foreground/60 mb-4">Welcome to</p>
+        <h1 className="text-4xl sm:text-5xl font-semibold leading-tight">
+          Ali + Andy Z <span className="block font-display italic text-foreground/70">Boutique</span>
+        </h1>
+        <p className="mt-6 text-base sm:text-lg text-foreground/70 max-w-xl">
+          Where refined aesthetics meet effortless elegance. Discover capsule collections that transcend seasons and speak
+          to those who understand that true luxury lies in perfect curation and mindful living.
+        </p>
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg">
+          {ctas.map((c) => (
+            <Link
+              key={c.to}
+              to={c.to}
+              className="inline-flex items-center justify-center px-5 py-3 text-xs tracking-widest uppercase bg-foreground text-primary-foreground hover:opacity-90 transition-colors"
+            >
+              {c.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div className="relative min-h-[28rem] lg:min-h-[36rem]">
+        <img
+          src="https://images.pexels.com/photos/33627991/pexels-photo-33627991.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          alt="Editorial fashion portrait on warm studio background"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </div>
+    </section>
+  );
+}
