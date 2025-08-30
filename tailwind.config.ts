@@ -57,6 +57,15 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        brand: {
+          sand: "hsl(var(--brand-sand))",
+          tan: "hsl(var(--brand-tan))",
+          ink: "hsl(var(--brand-ink))",
+        },
+      },
+      fontFamily: {
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Cormorant Garamond", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
