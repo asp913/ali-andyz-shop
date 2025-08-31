@@ -14,6 +14,8 @@ import Header from "./components/site/Header";
 import Footer from "./components/site/Footer";
 import CollectionPlaceholder from "./pages/CollectionPlaceholder";
 import WomensActivewear from "./pages/WomensActivewear";
+import ProductPage from "./pages/Product";
+import CartDrawer from "./components/site/CartDrawer";
 
 const queryClient = new QueryClient();
 
@@ -29,9 +31,11 @@ const App = () => {
       <Sonner />
       <BrowserRouter>
         <Header />
+        <CartDrawer />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/womens-activewear" element={<WomensActivewear />} />
+          <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/womens-ready-to-wear" element={<CollectionPlaceholder />} />
           <Route path="/mens-activewear" element={<CollectionPlaceholder />} />
           <Route path="/mens-ready-to-wear" element={<CollectionPlaceholder />} />
