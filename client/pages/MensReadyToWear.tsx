@@ -13,14 +13,34 @@ export default function MensReadyToWear() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="bg-card py-16 px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl lg:text-5xl font-light text-foreground tracking-wide mb-4">
-            Men's Ready to Wear
-          </h1>
-          <p className="text-lg font-light text-muted-foreground max-w-2xl mx-auto">
-            Refined essentials for the modern gentleman. Thoughtfully designed pieces that embody understated sophistication.
-          </p>
+      <section className="relative min-h-[85vh] overflow-hidden flex items-center justify-center bg-background">
+        <div className="flex flex-col-reverse lg:flex-row max-w-7xl w-full items-center">
+          <div className="flex flex-col justify-center px-8 py-16 lg:px-12 lg:py-0 flex-1 text-center lg:text-left">
+            <div className="text-sm mb-4 text-muted-foreground tracking-[0.3em] uppercase">For the Modern Gentleman</div>
+            <h1 className="text-4xl lg:text-6xl font-light leading-tight mb-4 tracking-wide text-foreground">
+              Men's Ready<br />
+              <span className="font-display italic text-foreground/80">to Wear</span>
+            </h1>
+            <p className="text-lg font-light tracking-wide mt-6 mb-8 text-muted-foreground max-w-lg mx-auto lg:mx-0">
+              Refined essentials for the modern gentleman. Thoughtfully designed pieces that embody understated sophistication and timeless style.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 w-max mx-auto lg:mx-0">
+              <button className="py-3 px-6 text-sm tracking-[0.1em] uppercase rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 border border-primary">
+                Shop the Collection
+              </button>
+              <button className="py-3 px-6 text-sm tracking-[0.1em] uppercase rounded-sm border border-border text-foreground hover:bg-card transition-all duration-300">
+                View Lookbook
+              </button>
+            </div>
+          </div>
+          <div className="w-full lg:w-1/2 h-[50vh] sm:h-[55vh] lg:h-[85vh] relative overflow-hidden">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F6c566af9ff0a4408b20b60199fdb31bf?format=webp&width=1600"
+              alt="Men's Ready to Wear — refined sophistication"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/10 to-transparent" />
+          </div>
         </div>
       </section>
 
