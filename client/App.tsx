@@ -27,6 +27,7 @@ const App = () => (
           <Route path="/womens-ready-to-wear" element={<CollectionPlaceholder />} />
           <Route path="/mens-activewear" element={<CollectionPlaceholder />} />
           <Route path="/mens-ready-to-wear" element={<CollectionPlaceholder />} />
+          <Route path="/our-impact" element={<CollectionPlaceholder />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
