@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Header from "./components/site/Header";
 import Footer from "./components/site/Footer";
 import CollectionPlaceholder from "./pages/CollectionPlaceholder";
+import WomensActivewear from "./pages/WomensActivewear";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,7 @@ const App = () => (
         <Header />
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/womens-activewear" element={<CollectionPlaceholder />} />
+          <Route path="/womens-activewear" element={<WomensActivewear />} />
           <Route path="/womens-ready-to-wear" element={<CollectionPlaceholder />} />
           <Route path="/mens-activewear" element={<CollectionPlaceholder />} />
           <Route path="/mens-ready-to-wear" element={<CollectionPlaceholder />} />
