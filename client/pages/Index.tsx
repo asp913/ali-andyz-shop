@@ -85,15 +85,15 @@ export default function Index() {
               <div className="space-y-4">
                 <div className="relative w-full aspect-square rounded-sm overflow-hidden">
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fee7b8ac9c32047f08d3b1dfb992057fb?format=webp&width=800"
-                    alt="Resort lifestyle"
+                    src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F42258aa582284482912ce600a327a8b9?format=webp&width=800"
+                    alt="Resort suite lifestyle"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
                 <div className="relative w-full aspect-[3/4] rounded-sm overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/7679450/pexels-photo-7679450.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Elegant resort setting"
+                    src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fa51a1398432a488683bed352903277b4?format=webp&width=800"
+                    alt="Mindful lounge moments"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
@@ -101,8 +101,8 @@ export default function Index() {
               <div className="mt-8">
                 <div className="relative w-full aspect-[2/3] rounded-sm overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/6311628/pexels-photo-6311628.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Lifestyle editorial"
+                    src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fa2b9c00553c942f5aa42304607a06c83?format=webp&width=800"
+                    alt="Mindful wellness retreat"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
