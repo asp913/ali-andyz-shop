@@ -93,8 +93,9 @@ export const sampleProducts: Product[] = [
 ];
 
 import { readyToWearProducts } from "./ready-to-wear-products";
+import { mensReadyToWearProducts } from "./mens-ready-to-wear-products";
 
-export const allProducts = [...sampleProducts, ...readyToWearProducts];
+export const allProducts = [...sampleProducts, ...readyToWearProducts, ...mensReadyToWearProducts];
 
 export function getProductById(id: string): Product | undefined {
   return allProducts.find((p) => p.id === id);
