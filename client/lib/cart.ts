@@ -13,19 +13,42 @@ let cartItems: CartItem[] = [];
 
 export function addToCart(item: CartItem) {
   const existingIndex = cartItems.findIndex(cartItem => cartItem.variantId === item.variantId);
-  
   if (existingIndex >= 0) {
     cartItems[existingIndex].qty += item.qty;
+    if (cartItems[existingIndex].qty <= 0) {
+      cartItems.splice(existingIndex, 1);
+    }
   } else {
-    cartItems.push(item);
+    if (item.qty > 0) cartItems.push(item);
   }
-  
-  // Trigger cart update event
+
   document.dispatchEvent(new CustomEvent('cart:updated', {
     detail: { items: cartItems, total: getCartTotal() }
   }));
-  
-  console.log('Cart updated:', cartItems);
+}
+
+export function setItemQty(variantId: string, qty: number) {
+  const idx = cartItems.findIndex(c => c.variantId === variantId);
+  if (idx >= 0) {
+    if (qty <= 0) cartItems.splice(idx, 1); else cartItems[idx].qty = qty;
+  }
+  document.dispatchEvent(new CustomEvent('cart:updated', {
+    detail: { items: cartItems, total: getCartTotal() }
+  }));
+}
+
+export function removeFromCart(variantId: string) {
+  cartItems = cartItems.filter(c => c.variantId !== variantId);
+  document.dispatchEvent(new CustomEvent('cart:updated', {
+    detail: { items: cartItems, total: getCartTotal() }
+  }));
+}
+
+export function clearCart() {
+  cartItems = [];
+  document.dispatchEvent(new CustomEvent('cart:updated', {
+    detail: { items: cartItems, total: getCartTotal() }
+  }));
 }
 
 export function getCartItems(): CartItem[] {
