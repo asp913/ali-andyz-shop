@@ -1,50 +1,39 @@
-import { ShieldCheck, Truck, RotateCcw, Heart } from "lucide-react";
-
-const signals = [
-  {
-    icon: ShieldCheck,
-    title: "Sustainable Materials",
-    description: "Ethically sourced fabrics and responsible manufacturing practices"
-  },
-  {
-    icon: Truck,
-    title: "Free Shipping",
-    description: "Complimentary delivery on orders over $150 worldwide"
-  },
-  {
-    icon: RotateCcw,
-    title: "30-Day Returns",
-    description: "Easy returns and exchanges within 30 days of purchase"
-  },
-  {
-    icon: Heart,
-    title: "Curated Collections",
-    description: "Hand-selected pieces that transcend seasonal trends"
-  }
-];
+import React from "react";
 
 export default function TrustSignals() {
   return (
-    <section className="py-16 px-8 bg-background">
+    <section className="py-16 px-8 bg-card">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {signals.map((signal, index) => {
-            const Icon = signal.icon;
-            return (
-              <div key={index} className="text-center">
-                <div className="flex justify-center mb-4">
-                  <Icon className="h-8 w-8 text-foreground/70" />
-                </div>
-                <h3 className="text-sm font-medium text-foreground mb-2 tracking-wide uppercase">
-                  {signal.title}
-                </h3>
-                <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                  {signal.description}
-                </p>
-              </div>
-            );
-          })}
+        <h2 className="sr-only">Trust & Social Proof</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="border border-border rounded-sm p-5">
+            <div className="text-sm font-semibold text-foreground">Secure Shopping</div>
+            <div className="text-muted-foreground">SSL encrypted checkout</div>
+          </div>
+          <div className="border border-border rounded-sm p-5">
+            <div className="text-sm font-semibold text-foreground">Authenticity Guarantee</div>
+            <div className="text-muted-foreground">Every piece verified</div>
+          </div>
+          <div className="border border-border rounded-sm p-5">
+            <div className="text-sm font-semibold text-foreground">50,000+ Happy Customers</div>
+            <div className="text-muted-foreground">Worldwide community</div>
+          </div>
+          <div className="border border-border rounded-sm p-5">
+            <div className="text-sm font-semibold text-foreground">Global Shipping</div>
+            <div className="text-muted-foreground">Delivery worldwide</div>
+          </div>
+          <div className="border border-border rounded-sm p-5 lg:col-span-2">
+            <div className="text-sm font-semibold text-foreground">4.9/5 from 2,847 reviews</div>
+            <div className="text-muted-foreground">Real feedback from our community</div>
+          </div>
         </div>
+
+        <figure className="mt-10 border border-border rounded-sm p-6 bg-background">
+          <blockquote className="text-lg text-foreground leading-relaxed">
+            "Absolutely love the unique pieces! Never seen anything like this elsewhere."
+          </blockquote>
+          <figcaption className="mt-3 text-sm text-muted-foreground">— Sarah M.</figcaption>
+        </figure>
       </div>
     </section>
   );
