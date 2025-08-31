@@ -6,13 +6,13 @@ export const mensReadyToWearProducts: Product[] = [
     name: "Essential Oxford Shirt",
     price: 148,
     image:
-      "https://images.pexels.com/photos/769733/pexels-photo-769733.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F6c566af9ff0a4408b20b60199fdb31bf?format=webp&width=1200",
     badge: "Best Seller",
     options: ["XS", "S", "M", "L", "XL", "XXL"],
     description:
       "Classic oxford shirt in premium cotton. Versatile enough for work or weekend.",
     images: [
-      "https://images.pexels.com/photos/769733/pexels-photo-769733.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F6c566af9ff0a4408b20b60199fdb31bf?format=webp&width=1600",
     ],
   },
   {
