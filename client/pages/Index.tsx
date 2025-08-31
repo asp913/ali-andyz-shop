@@ -197,7 +197,6 @@ export default function Index() {
         </div>
       </section>
 
-      <TrustSignals />
       <CTASection />
       <ContactSection />
     </main>
