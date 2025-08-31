@@ -37,7 +37,7 @@ const App = () => {
           <Route path="/" element={<Index />} />
           <Route path="/womens-activewear" element={<WomensActivewear />} />
           <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/womens-ready-to-wear" element={<CollectionPlaceholder />} />
+          <Route path="/womens-ready-to-wear" element={<WomensReadyToWear />} />
           <Route path="/mens-activewear" element={<CollectionPlaceholder />} />
           <Route path="/mens-ready-to-wear" element={<CollectionPlaceholder />} />
           <Route path="/our-impact" element={<CollectionPlaceholder />} />
