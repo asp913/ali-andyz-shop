@@ -5,53 +5,7 @@ import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
 
-// Sample product data - replace with real data from your source
-const sampleProducts = [
-  {
-    id: "wa-001",
-    name: "Essential Ribbed Tank",
-    price: 68,
-    image: "https://images.pexels.com/photos/7679450/pexels-photo-7679450.jpeg?auto=compress&cs=tinysrgb&w=800",
-    badge: "Best Seller",
-    options: ["XS", "S", "M", "L", "XL"]
-  },
-  {
-    id: "wa-002", 
-    name: "Mindful Movement Leggings",
-    price: 98,
-    image: "https://images.pexels.com/photos/4327024/pexels-photo-4327024.jpeg?auto=compress&cs=tinysrgb&w=800",
-    options: ["XS", "S", "M", "L", "XL"]
-  },
-  {
-    id: "wa-003",
-    name: "Studio Flow Sports Bra",
-    price: 58,
-    image: "https://images.pexels.com/photos/4498614/pexels-photo-4498614.jpeg?auto=compress&cs=tinysrgb&w=800",
-    badge: "New",
-    options: ["XS", "S", "M", "L", "XL"]
-  },
-  {
-    id: "wa-004",
-    name: "Zen Zip-Up Hoodie",
-    price: 128,
-    image: "https://images.pexels.com/photos/7822865/pexels-photo-7822865.jpeg?auto=compress&cs=tinysrgb&w=800",
-    options: ["XS", "S", "M", "L", "XL"]
-  },
-  {
-    id: "wa-005",
-    name: "Balance Cropped Jacket",
-    price: 158,
-    image: "https://images.pexels.com/photos/8159657/pexels-photo-8159657.jpeg?auto=compress&cs=tinysrgb&w=800",
-    options: ["XS", "S", "M", "L", "XL"]
-  },
-  {
-    id: "wa-006",
-    name: "Serene Seamless Shorts",
-    price: 78,
-    image: "https://images.pexels.com/photos/6311407/pexels-photo-6311407.jpeg?auto=compress&cs=tinysrgb&w=800",
-    options: ["XS", "S", "M", "L", "XL"]
-  }
-];
+import { sampleProducts } from "@/lib/sample-products";
 
 export default function WomensActivewear() {
   const [sortBy, setSortBy] = useState("featured");
