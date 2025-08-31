@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
 
