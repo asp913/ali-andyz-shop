@@ -112,6 +112,31 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Giving Back Section */}
+      <section className="py-20 px-8 bg-background">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div>
+            <h2 className="text-3xl lg:text-4xl font-light text-foreground tracking-wide mb-6">
+              Giving Back: Every Purchase Makes a Difference
+            </h2>
+            <div className="space-y-6 text-lg font-light text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+              <p>
+                We proudly support <strong className="text-foreground">Bön Children's Home</strong>, a sanctuary for 280
+                Tibetan refugee children and orphans in Himachal Pradesh, India. Your purchases help provide food, education,
+                and a loving home to these resilient young souls.
+              </p>
+              <p className="text-foreground font-normal text-xl">Shop with purpose. Move with heart.</p>
+            </div>
+            <Link
+              to="/our-impact"
+              className="inline-flex items-center justify-center px-8 py-3 rounded-sm uppercase tracking-wider text-sm mt-8 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300"
+            >
+              Learn More About Our Impact
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <TrustSignals />
       <CTASection />
       <ContactSection />
