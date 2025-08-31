@@ -15,6 +15,7 @@ import Footer from "./components/site/Footer";
 import CollectionPlaceholder from "./pages/CollectionPlaceholder";
 import WomensActivewear from "./pages/WomensActivewear";
 import WomensReadyToWear from "./pages/WomensReadyToWear";
+import MensReadyToWear from "./pages/MensReadyToWear";
 import ProductPage from "./pages/Product";
 import CartDrawer from "./components/site/CartDrawer";
 
@@ -39,7 +40,7 @@ const App = () => {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/womens-ready-to-wear" element={<WomensReadyToWear />} />
           <Route path="/mens-activewear" element={<CollectionPlaceholder />} />
-          <Route path="/mens-ready-to-wear" element={<CollectionPlaceholder />} />
+          <Route path="/mens-ready-to-wear" element={<MensReadyToWear />} />
           <Route path="/our-impact" element={<CollectionPlaceholder />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
