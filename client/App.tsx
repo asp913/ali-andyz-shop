@@ -14,6 +14,7 @@ import Header from "./components/site/Header";
 import Footer from "./components/site/Footer";
 import CollectionPlaceholder from "./pages/CollectionPlaceholder";
 import WomensActivewear from "./pages/WomensActivewear";
+import WomensReadyToWear from "./pages/WomensReadyToWear";
 import ProductPage from "./pages/Product";
 import CartDrawer from "./components/site/CartDrawer";
 
