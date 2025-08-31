@@ -1,5 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { Heart, ShoppingBag } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getCartItemCount } from "@/lib/cart";
 
 const nav = [
   { to: "/womens-activewear", label: "Women's Activewear" },
@@ -9,6 +11,15 @@ const nav = [
 ];
 
 export default function Header() {
+  const [count, setCount] = useState<number>(getCartItemCount());
+  useEffect(() => {
+    const onUpdated = (e: any) => {
+      const items = e.detail.items as { qty: number }[];
+      setCount(items.reduce((c, it) => c + it.qty, 0));
+    };
+    document.addEventListener("cart:updated", onUpdated as EventListener);
+    return () => document.removeEventListener("cart:updated", onUpdated as EventListener);
+  }, []);
   return (
     <header className="sticky top-0 z-40 bg-[hsl(var(--background))]/80 backdrop-blur border-b border-border">
       <div className="container mx-auto">
@@ -33,8 +44,11 @@ export default function Header() {
             <button aria-label="Wishlist" className="p-2 rounded-full hover:bg-secondary">
               <Heart className="h-5 w-5" />
             </button>
-            <button aria-label="Cart" className="p-2 rounded-full hover:bg-secondary">
+            <button aria-label="Cart" className="relative p-2 rounded-full hover:bg-secondary" onClick={() => document.dispatchEvent(new Event("cart:toggle"))}>
               <ShoppingBag className="h-5 w-5" />
+              {count > 0 && (
+                <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-1 rounded-full bg-primary text-primary-foreground border border-border">{count}</span>
+              )}
             </button>
           </div>
         </div>
