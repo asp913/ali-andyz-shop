@@ -5,7 +5,8 @@ import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// ⬇️ BrowserRouter → HashRouter
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { initializeCart } from "./lib/cart";
 import Index from "./pages/Index";
@@ -28,28 +29,29 @@ const App = () => {
   }, []);
 
   return (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Header />
-        <CartDrawer />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/womens-activewear" element={<WomensActivewear />} />
-          <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/womens-ready-to-wear" element={<WomensReadyToWear />} />
-          <Route path="/mens-activewear" element={<MensActivewear />} />
-          <Route path="/mens-ready-to-wear" element={<MensReadyToWear />} />
-          <Route path="/our-impact" element={<CollectionPlaceholder />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        {/* ⬇️ Wrap with HashRouter */}
+        <HashRouter>
+          <Header />
+          <CartDrawer />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/womens-activewear" element={<WomensActivewear />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/womens-ready-to-wear" element={<WomensReadyToWear />} />
+            <Route path="/mens-activewear" element={<MensActivewear />} />
+            <Route path="/mens-ready-to-wear" element={<MensReadyToWear />} />
+            <Route path="/our-impact" element={<CollectionPlaceholder />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </HashRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 
