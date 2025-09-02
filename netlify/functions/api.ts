@@ -1,5 +1,9 @@
-import serverless from "serverless-http";
+[build]
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm build:client"
+  publish = "dist"
 
-import { createServer } from "../../server";
-
-export const handler = serverless(createServer());
+# SPA fallback so /womens-activewear etc. work without 404
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
