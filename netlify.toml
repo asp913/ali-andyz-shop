@@ -1,11 +1,12 @@
 [build]
-  command = "npm run build"
+  command = "pnpm build"
   publish = ".next"
 
+# (Option A) If you keep the plugin in package.json, you can KEEP this block:
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Force HTTPS + canonical apex
+# Redirects (optional but nice)
 [[redirects]]
   from = "http://alyandandyz.com/*"
   to = "https://alyandandyz.com/:splat"
