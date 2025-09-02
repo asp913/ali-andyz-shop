@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+- import { HashRouter, Routes, Route } from "react-router-dom";
++ import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 ...
-<BrowserRouter> ... </BrowserRouter>
-fix: switch back to BrowserRouter for Netlify/Cloudflare deploy
+- <HashRouter>
++ <BrowserRouter>
+    {/* header, routes, footer */}
+- </HashRouter>
++ </BrowserRouter>
