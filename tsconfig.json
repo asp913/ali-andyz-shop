@@ -9,11 +9,13 @@
     "allowJs": true,
     "skipLibCheck": true,
     "noEmit": true,
-"paths": {
-  "@/*": ["./*"],
-  "@/components/*": ["./client/components/*", "./components/*"]
-}
-    /* Next.js expects these */
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@/components/*": ["./client/components/*", "./components/*"]
+    },
+
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -23,3 +25,10 @@
   "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
+Then run:
+
+bash
+Copy code
+git add tsconfig.json
+git commit -m "fix(tsconfig): add missing comma after paths block"
+git push origin main
