@@ -13,7 +13,7 @@ export default function CartDrawer() {
     const onUpdated = (e: any) => {
       setItems(e.detail.items);
       setTotal(e.detail.total);
-      setCount(e.detail.items.reduce((c: number, it: CartItem) => c + it.qty, 0));
+      setCount(e.detail.items.reduce((c: number, it: CartItem) => c + it.quantity, 0));
       setOpen(true);
     };
     const onToggle = () => setOpen((v) => !v);
@@ -71,7 +71,7 @@ export default function CartDrawer() {
                         >
                           -
                         </button>
-                        <span className="min-w-[2ch] text-center">{it.qty}</span>
+                        <span className="min-w-[2ch] text-center">{it.quantity}</span>
                         <button
                           className="px-2 py-1 border border-border rounded-sm text-sm"
                           onClick={() => adjustQty(it.variantId, 1)}
