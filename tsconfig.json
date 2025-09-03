@@ -9,19 +9,11 @@
     "allowJs": true,
     "skipLibCheck": true,
     "noEmit": true,
-<<<<<<< HEAD
-
-=======
->>>>>>> b48cc6b (fix(tsconfig): valid JSON + alias for @/components)
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@/components/*": ["./client/components/*", "./components/*"]
     },
-<<<<<<< HEAD
-
-=======
->>>>>>> b48cc6b (fix(tsconfig): valid JSON + alias for @/components)
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -31,10 +23,3 @@
   "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
-Then run:
-
-bash
-Copy code
-git add tsconfig.json
-git commit -m "fix(tsconfig): add missing comma after paths block"
-git push origin main
