@@ -5,21 +5,5 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Redirects (optional but good for www → root)
-[[redirects]]
-  from = "http://alyandandyz.com/*"
-  to = "https://alyandandyz.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "http://www.alyandandyz.com/*"
-  to = "https://alyandandyz.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://www.alyandandyz.com/*"
-  to = "https://alyandandyz.com/:splat"
-  status = 301
-  force = true
+[functions]
+  directory = "netlify/functions"
