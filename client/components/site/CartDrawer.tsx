@@ -32,7 +32,7 @@ export default function CartDrawer() {
     const newQty = target.qty + delta;
     if (newQty <= 0) {
       // remove by setting negative current qty
-      addToCart({ ...target, qty: -target.qty });
+      addToCart({ ...target, quantity: -(((target as any).quantity ?? (target as any).qty ?? 0)) });
     } else {
       addToCart({ ...target, qty: delta });
     }
