@@ -1,8 +1,9 @@
+/ lib/cart.ts
 export type CartItem = {
-export type CartItem = {
+  id: string;           // ✅ required (used in addToCart/findIndex)
   name: string;
-    price: number;      // unit price
-  quantity: number;   // item count
+  price: number;        // unit price
+  quantity: number;     // item count
   image?: string;
   variantId?: string;
 };
@@ -55,16 +56,16 @@ export function addToCart(item: AddInput) {
     (i) => i.id === item.id && i.variantId === item.variantId
   );
   if (idx >= 0) {
-    items[idx].quantity += qty;
+    const prev = Number(items[idx].quantity ?? 0);
+    items[idx].quantity = prev + qty;
   } else {
-    items.push({ ...item, quantity: qty });
+    items.push({ ...item, quantity: qty } as CartItem);
   }
   writeCart(items);
 }
 
-/* Optional helpers if you need them elsewhere:
-export function removeFromCart(id: string, variantId?: string) {
-  writeCart(readCart().filter(i => !(i.id === id && i.variantId === variantId)));
-}
-export function clearCart() { writeCart([]); }
-*/
+// Optional helpers:
+// export function removeFromCart(id: string, variantId?: string) {
+//   writeCart(readCart().filter(i => !(i.id === id && i.variantId === variantId)));
+// }
+// export function clearCart() { writeCart([]); }
