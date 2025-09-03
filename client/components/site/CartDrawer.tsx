@@ -29,12 +29,12 @@ export default function CartDrawer() {
   const adjustQty = (variantId: string, delta: number) => {
     const target = items.find((i) => i.variantId === variantId);
     if (!target) return;
-    const newQty = target.qty + delta;
+    const newQty = ((target as any).quantity ?? (target as any).qty ?? 0) + delta;
     if (newQty <= 0) {
       // remove by setting negative current qty
       addToCart({ ...target, quantity: -(((target as any).quantity ?? (target as any).qty ?? 0)) });
     } else {
-      addToCart({ ...target, qty: delta });
+      addToCart({ ...target, quantity: delta });
     }
   };
 
