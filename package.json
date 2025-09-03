@@ -3,25 +3,26 @@
   "private": true,
   "version": "0.0.0",
   "packageManager": "pnpm@10.15.0",
-  "engines": { "node": ">=20" },
-
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
-
   "dependencies": {
     "next": "14.2.5",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
-
   "devDependencies": {
     "@netlify/plugin-nextjs": "5.12.1",
-    "typescript": "^5.9.2",
+    "@types/node": "^20.14.2",
     "@types/react": "^18.3.3",
-    "@types/node": "^20.14.2"
+    "autoprefixer": "^10.4.21",
+    "tailwindcss": "^4.1.12",
+    "typescript": "^5.9.2"
   }
 }
