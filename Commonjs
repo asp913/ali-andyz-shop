@@ -1,9 +1,0 @@
-cat > postcss.config.js <<'EOF'
-/** PostCSS config for Next.js + Tailwind (CommonJS) */
-module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-};
-EOF
