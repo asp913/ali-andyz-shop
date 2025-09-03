@@ -8,8 +8,6 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./public/**/*.html",
-
-    // add these so classes in these folders are kept
     "./client/**/*.{js,ts,jsx,tsx,mdx}",
     "./server/**/*.{js,ts,jsx,tsx,mdx}",
     "./shared/**/*.{js,ts,jsx,tsx,mdx}",
@@ -72,7 +70,7 @@ const config: Config = {
     },
   },
   plugins: [
-    // animate, // uncomment if you imported tailwindcss-animate
+    // animate, // uncomment if you installed tailwindcss-animate
   ],
 };
 
