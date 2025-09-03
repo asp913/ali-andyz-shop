@@ -8,7 +8,20 @@
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
+
+    /* Next.js expects these */
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "plugins": [{ "name": "next" }]
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
