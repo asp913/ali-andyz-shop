@@ -21,3 +21,9 @@
   status = 301
   force = true
   conditions = { Host = ["alyandandyz.com", "aliandandyz.com"] }
+[[redirects]]
+  from = "/*"
+  to = "https://www.alyandandyz.com/:splat"
+  status = 301
+  force = true
+  conditions = { Host = ["www.aliandandyz.com"] }
