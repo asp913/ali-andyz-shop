@@ -7,3 +7,11 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Optional domain canonicalization to www.alyandandyz.com
+[[redirects]]
+  from = "/*"
+  to = "https://www.alyandandyz.com/:splat"
+  status = 301
+  force = true
+  conditions = { Host = ["alyandandyz.com", "aliandandyz.com"] }
