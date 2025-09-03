@@ -2,6 +2,12 @@
   command = "pnpm build"
   publish = ".next"
 
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "10.15.0"
+  # TEMPORARY while you stabilize lockfile; remove later:
+  # PNPM_FLAGS = "--no-frozen-lockfile"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
