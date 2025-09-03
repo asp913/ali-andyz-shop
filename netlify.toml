@@ -2,11 +2,10 @@
   command = "pnpm build"
   publish = ".next"
 
-# (Option A) If you keep the plugin in package.json, you can KEEP this block:
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Redirects (optional but nice)
+# Redirects (optional but good for www → root)
 [[redirects]]
   from = "http://alyandandyz.com/*"
   to = "https://alyandandyz.com/:splat"
