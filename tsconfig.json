@@ -1,29 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "lib": ["DOM", "DOM.Iterable", "ES2020"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
+    "lib": ["dom", "ES2020"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./app/*", "./components/*"],
-      "@shared/*": ["./shared/*"]
-    }
-
-    /* If you add Jest/Vitest, you can add their types here:
-    "types": ["vitest/globals"]
-    */
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts"]
 }
