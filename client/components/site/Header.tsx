@@ -15,7 +15,7 @@ export default function Header() {
   useEffect(() => {
     const onUpdated = (e: any) => {
       const items = e.detail.items as { qty: number }[];
-      setCount(items.reduce((c, it) => c + it.qty, 0));
+      setCount(items.reduce((c, it) => c + (it.quantity ?? it.qty ?? 0), 0));
     };
     document.addEventListener("cart:updated", onUpdated as EventListener);
     return () => document.removeEventListener("cart:updated", onUpdated as EventListener);

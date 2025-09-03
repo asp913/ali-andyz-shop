@@ -1,4 +1,3 @@
-cat > lib/cart.ts <<'TS_EOF'
 // lib/cart.ts
 export type CartItem = {
   id: string;           // required (used in addToCart/findIndex)
@@ -49,7 +48,7 @@ export function getCartTotal(): number {
   return readCart().reduce((sum, i) => sum + i.price * (i.quantity ?? i.qty ?? 0), 0);
 }
 
-// Accepts deltas: positive adds, negative removes
+// Accept deltas: positive adds, negative removes
 type AddInput = Omit<CartItem, "quantity" | "qty"> & { quantity?: number; qty?: number };
 
 export function addToCart(item: AddInput) {
@@ -63,8 +62,7 @@ export function addToCart(item: AddInput) {
     const prev = Number(items[idx].quantity ?? items[idx].qty ?? 0);
     const next = prev + delta;
     if (next <= 0) {
-      // remove if next <= 0
-      items.splice(idx, 1);
+      items.splice(idx, 1); // remove
     } else {
       items[idx].quantity = next;
       if (items[idx].qty != null) items[idx].qty = next; // keep legacy in sync
@@ -73,7 +71,6 @@ export function addToCart(item: AddInput) {
     if (delta > 0) {
       items.push({ ...item, quantity: delta, qty: item.qty } as CartItem);
     }
-    // if delta <= 0 on a non-existent item, do nothing
   }
 
   writeCart(items);
@@ -84,4 +81,3 @@ export function addToCart(item: AddInput) {
 //   writeCart(readCart().filter(i => !(i.id === id && i.variantId === variantId)));
 // }
 // export function clearCart() { writeCart([]); }
-TS_EOF
