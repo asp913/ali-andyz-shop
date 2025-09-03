@@ -61,7 +61,7 @@ export default function CartDrawer() {
                   <div key={it.variantId} className="flex items-start gap-3 border-b border-border pb-4">
                     <div className="flex-1">
                       <div className="font-medium text-foreground">{it.name}</div>
-                      <div className="text-sm text-muted-foreground">Size: {it.size}</div>
+                      {it.size <div className="text-sm text-muted-foreground">Size: {it.size}</div><div className="text-sm text-muted-foreground">Size: {it.size}</div> <div className="text-sm text-muted-foreground">Size: {it.size}</div>}
                       <div className="mt-1 text-sm">${it.price}</div>
                       <div className="mt-2 inline-flex items-center gap-2">
                         <button
