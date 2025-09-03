@@ -9,12 +9,10 @@
     "allowJs": true,
     "skipLibCheck": true,
     "noEmit": true,
-
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    },
-
+"paths": {
+  "@/*": ["./*"],
+  "@/components/*": ["./client/components/*", "./components/*"]
+}
     /* Next.js expects these */
     "esModuleInterop": true,
     "resolveJsonModule": true,
