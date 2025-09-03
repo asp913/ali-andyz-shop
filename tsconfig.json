@@ -9,13 +9,19 @@
     "allowJs": true,
     "skipLibCheck": true,
     "noEmit": true,
+<<<<<<< HEAD
 
+=======
+>>>>>>> b48cc6b (fix(tsconfig): valid JSON + alias for @/components)
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@/components/*": ["./client/components/*", "./components/*"]
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> b48cc6b (fix(tsconfig): valid JSON + alias for @/components)
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
