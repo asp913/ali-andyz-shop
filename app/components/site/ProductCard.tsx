@@ -1,14 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  badge?: string;
-  options?: string[];
-}
+import { Product } from "@/lib/sample-products";
 
 interface ProductCardProps {
   product: Product;
@@ -33,10 +27,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="text-foreground">${product.price}</div>
         </div>
         <div className="mt-2 text-sm text-muted-foreground">
-          {product.options?.length > 1 ? "Select size" : product.options?.[0]}
+          {product.options && product.options.length > 1 ? "Select size" : product.options?.[0]}
         </div>
 
-        {product.options?.length > 1 && (
+        {product.options && product.options.length > 1 && (
           <div className="mt-2 flex flex-wrap gap-2">
             {product.options.map((opt) => (
               <button
