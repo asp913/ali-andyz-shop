@@ -7,6 +7,7 @@ export type Product = {
   options?: string[];
   description?: string;
   images?: string[];
+  handle?: string;
 };
 
 export const sampleProducts: Product[] = [
@@ -23,6 +24,7 @@ export const sampleProducts: Product[] = [
     images: [
       "https://images.pexels.com/photos/7679450/pexels-photo-7679450.jpeg?auto=compress&cs=tinysrgb&w=1600",
     ],
+    handle: "essential-ribbed-tank",
   },
   {
     id: "wa-002",
@@ -36,6 +38,7 @@ export const sampleProducts: Product[] = [
     images: [
       "https://images.pexels.com/photos/4327024/pexels-photo-4327024.jpeg?auto=compress&cs=tinysrgb&w=1600",
     ],
+    handle: "mindful-movement-leggings",
   },
   {
     id: "wa-003",
@@ -50,6 +53,7 @@ export const sampleProducts: Product[] = [
     images: [
       "https://images.pexels.com/photos/4498614/pexels-photo-4498614.jpeg?auto=compress&cs=tinysrgb&w=1600",
     ],
+    handle: "studio-flow-sports-bra",
   },
   {
     id: "wa-004",
@@ -63,6 +67,7 @@ export const sampleProducts: Product[] = [
     images: [
       "https://images.pexels.com/photos/7822865/pexels-photo-7822865.jpeg?auto=compress&cs=tinysrgb&w=1600",
     ],
+    handle: "zen-zip-up-hoodie",
   },
   {
     id: "wa-005",
@@ -76,6 +81,7 @@ export const sampleProducts: Product[] = [
     images: [
       "https://images.pexels.com/photos/8159657/pexels-photo-8159657.jpeg?auto=compress&cs=tinysrgb&w=1600",
     ],
+    handle: "balance-cropped-jacket",
   },
   {
     id: "wa-006",
@@ -89,14 +95,24 @@ export const sampleProducts: Product[] = [
     images: [
       "https://images.pexels.com/photos/6311407/pexels-photo-6311407.jpeg?auto=compress&cs=tinysrgb&w=1600",
     ],
+    handle: "serene-seamless-shorts",
   },
 ];
 
 import { readyToWearProducts } from "./ready-to-wear-products";
 import { mensReadyToWearProducts } from "./mens-ready-to-wear-products";
 import { mensActivewearProducts } from "./mens-activewear-products";
+import { womensActivewearProducts } from "./womens-activewear-products";
+import { womensReadyToWearProducts } from "./womens-ready-to-wear-products";
 
-export const allProducts = [...sampleProducts, ...readyToWearProducts, ...mensReadyToWearProducts, ...mensActivewearProducts];
+export const allProducts = [
+  ...sampleProducts, 
+  ...readyToWearProducts, 
+  ...mensReadyToWearProducts, 
+  ...mensActivewearProducts,
+  ...womensActivewearProducts,
+  ...womensReadyToWearProducts
+];
 
 export function getProductById(id: string): Product | undefined {
   return allProducts.find((p) => p.id === id);

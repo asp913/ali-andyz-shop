@@ -7,6 +7,7 @@ export type CartItem = {
   qty?: number;         // legacy alias used by some UI
   image?: string;
   variantId?: string;
+  size?: string;
 };
 
 const STORAGE_KEY = "cart";

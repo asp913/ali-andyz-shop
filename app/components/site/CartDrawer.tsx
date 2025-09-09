@@ -61,12 +61,12 @@ export default function CartDrawer() {
                   <div key={it.variantId} className="flex items-start gap-3 border-b border-border pb-4">
                     <div className="flex-1">
                       <div className="font-medium text-foreground">{it.name}</div>
-                      {it.size <div className="text-sm text-muted-foreground">Size: {it.size}</div><div className="text-sm text-muted-foreground">Size: {it.size}</div> <div className="text-sm text-muted-foreground">Size: {it.size}</div>}
+                      {it.size && <div className="text-sm text-muted-foreground">Size: {it.size}</div>}
                       <div className="mt-1 text-sm">${it.price}</div>
                       <div className="mt-2 inline-flex items-center gap-2">
                         <button
                           className="px-2 py-1 border border-border rounded-sm text-sm"
-                          onClick={() => adjustQty(it.variantId, -1)}
+                          onClick={() => adjustQty(it.variantId || it.id, -1)}
                           aria-label={`Decrease quantity of ${it.name}`}
                         >
                           -
@@ -74,7 +74,7 @@ export default function CartDrawer() {
                         <span className="min-w-[2ch] text-center">{it.quantity}</span>
                         <button
                           className="px-2 py-1 border border-border rounded-sm text-sm"
-                          onClick={() => adjustQty(it.variantId, 1)}
+                          onClick={() => adjustQty(it.variantId || it.id, 1)}
                           aria-label={`Increase quantity of ${it.name}`}
                         >
                           +

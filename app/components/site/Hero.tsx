@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const ctas = [
-  { to: "/womens-activewear", label: "Women's Activewear" },
-  { to: "/womens-ready-to-wear", label: "Women's Ready to Wear" },
-  { to: "/mens-activewear", label: "Men's Activewear" },
-  { to: "/mens-ready-to-wear", label: "Men's Ready to Wear" },
+  { href: "/womens-activewear", label: "Women's Activewear" },
+  { href: "/womens-ready-to-wear", label: "Women's Ready to Wear" },
+  { href: "/mens-activewear", label: "Men's Activewear" },
+  { href: "/mens-ready-to-wear", label: "Men's Ready to Wear" },
 ];
 
 export default function Hero() {
@@ -22,8 +22,8 @@ export default function Hero() {
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg">
           {ctas.map((c) => (
             <Link
-              key={c.to}
-              to={c.to}
+              key={c.href}
+              href={c.href as any}
               className="inline-flex items-center justify-center px-5 py-3 text-xs tracking-widest uppercase bg-foreground text-primary-foreground hover:opacity-90 transition-colors"
             >
               {c.label}

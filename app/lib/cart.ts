@@ -4,4 +4,4 @@ export {
   getCartTotal,
   addToCart,
   type CartItem
-} from '@/lib/cart';
+} from '../../lib/cart';

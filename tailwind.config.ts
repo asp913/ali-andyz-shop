@@ -8,10 +8,8 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./public/**/*.html",
-    "./client/**/*.{js,ts,jsx,tsx,mdx}",
     "./server/**/*.{js,ts,jsx,tsx,mdx}",
     "./shared/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}" // only if you have a /pages dir
   ],
   prefix: "",
   theme: {
