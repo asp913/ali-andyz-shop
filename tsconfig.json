@@ -13,6 +13,7 @@
     "paths": {
       "@/components/*": ["app/components/*"],
       "@/lib/*": ["app/lib/*"],
+      "@/hooks/*": ["app/hooks/*"],
       "@shared/*": ["shared/*"]
     },
     "esModuleInterop": true,

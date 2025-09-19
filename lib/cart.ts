@@ -57,7 +57,7 @@ export function addToCart(item: AddInput) {
   const delta = Number.isFinite(Number(deltaRaw)) ? Number(deltaRaw) : 1;
 
   const items = readCart();
-  const idx = items.findIndex((i) => i.id === item.id && i.variantId === item.variantId);
+  const idx = items.findIndex((i) => i.variantId === item.variantId);
 
   if (idx >= 0) {
     const prev = Number(items[idx].quantity ?? items[idx].qty ?? 0);
@@ -75,6 +75,13 @@ export function addToCart(item: AddInput) {
   }
 
   writeCart(items);
+  
+  // Dispatch cart updated event
+  if (typeof window !== 'undefined') {
+    document.dispatchEvent(new CustomEvent('cart:updated', {
+      detail: { items: readCart(), total: getCartTotal() }
+    }));
+  }
 }
 
 // Optional helpers:
