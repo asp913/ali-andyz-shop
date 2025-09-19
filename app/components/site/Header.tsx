@@ -15,11 +15,17 @@ const nav = [
 
 export default function Header() {
   const pathname = usePathname();
-  const [count, setCount] = useState<number>(getCartItemCount());
+  const [count, setCount] = useState<number>(0);
+  
+  // Initialize cart count after hydration
+  useEffect(() => {
+    setCount(getCartItemCount());
+  }, []);
+
   useEffect(() => {
     const onUpdated = (e: any) => {
-      const items = e.detail.items as { qty: number }[];
-      setCount(items.reduce((c, it) => c + it.qty, 0));
+      const items = e.detail.items as { qty?: number; quantity?: number }[];
+      setCount(items.reduce((c, it) => c + (it.qty || it.quantity || 0), 0));
     };
     document.addEventListener("cart:updated", onUpdated as EventListener);
     return () => document.removeEventListener("cart:updated", onUpdated as EventListener);

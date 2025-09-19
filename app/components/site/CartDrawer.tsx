@@ -5,15 +5,22 @@ import { getCartItems, getCartTotal, getCartItemCount, addToCart, type CartItem 
 
 export default function CartDrawer() {
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState<CartItem[]>(getCartItems());
-  const [total, setTotal] = useState<number>(getCartTotal());
-  const [count, setCount] = useState<number>(getCartItemCount());
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [count, setCount] = useState<number>(0);
+
+  // Initialize cart state after hydration
+  useEffect(() => {
+    setItems(getCartItems());
+    setTotal(getCartTotal());
+    setCount(getCartItemCount());
+  }, []);
 
   useEffect(() => {
     const onUpdated = (e: any) => {
       setItems(e.detail.items);
       setTotal(e.detail.total);
-      setCount(e.detail.items.reduce((c: number, it: CartItem) => c + it.qty, 0));
+      setCount(e.detail.items.reduce((c: number, it: CartItem) => c + (it.qty || it.quantity || 0), 0));
       setOpen(true);
     };
     const onToggle = () => setOpen((v) => !v);
@@ -29,13 +36,16 @@ export default function CartDrawer() {
   const adjustQty = (variantId: string, delta: number) => {
     const target = items.find((i) => i.variantId === variantId);
     if (!target) return;
-    const newQty = target.qty + delta;
-    if (newQty <= 0) {
-      // remove by setting negative current qty
-      addToCart({ ...target, qty: -target.qty });
-    } else {
-      addToCart({ ...target, qty: delta });
-    }
+    
+    // Use the delta directly - addToCart will handle adding it to existing quantity
+    addToCart({ 
+      id: target.id,
+      variantId: target.variantId,
+      name: target.name,
+      price: target.price,
+      size: target.size,
+      qty: delta 
+    });
   };
 
   return (
@@ -66,15 +76,15 @@ export default function CartDrawer() {
                       <div className="mt-2 inline-flex items-center gap-2">
                         <button
                           className="px-2 py-1 border border-border rounded-sm text-sm"
-                          onClick={() => adjustQty(it.variantId, -1)}
+                          onClick={() => it.variantId && adjustQty(it.variantId, -1)}
                           aria-label={`Decrease quantity of ${it.name}`}
                         >
                           -
                         </button>
-                        <span className="min-w-[2ch] text-center">{it.qty}</span>
+                        <span className="min-w-[2ch] text-center">{it.qty || it.quantity || 0}</span>
                         <button
                           className="px-2 py-1 border border-border rounded-sm text-sm"
-                          onClick={() => adjustQty(it.variantId, 1)}
+                          onClick={() => it.variantId && adjustQty(it.variantId, 1)}
                           aria-label={`Increase quantity of ${it.name}`}
                         >
                           +
