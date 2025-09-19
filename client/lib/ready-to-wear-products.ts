@@ -1,5 +1,3 @@
-import { Product } from "./sample-products";
-
 export const readyToWearProducts: Product[] = [
   {
     id: "rtw-008",
