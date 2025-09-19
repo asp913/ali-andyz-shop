@@ -102,16 +102,12 @@ export const sampleProducts: Product[] = [
 import { readyToWearProducts } from "./ready-to-wear-products";
 import { mensReadyToWearProducts } from "./mens-ready-to-wear-products";
 import { mensActivewearProducts } from "./mens-activewear-products";
-import { womensActivewearProducts } from "./womens-activewear-products";
-import { womensReadyToWearProducts } from "./womens-ready-to-wear-products";
 
 export const allProducts = [
   ...sampleProducts, 
   ...readyToWearProducts, 
   ...mensReadyToWearProducts, 
-  ...mensActivewearProducts,
-  ...womensActivewearProducts,
-  ...womensReadyToWearProducts
+  ...mensActivewearProducts
 ];
 
 export function getProductById(id: string): Product | undefined {
