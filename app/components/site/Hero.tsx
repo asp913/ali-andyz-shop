@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const ctas = [
-  { to: "/womens-activewear", label: "Women's Activewear" },
-  { to: "/womens-ready-to-wear", label: "Women's Ready to Wear" },
-  { to: "/mens-activewear", label: "Men's Activewear" },
-  { to: "/mens-ready-to-wear", label: "Men's Ready to Wear" },
+  { href: "/womens-activewear", label: "Women's Activewear" },
+  { href: "/womens-ready-to-wear", label: "Women's Ready to Wear" },
+  { href: "/mens-activewear", label: "Men's Activewear" },
+  { href: "/mens-ready-to-wear", label: "Men's Ready to Wear" },
 ];
 
 export default function Hero() {
