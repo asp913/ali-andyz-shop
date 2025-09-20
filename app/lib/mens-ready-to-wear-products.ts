@@ -40,7 +40,7 @@ export const mensReadyToWearProducts: Product[] = [
     badge: "Capsule",
     options: [],
     description:
-      "Heritage Field — Suede & Cord. Bundle $239 · Value $345 · Save $106. Warm earth tones with true suede texture and workwear ease. Built for weekends, sharp enough for dinners. What's inside (5 pieces): Real Suede Field Jacket (Nutmeg) — $129 — 100% suede, rib hem/cuffs, two chest pockets, YKK zip. Chevron Merino Crew (Taupe/Forest/Rust/Cream) — $49 — Extra-fine merino blend, fully-fashioned. 16-Wale Corduroy Utility Pant (Sand) — $69 — Straight leg, utility patch pockets, comfort stretch. Suede Cupsole Sneakers (Cocoa) — $59 — Low profile, rubber cupsole, leather lining. Leather Crossbody (Cocoa) — One size — $39 — Pebbled leather, zip pocket, adjustable strap.",
+      "Heritage Field — Suede & Cord. Bundle $239 · Value $345 · Save $106. Warm earth tones with true suede texture and workwear ease. Built for weekends, sharp enough for dinners. What's inside (5 pieces): Faux Suede Field Jacket (Nutmeg) — $129 — 100% suede, rib hem/cuffs, two chest pockets, YKK zip. Chevron Merino Crew (Taupe/Forest/Rust/Cream) — $49 — Extra-fine merino blend, fully-fashioned. 16-Wale Corduroy Utility Pant (Sand) — $69 — Straight leg, utility patch pockets, comfort stretch. Suede Cupsole Sneakers (Cocoa) — $59 — Low profile, rubber cupsole, leather lining. Leather Crossbody (Cocoa) — One size — $39 — Pebbled leather, zip pocket, adjustable strap.",
     images: [
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F9e6171f24e4e4a9691b8877bb08c1a0e?format=webp&width=1600",
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fcae117a4247040a89d44b1d164dd0a6c?format=webp&width=1600",

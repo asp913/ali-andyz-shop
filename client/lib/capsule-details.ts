@@ -407,7 +407,7 @@ export const capsuleDetailsByProductId: Record<string, CapsuleDetails | undefine
     items: [
       {
         handle: 'real-suede-field-jacket',
-        title: 'Real Suede Field Jacket (Nutmeg)',
+        title: 'Faux Suede Field Jacket (Nutmeg)',
         price: 129,
         priceStripeId: '',
         sizes: ['S', 'M', 'L', 'XL', 'XXL'],
@@ -646,7 +646,7 @@ export const capsuleDetailsByProductId: Record<string, CapsuleDetails | undefine
     ],
   },
   'ma-004': {
-    capsuleTitle: 'Beach Flow Capsule — Capsule or Mix & Match',
+    capsuleTitle: 'Beach Flow Capsule ��� Capsule or Mix & Match',
     capsuleSubtitle:
       'Elevate your practice and your downtime with coastal calm and everyday movement. Lightweight, versatile, and effortless.',
     bundlePrice: 120,
