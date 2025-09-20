@@ -22,8 +22,8 @@ export default function Hero() {
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg">
           {ctas.map((c) => (
             <Link
-              key={c.to}
-              to={c.to}
+              key={c.href}
+              href={c.href}
               className="inline-flex items-center justify-center px-5 py-3 text-xs tracking-widest uppercase bg-foreground text-primary-foreground hover:opacity-90 transition-colors"
             >
               {c.label}
