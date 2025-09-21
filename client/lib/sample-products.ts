@@ -138,6 +138,21 @@ export const sampleProducts: Product[] = [
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F83855c6501054cb78c2cd523e42102c4?format=webp&width=1600",
     ],
   },
+  {
+    id: "wa-009",
+    name: "Design Your Own Activewear Capsule",
+    price: 0,
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F7c72cba2bec84afeb23488db6ae39c36?format=webp&width=800",
+    badge: "Custom",
+    options: [],
+    description:
+      "Design Your Own Activewear Capsule. Build your active set your way. Pick your favorites from this collection. 4–5 items = 15% off · 6+ = 20% off at checkout.",
+    images: [
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F7c72cba2bec84afeb23488db6ae39c36?format=webp&width=800",
+    ],
+    handle: "design-your-own-activewear-capsule",
+  },
 ];
 
 import { readyToWearProducts } from "./ready-to-wear-products";
