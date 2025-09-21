@@ -283,7 +283,7 @@ export default function ProductClient({ product }: ProductClientProps) {
                     <div className="text-lg font-light text-foreground">4–5 items = 15% off</div>
                     <div className="text-lg font-light text-foreground">6+ items = 20% off</div>
                   </div>
-                  <p className="text-sm text-muted-foreground">{capsule.priceRangeCopy}</p>
+                  <p className="text-sm text-muted-foreground">{capsule?.priceRangeCopy}</p>
                 </div>
 
                 <div>
