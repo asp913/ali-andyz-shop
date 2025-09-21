@@ -289,7 +289,7 @@ export default function ProductClient({ product }: ProductClientProps) {
                 <div>
                   <h3 className="text-xl font-medium mb-6 text-foreground text-center">Choose Your Activewear Pieces</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {capsule.items.map((it, idx) => {
+                    {capsule?.items?.map((it, idx) => {
                       const selected = itemSizes[it.handle] ?? (it.sizes?.[0] || 'OneSize');
                       return (
                         <div key={it.handle + idx} className="border border-border rounded-sm p-4 space-y-3">
