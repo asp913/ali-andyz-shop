@@ -234,6 +234,9 @@ export default function WomensReadyToWear() {
         </div>
       </section>
 
+      {/* Design Your Own Capsule */}
+      <DesignYourOwnCapsule category="womens-ready-to-wear" />
+
       {/* Trust Signals */}
       <TrustSignals />
 

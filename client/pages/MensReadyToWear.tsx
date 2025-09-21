@@ -211,6 +211,9 @@ export default function MensReadyToWear() {
         </div>
       </section>
 
+      {/* Design Your Own Capsule */}
+      <DesignYourOwnCapsule category="mens-ready-to-wear" />
+
       {/* Trust Signals */}
       <TrustSignals />
 
