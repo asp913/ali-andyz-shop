@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Filter } from "lucide-react";
 import ProductCard from "@/components/site/ProductCard";
+import DesignYourOwnCapsule from "@/components/site/DesignYourOwnCapsule";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
