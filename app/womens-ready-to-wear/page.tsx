@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Filter } from "lucide-react";
 import ProductCard from "@/components/site/ProductCard";
-import DesignYourOwnCapsule from "@/components/site/DesignYourOwnCapsule";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
@@ -235,9 +234,6 @@ export default function WomensReadyToWear() {
           <div className="mt-4 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
         </div>
       </section>
-
-      {/* Design Your Own Capsule */}
-      <DesignYourOwnCapsule category="womens-ready-to-wear" />
 
       {/* Trust Signals */}
       <TrustSignals />
