@@ -154,6 +154,36 @@ export default function ProductClient({ product }: ProductClientProps) {
                   decoding="async"
                 />
               </div>
+            ) : productId === 'wa-009' ? (
+              <>
+                <h1 className="text-3xl lg:text-4xl font-light text-foreground tracking-wide">
+                  {product.name}
+                </h1>
+                <div className="mt-2 text-xl">Custom Builder</div>
+                {product.badge && (
+                  <div className="mt-3 inline-block border border-border px-2 py-1 text-xs rounded-sm">
+                    {product.badge}
+                  </div>
+                )}
+
+                <div className="mt-6 space-y-3 text-muted-foreground">
+                  <p>{product.description}</p>
+                  <p className="text-sm font-medium text-foreground">4–5 items = 15% off • 6+ items = 20% off at checkout</p>
+                </div>
+
+                <div className="mt-6">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Select your favorite activewear pieces below to build your custom capsule. Each item can be purchased individually or combined for automatic discounts.
+                  </p>
+                </div>
+
+                <div className="mt-6 flex gap-3">
+                  <Button variant="outline" className="rounded-sm" asChild>
+                    <Link href="/womens-activewear">Browse All Activewear</Link>
+                  </Button>
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground">Mix and match pieces to create your perfect activewear collection.</div>
+              </>
             ) : (
               <>
                 <h1 className="text-3xl lg:text-4xl font-light text-foreground tracking-wide">
