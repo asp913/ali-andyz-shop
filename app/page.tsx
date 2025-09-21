@@ -47,7 +47,7 @@ export default function Home() {
           </div>
           <div className="w-full lg:w-1/2 h-[50vh] sm:h-[55vh] lg:h-[85vh] relative overflow-hidden">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F8b0fba45ec28476f8cc928c32316f837?format=webp&width=800"
+              src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd99ca277a4a044bfbe6fb8efd2902e3f?format=webp&width=800"
               alt="Aly + Andy Z — couple look"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
