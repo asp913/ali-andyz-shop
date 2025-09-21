@@ -8,6 +8,9 @@ const nextConfig = {
   images: {
     domains: ['cdn.builder.io'],
   },
+  // Disable static generation for problematic pages to avoid serialization issues
+  // output: 'standalone', // Commented out for development
+  trailingSlash: true,
 };
 
 export default nextConfig;

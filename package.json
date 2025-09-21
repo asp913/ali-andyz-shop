@@ -10,7 +10,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup-stripe": "node scripts/setup-stripe-products.js",
+    "setup-all-stripe": "node scripts/setup-all-stripe-products.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

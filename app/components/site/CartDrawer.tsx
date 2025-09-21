@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCartItems, getCartTotal, getCartItemCount, addToCart, type CartItem } from "@/lib/cart";
+import CheckoutButton from "@/components/checkout/CheckoutButton";
 
 export default function CartDrawer() {
   const [open, setOpen] = useState(false);
@@ -100,7 +101,9 @@ export default function CartDrawer() {
                 <div className="text-sm text-muted-foreground">Subtotal</div>
                 <div className="text-base font-medium">${total.toFixed(2)}</div>
               </div>
-              <Button className="w-full rounded-sm" onClick={() => alert("Connect Stripe to enable checkout.")}>Checkout</Button>
+              <CheckoutButton className="w-full rounded-sm">
+                Checkout
+              </CheckoutButton>
             </div>
           </aside>
         </div>

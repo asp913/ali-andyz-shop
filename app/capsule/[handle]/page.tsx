@@ -1,14 +1,13 @@
-"use client";
-
-import React, { useEffect } from "react";
-import { useParams } from "next/navigation";
+import React from "react";
 import TrustSignals from "@/components/site/TrustSignals";
-import { getProductById } from "@/lib/sample-products";
+import CapsuleClient from "./CapsuleClient";
+import { serializeCapsule } from "@/lib/serialization";
+import { fetchStripeProductsServer } from "@/lib/stripe";
 
 // Capsule data (ideally supplied by Builder or API). Stripe checkout URLs are optional — if present the UI will link directly to Stripe.
 const CAPSULES: Record<string, any> = {
-  riviera: {
-    handle: "riviera",
+  "riviera-edit-capsule": {
+    handle: "riviera-edit-capsule",
     title: "Riviera Edit",
     tagline: "Capsule or Mix & Match",
     bundlePrice: 179,
@@ -48,206 +47,165 @@ const CAPSULES: Record<string, any> = {
       {
         id: "riv-02",
         productId: "riv-02",
-        name: "Cropped Top",
-        price: 22,
-        sizeOptions: ["XS", "S", "M", "L"],
+        name: "Relaxed T-Shirt",
+        price: 29,
+        sizeOptions: ["XS", "S", "M", "L", "XL"],
         isIncludedInCapsule: true,
-        stripeLinks: { XS: null, S: null, M: null, L: null },
+        stripeLinks: {
+          XS: null,
+          S: null,
+          M: null,
+          L: null,
+          XL: null,
+        },
       },
       {
         id: "riv-03",
         productId: "riv-03",
-        name: "Cargo Pants",
-        price: 39,
-        sizeOptions: ["S", "M", "L"],
+        name: "Wide-Leg Pants",
+        price: 89,
+        sizeOptions: ["XS", "S", "M", "L", "XL"],
         isIncludedInCapsule: true,
-        stripeLinks: { S: null, M: null, L: null },
+        stripeLinks: {
+          XS: null,
+          S: null,
+          M: null,
+          L: null,
+          XL: null,
+        },
+      },
+    ],
+  },
+  "sunset-flow-capsule": {
+    handle: "sunset-flow-capsule",
+    title: "Sunset Flow",
+    tagline: "Capsule or Mix & Match",
+    bundlePrice: 119,
+    bundleValue: 154,
+    bundleSavings: 35,
+    priceRange: "$24–$42",
+    capsuleDescription:
+      "Golden hour vibes in wearable form. Pieces that flow from yoga class to sunset dinner, designed for those magical in-between moments. Flowing silhouettes in warm, sunset tones. Versatile layers perfect for day-to-night.",
+    sellingPoints: [
+      "Save $35 vs. buying separately",
+      "Versatile day-to-night pieces",
+      "Golden hour aesthetic",
+    ],
+    heroImage:
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd474d293666041978cf836301c70914a?format=webp&width=800",
+    flatLayImage:
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fb3b275c6e356437f9e376b3c12f4fa7f?format=webp&width=800",
+    bundleStripeUrl: null,
+    pieces: [
+      {
+        id: "sunset-01",
+        productId: "sunset-01",
+        name: "Sunset Flow Top",
+        price: 42,
+        sizeOptions: ["XS", "S", "M", "L", "XL"],
+        isIncludedInCapsule: true,
+        stripeLinks: {
+          XS: null,
+          S: null,
+          M: null,
+          L: null,
+          XL: null,
+        },
       },
       {
-        id: "riv-04",
-        productId: "riv-04",
-        name: "Cap",
-        price: 20,
-        sizeOptions: ["One Size"],
+        id: "sunset-02",
+        productId: "sunset-02",
+        name: "Sunset Flow Bottom",
+        price: 38,
+        sizeOptions: ["XS", "S", "M", "L", "XL"],
         isIncludedInCapsule: true,
-        stripeLinks: { "One Size": null },
+        stripeLinks: {
+          XS: null,
+          S: null,
+          M: null,
+          L: null,
+          XL: null,
+        },
       },
       {
-        id: "riv-05",
-        productId: "riv-05",
-        name: "Silver Accent Sneakers",
-        price: 129,
-        sizeOptions: ["6", "7", "8", "9"],
+        id: "sunset-03",
+        productId: "sunset-03",
+        name: "Sunset Flow Layer",
+        price: 24,
+        sizeOptions: ["XS", "S", "M", "L", "XL"],
         isIncludedInCapsule: true,
-        stripeLinks: { "6": null, "7": null, "8": null, "9": null },
-      },
-      {
-        id: "riv-06",
-        productId: "riv-06",
-        name: "Utility Bag",
-        price: 29,
-        sizeOptions: ["One Size"],
-        isIncludedInCapsule: true,
-        stripeLinks: { "One Size": null },
+        stripeLinks: {
+          XS: null,
+          S: null,
+          M: null,
+          L: null,
+          XL: null,
+        },
       },
     ],
   },
 };
 
-function SizeButton({ label, href }: { label: string; href: string | null }) {
-  if (href) {
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block border border-border px-3 py-2 rounded-sm text-sm hover:bg-muted transition"
-      >
-        {label}
-      </a>
-    );
-  }
-
-  return (
-    <button className="inline-block border border-border px-3 py-2 rounded-sm text-sm text-muted-foreground cursor-not-allowed" disabled>
-      {label}
-    </button>
-  );
+interface CapsulePageProps {
+  params: {
+    handle: string;
+  };
 }
 
-export default function CapsulePage() {
-  const params = useParams();
-  const handle = params.handle as string;
-  const capsule = (handle && CAPSULES[handle]) || CAPSULES["riviera"];
+async function buildCapsuleFromStripe(handle: string) {
+  try {
+    // Fetch all products from Stripe
+    const response = await fetchStripeProductsServer('all');
+    const products = response.products;
 
-  useEffect(() => {
-    console.info("CapsulePage render", { handle, capsuleLength: capsule?.pieces?.length });
-  }, [handle, capsule]);
+    // For now, we'll use the static capsule data as a template
+    // but populate the pieces with actual Stripe product data
+    const staticCapsule = CAPSULES[handle];
+    if (!staticCapsule) return null;
+
+    // Map pieces to actual Stripe products
+    const pieces = staticCapsule.pieces.map((piece: any) => {
+      const stripeProduct = products.find(p => p.handle === piece.productId || p.id === piece.productId);
+      return {
+        ...piece,
+        // Use Stripe data if available, fallback to static data
+        name: stripeProduct?.name || piece.name,
+        price: stripeProduct?.price || piece.price,
+        image: stripeProduct?.image || piece.image,
+        stripePriceId: stripeProduct?.stripePriceId || piece.stripePriceId,
+        productId: stripeProduct?.handle || piece.productId,
+      };
+    });
+
+    return {
+      ...staticCapsule,
+      pieces,
+    };
+  } catch (error) {
+    console.error('Error building capsule from Stripe:', error);
+    return CAPSULES[handle]; // Fallback to static data
+  }
+}
+
+export default async function CapsulePage({ params }: CapsulePageProps) {
+  const handle = params.handle;
+  const capsule = await buildCapsuleFromStripe(handle);
 
   if (!capsule) {
     return (
-      <main className="container mx-auto py-16">
-        <h1 className="text-2xl font-semibold">Capsule not found</h1>
-        <p className="mt-4">We couldn't find that capsule. Check the URL or create one in Builder CMS.</p>
-      </main>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Capsule Not Found</h1>
+          <p className="text-muted-foreground">
+            The capsule you're looking for doesn't exist.
+          </p>
+        </div>
+      </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Hero */}
-      <section className="px-6 py-12 bg-card">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h1 className="text-4xl lg:text-6xl font-light mb-2">{capsule.title} — {capsule.tagline}</h1>
-            <div className="text-lg text-muted-foreground mb-4">Secure checkout via Stripe</div>
+  // Serialize the capsule data to ensure it's safe for client components
+  const serializedCapsule = serializeCapsule(capsule);
 
-            <div className="text-xl font-light mb-4">
-              Bundle ${capsule.bundlePrice} · Value ${capsule.bundleValue} · Save ${capsule.bundleSavings}
-            </div>
-
-            <p className="max-w-2xl text-muted-foreground mb-6">{capsule.capsuleDescription}</p>
-
-            <div className="flex items-center gap-4">
-              {capsule.bundleStripeUrl ? (
-                <a
-                  href={capsule.bundleStripeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-foreground text-background px-5 py-3 rounded-sm font-medium"
-                >
-                  Add Full Capsule — ${capsule.bundlePrice}
-                </a>
-              ) : (
-                <button className="inline-block bg-muted text-muted-foreground px-5 py-3 rounded-sm font-medium cursor-not-allowed" disabled>
-                  Add Full Capsule — ${capsule.bundlePrice}
-                </button>
-              )}
-
-              <a href="#shop-individually" className="underline text-sm">Shop Individually</a>
-            </div>
-            <div className="mt-2 text-xs text-foreground">Only 3 left</div>
-            <div className="mt-1 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
-          </div>
-
-          <div className="rounded-sm overflow-hidden bg-card">
-            <img src={capsule.heroImage} alt={capsule.title} className="w-full h-full object-cover" loading="lazy" />
-          </div>
-        </div>
-      </section>
-
-      {/* Flat lay + includes */}
-      <section className="px-6 py-12">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <div className="rounded-sm overflow-hidden bg-card">
-            <img src={capsule.flatLayImage} alt={`${capsule.title} flat lay`} className="w-full h-full object-cover" loading="lazy" />
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-light mb-4">Includes</h3>
-            <ul className="space-y-3 text-lg">
-              {capsule.pieces.map((p: any) => {
-                const product = p.productId ? getProductById(p.productId) : undefined;
-                const title = product?.name ?? p.name;
-                const price = product?.price ?? p.price;
-                return (
-                  <li key={p.id} className="flex justify-between items-center">
-                    <span>{title}</span>
-                    <span className="text-muted-foreground">${price}</span>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <div className="mt-8 text-sm text-muted-foreground">
-              <p>Choose your size to checkout instantly. Each size button links to a secure Stripe checkout session.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Shop individually */}
-      <section id="shop-individually" className="px-6 py-12 bg-card">
-        <div className="max-w-6xl mx-auto">
-          <h3 className="text-2xl font-light mb-6">Shop Individually</h3>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {capsule.pieces.map((piece: any) => {
-              const product = piece.productId ? getProductById(piece.productId) : undefined;
-              const image = product?.image ?? capsule.heroImage;
-              const title = product?.name ?? piece.name;
-              const price = product?.price ?? piece.price;
-              const options = product?.options ?? piece.sizeOptions ?? [];
-
-              return (
-                <div key={piece.id} className="border p-4 rounded-sm flex flex-col h-full">
-                  <div className="rounded-sm overflow-hidden bg-background mb-3">
-                    <a href={product ? `/product/${product.id}` : undefined}>
-                      <img src={image} alt={title} className="w-full h-44 object-cover" loading="lazy" />
-                    </a>
-                  </div>
-
-                  <div className="flex-1">
-                    <a href={product ? `/product/${product.id}` : undefined} className="font-medium hover:underline block">{title}</a>
-                    <div className="text-sm text-muted-foreground mb-4">${price}{options?.includes('One Size') ? ' · One size' : ''}</div>
-
-                    <div className="size-buttons flex flex-wrap gap-2">
-                      {options.map((s: string) => (
-                        <SizeButton key={s} label={s} href={piece.stripeLinks?.[s] ?? null} />
-                      ))}
-                    </div>
-
-                    <div className="mt-4 text-xs text-muted-foreground">Easy returns within 30 days.</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Trust */}
-      <TrustSignals />
-    </div>
-  );
+  return <CapsuleClient capsule={serializedCapsule} />;
 }

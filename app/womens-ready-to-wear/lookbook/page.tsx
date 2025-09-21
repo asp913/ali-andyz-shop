@@ -2,20 +2,18 @@ import Link from "next/link";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
-import { readyToWearProducts } from "@/lib/ready-to-wear-products";
+import { fetchStripeProductsServer } from "@/lib/stripe";
 
-export default function WomensRTWLookbook() {
-  const gallery = (() => {
-    const arr = readyToWearProducts.slice(0, 6);
-    const a = arr.findIndex((p) => p.id === 'rtw-008'); // Soft Landing
-    const b = arr.findIndex((p) => p.id === 'rtw-007'); // Cosmic Elegance
-    if (a !== -1 && b !== -1) {
-      const tmp = arr[a];
-      arr[a] = arr[b];
-      arr[b] = tmp;
-    }
-    return arr.slice(0, 4);
-  })();
+export default async function WomensRTWLookbook() {
+  let products = [];
+  try {
+    const response = await fetchStripeProductsServer('womens-ready-to-wear');
+    products = response.products;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+
+  const gallery = products.slice(0, 4);
   const heroImage = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Ff17ae498594a4a2c88f32d221c0fd76c?format=webp&width=2000&v=1";
   const lifestyleA = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F625d681b373a412898b8c80737a75714?format=webp&width=800";
   const lifestyleB = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F2b1dc4cea526400cabad8ac484cf5d82?format=webp&width=800";

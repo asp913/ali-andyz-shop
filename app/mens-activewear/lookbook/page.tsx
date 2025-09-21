@@ -2,10 +2,18 @@ import Link from "next/link";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
-import { mensActivewearProducts } from "@/lib/mens-activewear-products";
+import { fetchStripeProductsServer } from "@/lib/stripe";
 
-export default function MensActivewearLookbook() {
-  const gallery = mensActivewearProducts.slice(0, 4);
+export default async function MensActivewearLookbook() {
+  let products = [];
+  try {
+    const response = await fetchStripeProductsServer('mens-activewear');
+    products = response.products;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+
+  const gallery = products.slice(0, 4);
   const heroImage = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F8e82cfd54a0a4a5c9a6834c9b9c0a287?format=webp&width=2000";
   const lifestyleA = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F20022d62b84f4f488e54b7428e05641c?format=webp&width=800";
   const lifestyleB = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F3b3cf89cd5194c6d9509e4157566e8ac?format=webp&width=800";

@@ -1,17 +1,23 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { Filter } from "lucide-react";
-import ProductCard from "@/components/site/ProductCard";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
-import { readyToWearProducts } from "@/lib/ready-to-wear-products";
+import { fetchStripeProductsServer } from "@/lib/stripe";
+import WomensReadyToWearClient from "./WomensReadyToWearClient";
 
-export default function WomensReadyToWear() {
-  const [sortBy, setSortBy] = useState("featured");
-  const [showFilters, setShowFilters] = useState(false);
+export default async function WomensReadyToWear() {
+  // Fetch products dynamically from Stripe
+  let products = [];
+  let hasError = false;
+  
+  try {
+    const response = await fetchStripeProductsServer('womens-ready-to-wear');
+    products = response.products;
+  } catch (error) {
+    console.error('Error fetching women\'s ready-to-wear products:', error);
+    hasError = true;
+  }
 
   return (
     <main className="min-h-screen bg-background">
@@ -90,155 +96,13 @@ export default function WomensReadyToWear() {
         </div>
       </section>
 
-      {/* Filters & Sort Bar */}
-      <section className="border-b border-border bg-background">
-        <div className="max-w-6xl mx-auto px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2 border border-border rounded-sm text-sm hover:bg-secondary transition-colors"
-              >
-                <Filter className="h-4 w-4" />
-                Filters
-              </button>
-              <span className="text-sm text-muted-foreground">
-                {readyToWearProducts.length} products
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <label htmlFor="sort" className="text-sm text-muted-foreground">
-                Sort by:
-              </label>
-              <select
-                id="sort"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-2 border border-border rounded-sm text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="featured">Featured</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="newest">Newest</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Expandable Filters */}
-          {showFilters && (
-            <div className="mt-4 pt-4 border-t border-border">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                  <h3 className="text-sm font-medium text-foreground mb-2">
-                    Size
-                  </h3>
-                  <div className="space-y-2">
-                    {["XS", "S", "M", "L", "XL"].map((size) => (
-                      <label key={size} className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          className="rounded border-border"
-                        />
-                        <span className="text-sm text-muted-foreground">
-                          {size}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-foreground mb-2">
-                    Category
-                  </h3>
-                  <div className="space-y-2">
-                    {["Dresses", "Blazers", "Tops", "Bottoms", "Outerwear"].map(
-                      (type) => (
-                        <label key={type} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="rounded border-border"
-                          />
-                          <span className="text-sm text-muted-foreground">
-                            {type}
-                          </span>
-                        </label>
-                      ),
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-foreground mb-2">
-                    Price
-                  </h3>
-                  <div className="space-y-2">
-                    {["Under $150", "$150-$250", "$250-$350", "Over $350"].map(
-                      (price) => (
-                        <label key={price} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="rounded border-border"
-                          />
-                          <span className="text-sm text-muted-foreground">
-                            {price}
-                          </span>
-                        </label>
-                      ),
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-foreground mb-2">
-                    Color
-                  </h3>
-                  <div className="space-y-2">
-                    {["Black", "White", "Cream", "Navy", "Camel"].map(
-                      (color) => (
-                        <label key={color} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="rounded border-border"
-                          />
-                          <span className="text-sm text-muted-foreground">
-                            {color}
-                          </span>
-                        </label>
-                      ),
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-foreground mb-2">In-Stock</h3>
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-2">
-                      <input type="checkbox" className="rounded border-border" />
-                      <span className="text-sm text-muted-foreground">Show only in-stock</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Product Grid */}
-
-      <section id="collection" className="py-12 px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {readyToWearProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          <div className="mt-4 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
-        </div>
-      </section>
+      {/* Products Section */}
+      <WomensReadyToWearClient products={products} hasError={hasError} />
 
       {/* Trust Signals */}
       <TrustSignals />
 
-      {/* Newsletter CTA */}
+      {/* CTA Section */}
       <CTASection />
 
       {/* Contact Section */}

@@ -12,7 +12,7 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["app/components/*"],
-      "@/lib/*": ["app/lib/*"],
+      "@/lib/*": ["lib/*"],
       "@/hooks/*": ["app/hooks/*"],
       "@shared/*": ["shared/*"]
     },
