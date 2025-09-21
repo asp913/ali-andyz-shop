@@ -272,7 +272,7 @@ export default function ProductClient({ product }: ProductClientProps) {
       {capsule && (
         <section className="px-8 pb-12">
           <div className="max-w-6xl mx-auto">
-            {productId === 'wa-009' ? (
+            {productId === 'wa-009' && capsule.items && capsule.items.length > 0 ? (
               // Special layout for Design Your Own Activewear Capsule
               <div className="space-y-6">
                 <div className="text-center space-y-4">
