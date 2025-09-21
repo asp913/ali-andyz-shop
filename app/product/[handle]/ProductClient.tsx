@@ -276,8 +276,8 @@ export default function ProductClient({ product }: ProductClientProps) {
               // Special layout for Design Your Own Activewear Capsule
               <div className="space-y-6">
                 <div className="text-center space-y-4">
-                  <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule.capsuleTitle}</h2>
-                  <p className="text-muted-foreground">{capsule.capsuleSubtitle}</p>
+                  <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule?.capsuleTitle}</h2>
+                  <p className="text-muted-foreground">{capsule?.capsuleSubtitle}</p>
                   <div className="bg-card border border-border rounded-sm p-4 max-w-md mx-auto">
                     <div className="text-sm text-muted-foreground">Automatic Discounts</div>
                     <div className="text-lg font-light text-foreground">4–5 items = 15% off</div>
