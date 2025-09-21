@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ChevronDown, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "@/components/site/ProductCard";
-import DesignYourOwnCapsule from "@/components/site/DesignYourOwnCapsule";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
@@ -228,9 +227,6 @@ export default function WomensActivewear() {
           </div>
         </div>
       </section>
-
-      {/* Design Your Own Capsule */}
-      <DesignYourOwnCapsule category="womens-activewear" />
 
       {/* Trust Signals */}
       <TrustSignals />
