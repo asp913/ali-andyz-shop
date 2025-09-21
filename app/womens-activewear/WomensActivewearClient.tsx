@@ -27,6 +27,44 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
   const [sortBy, setSortBy] = useState("featured");
   const [showFilters, setShowFilters] = useState(false);
   const [sortedProducts, setSortedProducts] = useState(products);
+  
+  // Filter states
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState<string>("all");
+
+  // Filter handler functions
+  const handleSizeChange = (size: string) => {
+    setSelectedSizes(prev => 
+      prev.includes(size) 
+        ? prev.filter(s => s !== size)
+        : [...prev, size]
+    );
+  };
+
+  const handleTypeChange = (type: string) => {
+    setSelectedTypes(prev => 
+      prev.includes(type) 
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
+    );
+  };
+
+  const handleColorChange = (color: string) => {
+    setSelectedColors(prev => 
+      prev.includes(color) 
+        ? prev.filter(c => c !== color)
+        : [...prev, color]
+    );
+  };
+
+  const clearAllFilters = () => {
+    setSelectedSizes([]);
+    setSelectedTypes([]);
+    setSelectedColors([]);
+    setSelectedPriceRange("all");
+  };
 
   // Add structured data for SEO
   useEffect(() => {
@@ -92,28 +130,74 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
     };
   }, [products]);
 
-  // Sort products based on selected option
+  // Filter and sort products based on selected options
   useEffect(() => {
-    let sorted = [...products];
+    let filtered = [...products];
     
+    // Apply filters
+    if (selectedSizes.length > 0) {
+      filtered = filtered.filter(product => 
+        product.options?.some(option => selectedSizes.includes(option))
+      );
+    }
+    
+    if (selectedTypes.length > 0) {
+      filtered = filtered.filter(product => {
+        // Simple type detection based on product name
+        const productName = product.name.toLowerCase();
+        return selectedTypes.some(type => 
+          productName.includes(type.toLowerCase())
+        );
+      });
+    }
+    
+    if (selectedColors.length > 0) {
+      filtered = filtered.filter(product => {
+        // Simple color detection based on product name
+        const productName = product.name.toLowerCase();
+        return selectedColors.some(color => 
+          productName.includes(color.toLowerCase())
+        );
+      });
+    }
+    
+    // Apply price range filter
+    if (selectedPriceRange !== "all") {
+      switch (selectedPriceRange) {
+        case "under-50":
+          filtered = filtered.filter(product => product.price < 50);
+          break;
+        case "50-100":
+          filtered = filtered.filter(product => product.price >= 50 && product.price <= 100);
+          break;
+        case "100-150":
+          filtered = filtered.filter(product => product.price >= 100 && product.price <= 150);
+          break;
+        case "over-150":
+          filtered = filtered.filter(product => product.price > 150);
+          break;
+      }
+    }
+    
+    // Apply sorting
     switch (sortBy) {
       case "price-low":
-        sorted.sort((a, b) => a.price - b.price);
+        filtered.sort((a, b) => a.price - b.price);
         break;
       case "price-high":
-        sorted.sort((a, b) => b.price - a.price);
+        filtered.sort((a, b) => b.price - a.price);
         break;
       case "newest":
         // Assuming newer products have higher IDs or we could add a date field
-        sorted.sort((a, b) => b.id.localeCompare(a.id));
+        filtered.sort((a, b) => b.id.localeCompare(a.id));
         break;
       default:
         // Keep original order for "featured"
         break;
     }
     
-    setSortedProducts(sorted);
-  }, [products, sortBy]);
+    setSortedProducts(filtered);
+  }, [products, sortBy, selectedSizes, selectedTypes, selectedColors, selectedPriceRange]);
 
   if (hasError) {
     return (
@@ -149,7 +233,7 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                 Filters
               </button>
               <span className="text-sm text-muted-foreground">
-                {products.length} products
+                {sortedProducts.length} of {products.length} products
               </span>
             </div>
 
@@ -173,6 +257,15 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
 
           {showFilters && (
             <div className="mt-4 pt-4 border-t border-border">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-sm font-medium text-foreground">Filters</h3>
+                <button
+                  onClick={clearAllFilters}
+                  className="text-sm text-muted-foreground hover:text-foreground underline"
+                >
+                  Clear all
+                </button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <h3 className="text-sm font-medium text-foreground mb-2">
@@ -183,6 +276,8 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                       <label key={size} className="flex items-center gap-2">
                         <input
                           type="checkbox"
+                          checked={selectedSizes.includes(size)}
+                          onChange={() => handleSizeChange(size)}
                           className="rounded border-border"
                         />
                         <span className="text-sm text-muted-foreground">
@@ -203,6 +298,8 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                         <label key={type} className="flex items-center gap-2">
                           <input
                             type="checkbox"
+                            checked={selectedTypes.includes(type)}
+                            onChange={() => handleTypeChange(type)}
                             className="rounded border-border"
                           />
                           <span className="text-sm text-muted-foreground">
@@ -219,19 +316,26 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                     Price
                   </h3>
                   <div className="space-y-2">
-                    {["Under $50", "$50-$100", "$100-$150", "Over $150"].map(
-                      (price) => (
-                        <label key={price} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="rounded border-border"
-                          />
-                          <span className="text-sm text-muted-foreground">
-                            {price}
-                          </span>
-                        </label>
-                      ),
-                    )}
+                    {[
+                      { value: "under-50", label: "Under $50" },
+                      { value: "50-100", label: "$50-$100" },
+                      { value: "100-150", label: "$100-$150" },
+                      { value: "over-150", label: "Over $150" },
+                    ].map((price) => (
+                      <label key={price.value} className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="price-range"
+                          value={price.value}
+                          checked={selectedPriceRange === price.value}
+                          onChange={(e) => setSelectedPriceRange(e.target.value)}
+                          className="rounded border-border"
+                        />
+                        <span className="text-sm text-muted-foreground">
+                          {price.label}
+                        </span>
+                      </label>
+                    ))}
                   </div>
                 </div>
 
@@ -245,6 +349,8 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                         <label key={color} className="flex items-center gap-2">
                           <input
                             type="checkbox"
+                            checked={selectedColors.includes(color)}
+                            onChange={() => handleColorChange(color)}
                             className="rounded border-border"
                           />
                           <span className="text-sm text-muted-foreground">
