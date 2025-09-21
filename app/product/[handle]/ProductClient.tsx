@@ -261,88 +261,170 @@ export default function ProductClient({ product }: ProductClientProps) {
       {capsule && (
         <section className="px-8 pb-12">
           <div className="max-w-6xl mx-auto">
-            <div className="grid gap-8 md:grid-cols-2">
-              <div className="space-y-4">
-                <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule.capsuleTitle}</h2>
-                <p className="text-muted-foreground">{capsule.capsuleSubtitle}</p>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-sm border border-border p-4">
-                    <div className="text-sm text-muted-foreground">Bundle Price</div>
-                    <div className="text-xl font-light text-foreground">${capsule.bundlePrice}</div>
+            {productId === 'wa-009' ? (
+              // Special layout for Design Your Own Activewear Capsule
+              <div className="space-y-6">
+                <div className="text-center space-y-4">
+                  <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule.capsuleTitle}</h2>
+                  <p className="text-muted-foreground">{capsule.capsuleSubtitle}</p>
+                  <div className="bg-card border border-border rounded-sm p-4 max-w-md mx-auto">
+                    <div className="text-sm text-muted-foreground">Automatic Discounts</div>
+                    <div className="text-lg font-light text-foreground">4–5 items = 15% off</div>
+                    <div className="text-lg font-light text-foreground">6+ items = 20% off</div>
                   </div>
-                  <div className="rounded-sm border border-border p-4">
-                    <div className="text-sm text-muted-foreground">Bundle Value</div>
-                    <div className="text-xl font-light text-foreground">${capsule.bundleValue}</div>
-                  </div>
+                  <p className="text-sm text-muted-foreground">{capsule.priceRangeCopy}</p>
                 </div>
-                <div className="mt-2 space-y-2">
-                  <Button
-                    className="rounded-sm"
-                    data-bundle
-                    data-capsule-title={capsule.capsuleTitle}
-                    data-bundle-price={String(capsule.bundlePrice)}
-                    data-items={bundleItemsAttr}
-                  >
-                    {(productId === 'ma-001' || productId === 'ma-002' || productId === 'ma-003' || productId === 'ma-004' || productId === 'ma-005' || productId === 'ma-006' || productId === 'ma-007' || productId === 'ma-008') ? `Add Full Capsule — $${capsule.bundlePrice}` : `Buy Bundle — $${capsule.bundlePrice}`}
-                  </Button>
-                </div>
-                <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
-                <div className="text-sm text-muted-foreground mt-2">{capsule.priceRangeCopy}</div>
+
                 <div>
-                  <Link href="/size-guide" className="underline hover:no-underline text-sm">Size Guide</Link>
+                  <h3 className="text-xl font-medium mb-6 text-foreground text-center">Choose Your Activewear Pieces</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {capsule.items.map((it, idx) => {
+                      const selected = itemSizes[it.handle] ?? (it.sizes?.[0] || 'OneSize');
+                      return (
+                        <div key={it.handle + idx} className="border border-border rounded-sm p-4 space-y-3">
+                          <div className="aspect-square bg-card rounded-sm flex items-center justify-center">
+                            <div className="text-muted-foreground text-center">
+                              <div className="text-sm font-medium">{it.title}</div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="font-medium text-foreground text-sm">{it.title}</div>
+                              <div className="text-foreground font-semibold">${it.price}</div>
+                            </div>
+
+                            {typeof it.inventoryLeft === 'number' && it.inventoryLeft <= 5 && (
+                              <div className="text-xs text-orange-600 mb-2">Only {it.inventoryLeft} left!</div>
+                            )}
+
+                            <div className="space-y-2">
+                              {it.sizes.length > 1 ? (
+                                <select
+                                  value={selected}
+                                  onChange={(e) => setItemSizes((m) => ({ ...m, [it.handle]: e.target.value }))}
+                                  className="w-full px-2 py-1 border border-border rounded-sm text-sm bg-background"
+                                  aria-label={`Select size for ${it.title}`}
+                                  data-size-for={it.handle}
+                                >
+                                  {it.sizes.map((s) => (
+                                    <option key={s} value={s}>{s}</option>
+                                  ))}
+                                </select>
+                              ) : (
+                                <div className="text-xs text-muted-foreground">Size: {it.sizes[0]}</div>
+                              )}
+
+                              <Button
+                                className="w-full rounded-sm"
+                                data-buy
+                                data-handle={it.handle}
+                                data-title={it.title}
+                                data-price-id={String(it.priceStripeId || '')}
+                                data-sizes={JSON.stringify(it.sizes)}
+                              >
+                                Add to Cart — ${it.price}
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="text-center space-y-2">
+                  <div className="text-xs text-muted-foreground">Build your perfect activewear collection with automatic bulk discounts.</div>
+                  <div>
+                    <Link href="/size-guide" className="underline hover:no-underline text-sm">Size Guide</Link>
+                  </div>
                 </div>
               </div>
+            ) : (
+              // Regular capsule layout
+              <div className="grid gap-8 md:grid-cols-2">
+                <div className="space-y-4">
+                  <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule.capsuleTitle}</h2>
+                  <p className="text-muted-foreground">{capsule.capsuleSubtitle}</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-sm border border-border p-4">
+                      <div className="text-sm text-muted-foreground">Bundle Price</div>
+                      <div className="text-xl font-light text-foreground">${capsule.bundlePrice}</div>
+                    </div>
+                    <div className="rounded-sm border border-border p-4">
+                      <div className="text-sm text-muted-foreground">Bundle Value</div>
+                      <div className="text-xl font-light text-foreground">${capsule.bundleValue}</div>
+                    </div>
+                  </div>
+                  <div className="mt-2 space-y-2">
+                    <Button
+                      className="rounded-sm"
+                      data-bundle
+                      data-capsule-title={capsule.capsuleTitle}
+                      data-bundle-price={String(capsule.bundlePrice)}
+                      data-items={bundleItemsAttr}
+                    >
+                      {(productId === 'ma-001' || productId === 'ma-002' || productId === 'ma-003' || productId === 'ma-004' || productId === 'ma-005' || productId === 'ma-006' || productId === 'ma-007' || productId === 'ma-008') ? `Add Full Capsule — $${capsule.bundlePrice}` : `Buy Bundle — $${capsule.bundlePrice}`}
+                    </Button>
+                  </div>
+                  <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
+                  <div className="text-sm text-muted-foreground mt-2">{capsule.priceRangeCopy}</div>
+                  <div>
+                    <Link href="/size-guide" className="underline hover:no-underline text-sm">Size Guide</Link>
+                  </div>
+                </div>
 
-              <div>
-                <h3 className="text-lg font-medium mb-3 text-foreground">Items</h3>
-                <ol className="space-y-3 list-decimal pl-5">
-                  {capsule.items.map((it, idx) => {
-                    const selected = itemSizes[it.handle] ?? (it.sizes?.[0] || 'OneSize');
-                    const isDirectLink = typeof it.priceStripeId === 'string' && it.priceStripeId.startsWith('http');
-                    return (
-                      <li key={it.handle + idx} className="border border-border rounded-sm p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="font-medium text-foreground">{it.title}</div>
-                          <div className="text-foreground">${it.price}</div>
-                        </div>
-                        <div className="text-sm text-muted-foreground mt-1">sizes: [{it.sizes.join(', ')}]</div>
-                        {typeof it.inventoryLeft === 'number' ? (
-                          <div className="text-sm text-muted-foreground">inventoryLeft: {it.inventoryLeft}</div>
-                        ) : null}
-                        <div className="text-xs text-muted-foreground mt-1">requiredForBundle: {it.requiredForBundle ? 'true' : 'false'}</div>
-                        <div className="text-xs text-muted-foreground">handle: {it.handle}</div>
-                        <div className="mt-3 flex items-center gap-2">
-                          {it.sizes.length > 1 ? (
-                            <select
-                              value={selected}
-                              onChange={(e) => setItemSizes((m) => ({ ...m, [it.handle]: e.target.value }))}
-                              className="px-2 py-1 border border-border rounded-sm text-sm bg-background"
-                              aria-label={`Select size for ${it.title}`}
-                              data-size-for={it.handle}
-                            >
-                              {it.sizes.map((s) => (
-                                <option key={s} value={s}>{s}</option>
-                              ))}
-                            </select>
+                <div>
+                  <h3 className="text-lg font-medium mb-3 text-foreground">Items</h3>
+                  <ol className="space-y-3 list-decimal pl-5">
+                    {capsule.items.map((it, idx) => {
+                      const selected = itemSizes[it.handle] ?? (it.sizes?.[0] || 'OneSize');
+                      const isDirectLink = typeof it.priceStripeId === 'string' && it.priceStripeId.startsWith('http');
+                      return (
+                        <li key={it.handle + idx} className="border border-border rounded-sm p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="font-medium text-foreground">{it.title}</div>
+                            <div className="text-foreground">${it.price}</div>
+                          </div>
+                          <div className="text-sm text-muted-foreground mt-1">sizes: [{it.sizes.join(', ')}]</div>
+                          {typeof it.inventoryLeft === 'number' ? (
+                            <div className="text-sm text-muted-foreground">inventoryLeft: {it.inventoryLeft}</div>
                           ) : null}
+                          <div className="text-xs text-muted-foreground mt-1">requiredForBundle: {it.requiredForBundle ? 'true' : 'false'}</div>
+                          <div className="text-xs text-muted-foreground">handle: {it.handle}</div>
+                          <div className="mt-3 flex items-center gap-2">
+                            {it.sizes.length > 1 ? (
+                              <select
+                                value={selected}
+                                onChange={(e) => setItemSizes((m) => ({ ...m, [it.handle]: e.target.value }))}
+                                className="px-2 py-1 border border-border rounded-sm text-sm bg-background"
+                                aria-label={`Select size for ${it.title}`}
+                                data-size-for={it.handle}
+                              >
+                                {it.sizes.map((s) => (
+                                  <option key={s} value={s}>{s}</option>
+                                ))}
+                              </select>
+                            ) : null}
 
-                          <Button
-                            className="rounded-sm"
-                            data-buy
-                            data-handle={it.handle}
-                            data-title={it.title}
-                            data-price-id={String(it.priceStripeId || '')}
-                            data-sizes={JSON.stringify(it.sizes)}
-                          >
-                            Buy
-                          </Button>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
+                            <Button
+                              className="rounded-sm"
+                              data-buy
+                              data-handle={it.handle}
+                              data-title={it.title}
+                              data-price-id={String(it.priceStripeId || '')}
+                              data-sizes={JSON.stringify(it.sizes)}
+                            >
+                              Buy
+                            </Button>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
       )}
