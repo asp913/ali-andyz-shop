@@ -9,7 +9,18 @@ import { getCapsuleDetails } from "@/lib/capsule-details";
 import Link from "next/link";
 
 interface ProductClientProps {
-  product: any;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+    badge?: string;
+    options?: string[];
+    description?: string;
+    images?: string[];
+    handle?: string;
+    stripeLinks?: Record<string, string>;
+  };
 }
 
 export default function ProductClient({ product }: ProductClientProps) {
