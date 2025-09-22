@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
+import { addToCart } from "@/lib/cart";
+import { toast } from "sonner";
 
 interface Product {
   id: string;
@@ -158,19 +160,27 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Button
             className="rounded-sm"
             onClick={() => {
-              document.dispatchEvent(
-                new CustomEvent("capsule:addToCart", {
-                  detail: {
-                    variantId: `${product.id}:${size}`,
-                    qty: 1,
-                    name: product.name,
-                    price: product.price,
-                    size,
-                    stripePriceId: product.stripePriceId,
-                  },
-                })
-              );
-              alert(`${product.name} (${size}) added to cart`);
+              if (!product.stripePriceId) {
+                alert(`Sorry, ${product.name} is not available for purchase at the moment.`);
+                return;
+              }
+              
+              try {
+                addToCart({
+                  id: `${product.handle || product.id}:${size}`,
+                  variantId: `${product.handle || product.id}:${size}`,
+                  name: product.name,
+                  price: product.price,
+                  qty: 1,
+                  size: size,
+                  image: product.images?.[0] || product.image,
+                  stripePriceId: product.stripePriceId,
+                });
+                toast.success(`${product.name} (${size}) added to cart!`);
+              } catch (error) {
+                console.error('Error adding item to cart:', error);
+                toast.error(`Failed to add ${product.name} to cart`);
+              }
             }}
           >
             Add to Cart
