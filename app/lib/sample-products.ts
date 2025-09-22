@@ -44,22 +44,6 @@ export const sampleProducts: Product[] = [
     handle: "sunset-flow-capsule",
   },
   {
-    id: "wa-003",
-    name: "Studio Flow — Capsule or Mix & Match",
-    price: 99,
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F73c64ef02c64424f86234be18a9aa5f0?format=webp&width=1600",
-    badge: "Capsule",
-    options: [],
-    description:
-      "Studio Flow — Capsule or Mix & Match. Bundle $99 · Value $134 · Save $35. Price range: $19–$39. Move with intention. Get the full capsule for effortless head-to-toe styling, or shop pieces individually to mix into your wardrobe. Grounded sage meets warm neutrals for a calm, studio-to-street vibe.",
-    images: [
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F73c64ef02c64424f86234be18a9aa5f0?format=webp&width=1600",
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F20ff5e787acf4d259f0b0d78397403e3?format=webp&width=1600",
-    ],
-    handle: "studio-flow-capsule",
-  },
-  {
     id: "wa-004",
     name: "Off-Duty Luxe — Moto Edit (updated)",
     price: 79,
@@ -74,6 +58,22 @@ export const sampleProducts: Product[] = [
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F561b06bee9f042ff9fd7d35376fb0805?format=webp&width=1600",
     ],
     handle: "off-duty-luxe-moto-edit",
+  },
+  {
+    id: "wa-003",
+    name: "Studio Flow — Capsule or Mix & Match",
+    price: 99,
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F73c64ef02c64424f86234be18a9aa5f0?format=webp&width=1600",
+    badge: "Capsule",
+    options: [],
+    description:
+      "Studio Flow — Capsule or Mix & Match. Bundle $99 · Value $134 · Save $35. Price range: $19–$39. Move with intention. Get the full capsule for effortless head-to-toe styling, or shop pieces individually to mix into your wardrobe. Grounded sage meets warm neutrals for a calm, studio-to-street vibe.",
+    images: [
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F73c64ef02c64424f86234be18a9aa5f0?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F20ff5e787acf4d259f0b0d78397403e3?format=webp&width=1600",
+    ],
+    handle: "studio-flow-capsule",
   },
   {
     id: "wa-005",
