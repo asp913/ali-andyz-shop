@@ -27,19 +27,19 @@ export const sampleProducts: Product[] = [
     ],
   },
   {
-    id: "wa-003",
-    name: "Studio Flow — Capsule or Mix & Match",
-    price: 99,
+    id: "wa-004",
+    name: "Off-Duty Luxe — Moto Edit (updated)",
+    price: 79,
     image:
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F73c64ef02c64424f86234be18a9aa5f0?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Ff0697e6ce2f4413eb9461af368f649ef?format=webp&width=1600",
     badge: "Capsule",
     options: [],
     description:
-      "Studio Flow — Capsule or Mix & Match. Bundle $99 · Value $134 · Save $35. Price range: $19–$39. Move with intention. Get the full capsule for effortless head-to-toe styling, or shop pieces individually to mix into your wardrobe. Grounded sage meets warm neutrals for a calm, studio-to-street vibe.",
+      "Off-Duty Luxe — Moto Edit. Color story: jet black • mocha • olive • noir/ivory. Texture mix: leather effect + matte stretch + silk-feel. Pieces include Faux Leather Moto Jacket, Cropped Tank, High-Waisted Leggings, and a Graphic Silk-Feel Square. Capsule Total (3 pcs): $97 · Bundle (3 pcs): $79 — Save $18 · Upgrade (4 pcs incl. scarf): $92 — Save $27. Add Capsule — $79 · Upgrade with Scarf — $92.",
     images: [
       // hero (model) first, then flat lay for thumbnail
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F73c64ef02c64424f86234be18a9aa5f0?format=webp&width=1600",
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F20ff5e787acf4d259f0b0d78397403e3?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Ff0697e6ce2f4413eb9461af368f649ef?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F561b06bee9f042ff9fd7d35376fb0805?format=webp&width=1600",
     ],
   },
   {
