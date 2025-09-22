@@ -46,16 +46,20 @@ export async function GET(request: NextRequest) {
         handle: product.metadata?.handle || product.id,
         stripePriceId: price?.id || '',
         category: product.metadata?.category || 'general',
+        productType: product.metadata?.productType || 'general',
         active: product.active,
         created: product.created,
         updated: product.updated,
       };
     });
 
-    // Filter by category if not 'all'
+    // Filter by category if not 'all', and only show capsules on category pages
     const filteredProducts = category === 'all' 
-      ? transformedProducts 
-      : transformedProducts.filter(product => product.category === category);
+      ? transformedProducts.filter(product => product.productType === 'capsule')
+      : transformedProducts.filter(product => 
+          product.category === category && 
+          product.productType === 'capsule'
+        );
 
     return NextResponse.json({
       products: filteredProducts,

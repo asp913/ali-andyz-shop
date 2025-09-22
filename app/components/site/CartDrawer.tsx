@@ -12,9 +12,18 @@ export default function CartDrawer() {
 
   // Initialize cart state after hydration
   useEffect(() => {
-    setItems(getCartItems());
-    setTotal(getCartTotal());
-    setCount(getCartItemCount());
+    const items = getCartItems();
+    const total = getCartTotal();
+    const count = getCartItemCount();
+    
+    setItems(items);
+    setTotal(total);
+    setCount(count);
+    
+    // Close drawer if cart is empty on page load (e.g., after successful payment)
+    if (items.length === 0) {
+      setOpen(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -22,7 +31,13 @@ export default function CartDrawer() {
       setItems(e.detail.items);
       setTotal(e.detail.total);
       setCount(e.detail.items.reduce((c: number, it: CartItem) => c + (it.qty || it.quantity || 0), 0));
-      setOpen(true);
+      
+      // Close drawer if cart is empty (e.g., after successful payment)
+      if (e.detail.items.length === 0) {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
     };
     const onToggle = () => setOpen((v) => !v);
 

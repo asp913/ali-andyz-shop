@@ -1,7 +1,5 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Filter } from "lucide-react";
-import ProductCard from "@/components/site/ProductCard";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
@@ -62,9 +60,9 @@ export const metadata: Metadata = {
 
 export default async function WomensActivewear() {
   // Fetch products dynamically from Stripe
-  let products = [];
+  let products: any[] = [];
   let hasError = false;
-  
+
   try {
     const response = await fetchStripeProductsServer('womens-activewear');
     products = response.products;

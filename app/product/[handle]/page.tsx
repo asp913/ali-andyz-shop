@@ -1,11 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchStripeProductsServer } from "@/lib/stripe";
+import { getCapsuleDetailsFromStripe } from "@/lib/capsule-details";
 import ProductClient from "./ProductClient";
 
 interface ProductPageProps {
   params: {
-    handle: string;
+    handle: string; // This can be either a handle or a product ID
   };
 }
 
@@ -31,15 +32,25 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 export default async function ProductPage({ params }: ProductPageProps) {
   try {
     
-    // Fetch all products from Stripe
-    const response = await fetchStripeProductsServer('all');
-    const product = response.products.find(p => p.handle === params.handle || p.id === params.handle);
+        // Fetch all products from Stripe
+        const response = await fetchStripeProductsServer('all');
+        const product = response.products.find(p => p.handle === params.handle || p.id === params.handle);
     
     if (!product) {
       notFound();
     }
 
-    return <ProductClient product={product} />;
+        // Fetch capsule details if this is a capsule product
+        let capsuleDetails = null;
+        if (product.productType === 'capsule') {
+          try {
+            capsuleDetails = await getCapsuleDetailsFromStripe(params.handle);
+          } catch (error) {
+            console.error('Error fetching capsule details:', error);
+          }
+        }
+
+    return <ProductClient product={product} capsuleDetails={capsuleDetails} />;
   } catch (error) {
     console.error('Error fetching product:', error);
     notFound();

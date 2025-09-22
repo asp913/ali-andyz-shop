@@ -1,3 +1,5 @@
+import { fetchStripeProductsServer } from './stripe';
+
 export type CapsuleItem = {
   handle: string;
   title: string;
@@ -9,12 +11,16 @@ export type CapsuleItem = {
 };
 
 export type CapsuleDetails = {
-  capsuleTitle: string;
-  capsuleSubtitle: string;
-  bundlePrice: number;
-  bundleValue: number;
-  priceRangeCopy: string;
-  sizeGuideHref: string;
+  productId: string;
+  name: string;
+  description: string;
+  images: string[];
+  category: string;
+  badge?: string;
+  options?: { name: string; values: string[] }[];
+  productType: 'capsule';
+  price: number;
+  priceStripeId: string;
   items: CapsuleItem[];
 };
 
@@ -693,6 +699,63 @@ export const capsuleDetailsByProductId: Record<string, CapsuleDetails | undefine
     ],
   },
 };
+
+// Function to get capsule details and its individual items from Stripe
+export async function getCapsuleDetailsFromStripe(capsuleHandleOrId: string): Promise<CapsuleDetails | undefined> {
+  try {    
+    // Use the imported function directly
+    
+    // First get the capsule product from all categories
+    const capsuleResponse = await fetchStripeProductsServer('all');
+    
+    const mainCapsuleProduct = capsuleResponse.products.find(p => p.handle === capsuleHandleOrId || p.id === capsuleHandleOrId);
+
+    if (!mainCapsuleProduct) {
+      console.log('Capsule not found:', capsuleHandleOrId);
+      return undefined;
+    }
+
+    // Now get all products to find individual items
+    const allProductsResponse = await fetchStripeProductsServer('all', true);
+    const allProducts = allProductsResponse.products;
+    
+    // Log all individual products
+    const individualProducts = allProducts.filter(p => p.productType === 'individual');
+
+    // Find all individual items associated with this capsule
+    const individualItems: CapsuleItem[] = allProducts
+      .filter(p => 
+        p.productType === 'individual' && 
+        p.metadata?.parentCapsuleId === mainCapsuleProduct.id
+      )
+      .map(p => ({
+        handle: p.handle,
+        title: p.name,
+        price: p.price,
+        priceStripeId: p.stripePriceId,
+        sizes: p.metadata?.sizes ? JSON.parse(p.metadata.sizes) : [],
+        inventoryLeft: p.metadata?.availableQuantity ? parseInt(p.metadata.availableQuantity) : null,
+        requiredForBundle: p.metadata?.requiredForBundle === 'true',
+      }));
+
+    return {
+      productId: mainCapsuleProduct.id,
+      name: mainCapsuleProduct.name,
+      description: mainCapsuleProduct.description,
+      images: mainCapsuleProduct.images,
+      category: mainCapsuleProduct.category,
+      badge: mainCapsuleProduct.badge,
+      options: mainCapsuleProduct.options,
+      productType: 'capsule',
+      price: mainCapsuleProduct.price,
+      priceStripeId: mainCapsuleProduct.stripePriceId,
+      items: individualItems,
+    };
+  } catch (error) {
+    console.error('Error fetching capsule details from Stripe:', error);
+    return undefined;
+  }
+}
 
 export function getCapsuleDetails(productId: string): CapsuleDetails | undefined {
   return capsuleDetailsByProductId[productId];

@@ -12,6 +12,7 @@ export type StripeProduct = {
   handle: string;
   stripePriceId: string;
   category: string;
+  productType?: string;
   active: boolean;
   created: number;
   updated: number;
@@ -23,7 +24,7 @@ export type StripeProductsResponse = {
 };
 
 // Server-side function to fetch products directly from Stripe
-export async function fetchStripeProductsServer(category: string = 'all'): Promise<StripeProductsResponse> {
+export async function fetchStripeProductsServer(category: string = 'all', includeIndividualItems: boolean = false): Promise<StripeProductsResponse> {
   try {
     const stripe = getStripe();
     
@@ -43,10 +44,13 @@ export async function fetchStripeProductsServer(category: string = 'all'): Promi
       return transformStripeProduct(product, price);
     });
 
-    // Filter by category if not 'all'
+    // Filter by category if not 'all', and only show capsules on category pages
     const filteredProducts = category === 'all' 
-      ? transformedProducts 
-      : transformedProducts.filter(product => product.category === category);
+      ? transformedProducts.filter(product => includeIndividualItems ? true : product.productType === 'capsule')
+      : transformedProducts.filter(product => 
+          product.category === category && 
+          (includeIndividualItems ? true : product.productType === 'capsule')
+        );
 
     return {
       products: filteredProducts,
@@ -63,7 +67,6 @@ export async function fetchStripeProducts(category: string = 'all'): Promise<Str
   try {
     // During build time, we can't make API calls, so return empty array
     if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
-      console.log('Build time detected, returning empty products array');
       return { products: [], hasMore: false };
     }
 
@@ -102,8 +105,10 @@ export function transformStripeProduct(product: Stripe.Product, price?: Stripe.P
     handle: product.metadata?.handle || product.id,
     stripePriceId: price?.id || '',
     category: product.metadata?.category || 'general',
+    productType: product.metadata?.productType || 'general',
     active: product.active,
     created: product.created,
     updated: product.updated,
+    metadata: product.metadata, // Include all metadata
   };
 }
