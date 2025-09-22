@@ -35,7 +35,7 @@ export const sampleProducts: Product[] = [
     badge: "Capsule",
     options: [],
     description:
-      "Off-Duty Luxe — Moto Edit. Color story: jet black • mocha • olive • noir/ivory. Texture mix: leather effect + matte stretch + silk-feel. Pieces include Faux Leather Moto Jacket, Cropped Tank, High-Waisted Leggings, and a Graphic Silk-Feel Square. Capsule Total (3 pcs): $97 · Bundle (3 pcs): $79 — Save $18 · Upgrade (4 pcs incl. scarf): $92 — Save $27. Add Capsule — $79 · Upgrade with Scarf �� $92.",
+      "Off-Duty Luxe — Moto Edit. Color story: jet black • mocha • olive • noir/ivory. Texture mix: leather effect + matte stretch + silk-feel. Pieces include Faux Leather Moto Jacket, Cropped Tank, High-Waisted Leggings, and a Graphic Silk-Feel Square. Capsule Total (3 pcs): $97 · Bundle (3 pcs): $79 — Save $18 · Upgrade (4 pcs incl. scarf): $92 — Save $27. Add Capsule — $79 · Upgrade with Scarf — $92.",
     images: [
       // hero (model) first, then flat lay for thumbnail
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Ff0697e6ce2f4413eb9461af368f649ef?format=webp&width=1600",
@@ -47,15 +47,15 @@ export const sampleProducts: Product[] = [
     name: "Black Tennis — Capsule or Mix & Match",
     price: 189,
     image:
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F0a65243126ac4b3a8cd0de54e115902a?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fc8239d1dcbf341c28afd04355bb8abe5?format=webp&width=1600",
     badge: "Capsule",
     options: [],
     description:
       "Black Tennis — Capsule or Mix & Match. Bundle $189 · Value $314 · Save $125. Price range: $25–$75. Elevate your game with court-to-club sophistication. Get the full capsule for seamless athletic elegance, or shop pieces individually to build your champion wardrobe. Premium black pieces designed for peak performance and timeless style. Save $75 vs. buying separately. Court-to-club versatility in timeless black. Premium performance fabrics with elegant design.",
     images: [
       // hero (model) first, then flat lay for thumbnail
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F0a65243126ac4b3a8cd0de54e115902a?format=webp&width=1600",
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F72bac85631b742eea63dbbf9fd3cf038?format=webp&width=800",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fc8239d1dcbf341c28afd04355bb8abe5?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F0a65243126ac4b3a8cd0de54e115902a?format=webp&width=800",
     ],
   },
   {
