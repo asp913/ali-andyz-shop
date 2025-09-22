@@ -1,41 +1,58 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { allProducts, getProductById } from "@/lib/sample-products";
-import { Button } from "@/components/ui/button";
-import TrustSignals from "@/components/site/TrustSignals";
-import CTASection from "@/components/site/CTASection";
-import ContactSection from "@/components/site/ContactSection";
-import { getCapsuleDetails } from "@/lib/capsule-details";
-import Link from "next/link";
+import { fetchStripeProductsServer } from "@/lib/stripe";
+import { getCapsuleDetailsFromStripe } from "@/lib/capsule-details";
 import ProductClient from "./ProductClient";
 
 interface ProductPageProps {
   params: {
-    handle: string;
+    handle: string; // This can be either a handle or a product ID
   };
+}
+
+// Generate static params for all products
+export async function generateStaticParams() {
+  // For now, return empty array to avoid build issues
+  // TODO: Re-enable once Stripe is properly set up
+  return [];
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const product = allProducts.find(p => p.id === params.handle || p.handle === params.handle);
-  
-  if (!product) {
-    return {
-      title: "Product Not Found | Ali + Andy Z",
-    };
-  }
-
+  // Simplified metadata for now to avoid build issues
   return {
-    title: `${product.name} | Ali + Andy Z`,
-    description: product.description,
+    title: `Product ${params.handle} | Ali + Andy Z`,
+    description: "Shop premium fashion and activewear at Ali + Andy Z.",
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = allProducts.find(p => p.id === params.handle || p.handle === params.handle);
+export default async function ProductPage({ params }: ProductPageProps) {
+  try {
+    
+        // Fetch all products from Stripe
+        const response = await fetchStripeProductsServer('all');
+        const product = response.products.find(p => p.handle === params.handle || p.id === params.handle);
+    
+    if (!product) {
+      notFound();
+    }
 
-  if (!product) {
+        // Fetch capsule details if this is a capsule product
+        let capsuleDetails = null;
+        if (product.productType === 'capsule') {
+          try {
+            capsuleDetails = await getCapsuleDetailsFromStripe(params.handle);
+          } catch (error) {
+            console.error('Error fetching capsule details:', error);
+          }
+        }
+
+    return <ProductClient product={product} capsuleDetails={capsuleDetails} />;
+  } catch (error) {
+    console.error('Error fetching product:', error);
     notFound();
   }
-
-  return <ProductClient product={product} />;
 }

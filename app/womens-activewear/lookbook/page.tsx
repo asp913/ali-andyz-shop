@@ -2,14 +2,18 @@ import Link from "next/link";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
-import { sampleProducts } from "@/lib/sample-products";
+import { fetchStripeProductsServer } from "@/lib/stripe";
 
-export default function WomensActivewearLookbook() {
-  const gallery = (() => {
-    const base = sampleProducts.slice(0, 6);
-    const airport = sampleProducts.find((p) => p.id === "wa-008");
-    return base.map((p) => (p.id === "wa-005" && airport ? airport : p)).slice(0, 4);
-  })();
+export default async function WomensActivewearLookbook() {
+  let products = [];
+  try {
+    const response = await fetchStripeProductsServer('womens-activewear');
+    products = response.products;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+
+  const gallery = products.slice(0, 4);
   const heroImage = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F7d09617e996f4bc3b64acac43531e14e?format=webp&width=2000";
   const lifestyleA = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F9efa01e8d2614f2ba8d548074ed5ab9e?format=webp&width=800";
   const lifestyleB = "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F798f9180c6d249399783af2d9e2b72fe?format=webp&width=800";

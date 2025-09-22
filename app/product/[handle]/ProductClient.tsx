@@ -1,105 +1,150 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
-import { getCapsuleDetails } from "@/lib/capsule-details";
+import { addToCart } from "@/lib/cart";
+import { toast } from "sonner";
 import Link from "next/link";
 
 interface ProductClientProps {
-  product: any;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+    images?: string[];
+    badge?: string;
+    options?: string[];
+    description?: string;
+    handle?: string;
+    stripePriceId?: string;
+    category?: string;
+    productType?: string;
+  };
+  capsuleDetails?: {
+    productId: string;
+    name: string;
+    description: string;
+    images: string[];
+    category: string;
+    badge?: string;
+    options?: { name: string; values: string[] }[];
+    productType: 'capsule';
+    price: number;
+    priceStripeId: string;
+    items: Array<{
+      handle: string;
+      title: string;
+      price: number;
+      priceStripeId: string;
+      sizes: string[];
+      inventoryLeft?: number | null;
+      requiredForBundle: boolean;
+    }>;
+  } | null;
 }
 
-export default function ProductClient({ product }: ProductClientProps) {
-  // Convert handle to id for compatibility with client logic
-  const productId = product.id || product.handle;
+export default function ProductClient({ product, capsuleDetails }: ProductClientProps) {
+  // Use product.id directly like the client
+  const productId = product.id;
   const [size, setSize] = useState(product?.options?.[0] || "One size");
-  const capsule = useMemo(() => (product && productId ? getCapsuleDetails(productId) : undefined), [product, productId]);
+  
   const [itemSizes, setItemSizes] = useState<Record<string, string>>({});
+  const [loadingItems, setLoadingItems] = useState<Record<string, boolean>>({});
+  const [capsule, setCapsule] = useState(capsuleDetails);
+  const [capsuleLoaded, setCapsuleLoaded] = useState(true);
+
+  // Add structured data for SEO
+  useEffect(() => {
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "description": product.description || `Shop ${product.name} at Ali + Andy Z. Premium fashion and activewear.`,
+      "image": product.images || [product.image],
+      "brand": {
+        "@type": "Brand",
+        "name": "Ali + Andy Z"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": product.price,
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "Ali + Andy Z"
+        }
+      },
+      "category": product.category || "Fashion",
+      "sku": product.id,
+      "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/product/${product.handle || product.id}`,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "127"
+      }
+    };
+
+    // Remove existing structured data
+    const existingScript = document.querySelector('script[type="application/ld+json"]');
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    // Add new structured data
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [product]);
   
-  const showFlatRight = productId === 'mrt-003' || productId === 'mrt-001' || productId === 'mrt-002' || productId === 'mrt-004' || productId === 'mrt-005' || productId === 'mrt-006' || productId === 'mrt-007' || productId === 'mrt-008' || productId === 'mrt-009' || productId === 'mrt-010' || productId === 'wa-001' || productId === 'wa-003' || productId === 'wa-005' || productId === 'wa-002' || productId === 'wa-004' || productId === 'wa-006' || productId === 'wa-007' || productId === 'wa-008' || productId === 'rtw-008' || productId === 'rtw-007' || productId === 'rtw-006' || productId === 'rtw-004' || productId === 'rtw-001' || productId === 'rtw-002' || productId === 'rtw-003' || productId === 'rtw-005' || productId === 'rtw-009' || productId === 'ma-001' || productId === 'ma-002' || productId === 'ma-003' || productId === 'ma-004' || productId === 'ma-005' || productId === 'ma-006' || productId === 'ma-007' || productId === 'ma-008';
+  // Dynamic: Show flat right image if product has multiple images
+  const showFlatRight = product.images && product.images.length > 1;
   
-  const flatRightSrc = productId === 'mrt-003'
-    ? 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F9ab430586e25429da7084617e12c3fc9?format=webp&width=1600'
-    : productId === 'mrt-001'
-    ? 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F9cf5d067456f4a35b404486c4afb04e2?format=webp&width=1600'
-    : productId === 'mrt-002'
-    ? 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F46cd995d784e4294ac08648d9ed4da75?format=webp&width=1600'
-    : productId === 'mrt-004'
-    ? 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F8a7bed98cead40b8987e3b38e1aed063?format=webp&width=1600'
-    : productId === 'mrt-005'
-    ? 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F061c929ae6914789add3de1e3e401c18?format=webp&width=1600'
-    : productId === 'mrt-006'
-    ? 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F04ced446b10d42c4a5bde48553805d62?format=webp&width=1600'
-    : productId === 'mrt-007'
-    ? 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F41f751e1d3a14813be3e2c0d918535f2?format=webp&width=1600'
-    : productId === 'mrt-008'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F143e829039ef42ce92f74e9044934968?format=webp&width=1600')
-    : productId === 'mrt-009'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F918f2747b7b543fc9141e8692e18e471?format=webp&width=1600')
-    : productId === 'mrt-010'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F1c3a3d72b525422c9c6a803ae89acd05?format=webp&width=1600')
-    : productId === 'wa-001'
-    ? (product.images?.[0] || product.image)
-    : productId === 'wa-003'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F20ff5e787acf4d259f0b0d78397403e3?format=webp&width=1600')
-    : productId === 'wa-005'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F72bac85631b742eea63dbbf9fd3cf038?format=webp&width=800')
-    : productId === 'wa-002'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fb3b275c6e356437f9e376b3c12f4fa7f?format=webp&width=1600')
-    : productId === 'wa-004'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F561b06bee9f042ff9fd7d35376fb0805?format=webp&width=1600')
-    : productId === 'wa-006'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fe33735d1e16448eebb7aa0c04a6cc7a7?format=webp&width=1600')
-    : productId === 'wa-007'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F75bed15853924ae08bb7a8418fdee852?format=webp&width=1600')
-    : productId === 'wa-008'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F83855c6501054cb78c2cd523e42102c4?format=webp&width=1600')
-    : productId === 'rtw-008'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F7872be3f192c403da885b37ba262bbd8?format=webp&width=1600')
-    : productId === 'rtw-007'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F58cf52b39f5c46dd86cd4cfc8455eb37?format=webp&width=1600')
-    : productId === 'rtw-006'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd86a9a5ab5b14a388795f8211f2613ef?format=webp&width=1600')
-    : productId === 'rtw-004'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fb1f21b3c338d413b9aab7d19f7ddde52?format=webp&width=800')
-    : productId === 'rtw-002'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F6290fd2aa7a7464c9abdf0f8053b8e3e?format=webp&width=1600')
-    : productId === 'rtw-003'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F99789973ec8e434e884411b1d66c18ce?format=webp&width=1600')
-    : productId === 'rtw-005'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fa2e83f8ebc74421183ee526faf90d9d4?format=webp&width=1600')
-    : productId === 'rtw-009'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F20800732448b4e6681ab954a63c55a77?format=webp&width=800')
-    : productId === 'rtw-001'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fe65070acba58419a846281d90eb2b9df?format=webp&width=1600')
-    : productId === 'ma-001'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fbe7dea6b0511466eaa374e431788e71b?format=webp&width=800')
-    : productId === 'ma-002'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F60ef7b5b5920443b91d420a24aad573a?format=webp&width=800')
-    : productId === 'ma-003'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fc7012d08b0a24b33b24d5715f155a873?format=webp&width=800')
-    : productId === 'ma-004'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F2d0195d8c88e4bd096dd8072e033df22?format=webp&width=1600')
-    : productId === 'ma-005'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fa1edb899d65643d2a9f31e255d757006?format=webp&width=800')
-    : productId === 'ma-006'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F72a288d14ae941a69e6ec3b7c8ca63f4?format=webp&width=1600')
-    : productId === 'ma-007'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fe31259ac6321458497194eed5dbf317e?format=webp&width=800')
-    : productId === 'ma-008'
-    ? (product.images?.[1] || 'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F810bce640f184bd39397473a85cfe1e6?format=webp&width=800')
-    : null;
+  // Dynamic: Use second image if available, fallback to first image
+  const flatRightSrc = product.images?.[1] || product.images?.[0] || product.image;
   
-  const leftImageSrc = productId === 'wa-001'
-    ? (product.images?.[1] || product.image)
-    : (product.images?.[0] || product.image);
+  // Dynamic: Use first image for left side
+  const leftImageSrc = product.images?.[0] || product.image;
 
   const bundleItemsAttr = useMemo(() => (
     capsule ? JSON.stringify(capsule.items.map(i => ({ handle: i.handle, title: i.title, priceId: i.priceStripeId, sizes: i.sizes, required: i.requiredForBundle }))) : '[]'
   ), [capsule]);
+  
+  // Dynamic upgrade items for specific products
+  const motoUpgradeItemsAttr = useMemo(() => {
+    if (!capsule || product.handle !== 'wa-004') return null;
+    const arr = capsule.items.map(i => ({
+      handle: i.handle,
+      title: i.title,
+      priceId: i.priceStripeId,
+      sizes: i.sizes,
+      required: i.handle === 'graphic-silk-feel-square' ? true : i.requiredForBundle,
+    }));
+    return JSON.stringify(arr);
+  }, [capsule, product.handle]);
+  
+  const airportUpgradeItemsAttr = useMemo(() => {
+    if (!capsule || product.handle !== 'wa-008') return null;
+    const arr = capsule.items.map(i => ({
+      handle: i.handle,
+      title: i.title,
+      priceId: i.priceStripeId,
+      sizes: i.sizes,
+      required: i.handle === 'slim-strap' ? true : i.requiredForBundle,
+    }));
+    return JSON.stringify(arr);
+  }, [capsule, product.handle]);
 
   function SizeButton({ opt }: { opt: string }) {
     const href = (product as any).stripeLinks?.[opt] ?? null;
@@ -126,6 +171,22 @@ export default function ProductClient({ product }: ProductClientProps) {
       >
         {opt}
       </button>
+    );
+  }
+
+  if (!product) {
+    return (
+      <main className="container mx-auto px-8 py-16">
+        <h1 className="text-2xl font-semibold">Product not found</h1>
+        <p className="mt-2 text-muted-foreground">
+          The item you're looking for doesn't exist.
+        </p>
+        <div className="mt-6">
+          <Link href="/" className="underline hover:no-underline">
+            Back to home
+          </Link>
+        </div>
+      </main>
     );
   }
 
@@ -207,6 +268,8 @@ export default function ProductClient({ product }: ProductClientProps) {
                               name: product.name,
                               price: product.price,
                               size,
+                              stripePriceId: product.stripePriceId,
+                              productType: 'capsule',
                             },
                           }),
                         );
@@ -218,7 +281,7 @@ export default function ProductClient({ product }: ProductClientProps) {
                   )}
 
                   <Button variant="outline" className="rounded-sm" asChild>
-                    <Link href="/womens-activewear">Continue Shopping</Link>
+                    <a href="/womens-activewear">Continue Shopping</a>
                   </Button>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
@@ -233,40 +296,64 @@ export default function ProductClient({ product }: ProductClientProps) {
           <div className="max-w-6xl mx-auto">
             <div className="grid gap-8 md:grid-cols-2">
               <div className="space-y-4">
-                <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule.capsuleTitle}</h2>
-                <p className="text-muted-foreground">{capsule.capsuleSubtitle}</p>
+                <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule.name}</h2>
+                <p className="text-muted-foreground">{capsule.description}</p>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-sm border border-border p-4">
                     <div className="text-sm text-muted-foreground">Bundle Price</div>
-                    <div className="text-xl font-light text-foreground">${capsule.bundlePrice}</div>
+                    <div className="text-xl font-light text-foreground">${capsule.price}</div>
                   </div>
                   <div className="rounded-sm border border-border p-4">
                     <div className="text-sm text-muted-foreground">Bundle Value</div>
-                    <div className="text-xl font-light text-foreground">${capsule.bundleValue}</div>
+                    <div className="text-xl font-light text-foreground">${capsule.items.reduce((sum, item) => sum + item.price, 0)}</div>
                   </div>
                 </div>
                 <div className="mt-2 space-y-2">
                   <Button
-                    className="rounded-sm"
-                    data-bundle
-                    data-capsule-title={capsule.capsuleTitle}
-                    data-bundle-price={String(capsule.bundlePrice)}
-                    data-items={bundleItemsAttr}
+                    className="rounded-sm w-full sm:w-auto"
+                    onClick={() => {
+                      try {
+                        addToCart({
+                          id: `${product.handle}:bundle`,
+                          variantId: `${product.handle}:bundle`,
+                          name: capsule.name,
+                          price: capsule.price,
+                          qty: 1,
+                          size: 'Bundle',
+                          image: product.images?.[0] || product.image,
+                          stripePriceId: product.stripePriceId,
+                        });
+                        toast.success(`${capsule.name} bundle added to cart!`);
+                      } catch (error) {
+                        console.error('Error adding bundle to cart:', error);
+                        toast.error(`Failed to add ${capsule.name} bundle to cart`);
+                      }
+                    }}
                   >
-                    {(productId === 'ma-001' || productId === 'ma-002' || productId === 'ma-003' || productId === 'ma-004' || productId === 'ma-005' || productId === 'ma-006' || productId === 'ma-007' || productId === 'ma-008') ? `Add Full Capsule — $${capsule.bundlePrice}` : `Buy Bundle — $${capsule.bundlePrice}`}
+                    Buy Bundle — ${capsule.price}
                   </Button>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
-                <div className="text-sm text-muted-foreground mt-2">{capsule.priceRangeCopy}</div>
+                <div className="text-sm text-muted-foreground mt-2">Price range: ${Math.min(...capsule.items.map(i => i.price))}–${Math.max(...capsule.items.map(i => i.price))}</div>
                 <div>
-                  <Link href="/size-guide" className="underline hover:no-underline text-sm">Size Guide</Link>
+                  <a href={product.category?.includes('mens') ? '/size-guide#men' : '/size-guide#women'} className="underline hover:no-underline text-sm">Size Guide</a>
                 </div>
               </div>
 
               <div>
                 <h3 className="text-lg font-medium mb-3 text-foreground">Items</h3>
-                <ol className="space-y-3 list-decimal pl-5">
-                  {capsule.items.map((it, idx) => {
+                {!capsuleLoaded ? (
+                  <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground mx-auto"></div>
+                    <p className="mt-2 text-muted-foreground">Loading items...</p>
+                  </div>
+                ) : !capsule ? (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground">No capsule items available at the moment.</p>
+                  </div>
+                ) : (
+                  <ol className="space-y-3 list-decimal pl-5">
+                    {capsule.items.map((it, idx) => {
                     const selected = itemSizes[it.handle] ?? (it.sizes?.[0] || 'OneSize');
                     const isDirectLink = typeof it.priceStripeId === 'string' && it.priceStripeId.startsWith('http');
                     return (
@@ -298,19 +385,43 @@ export default function ProductClient({ product }: ProductClientProps) {
 
                           <Button
                             className="rounded-sm"
-                            data-buy
-                            data-handle={it.handle}
-                            data-title={it.title}
-                            data-price-id={String(it.priceStripeId || '')}
-                            data-sizes={JSON.stringify(it.sizes)}
+                            disabled={loadingItems[it.handle] || !it.priceStripeId}
+                            onClick={() => {
+                              if (!it.priceStripeId) {
+                                alert(`Sorry, ${it.title} is not available for individual purchase at the moment.`);
+                                return;
+                              }
+                              
+                              setLoadingItems(prev => ({ ...prev, [it.handle]: true }));
+                              
+                              try {
+                                addToCart({
+                                  id: `${it.handle}:${selected}`,
+                                  variantId: `${it.handle}:${selected}`,
+                                  name: it.title,
+                                  price: it.price,
+                                  qty: 1,
+                                  size: selected,
+                                  image: product.images?.[0] || product.image,
+                                  stripePriceId: it.priceStripeId,
+                                });
+                                toast.success(`${it.title} added to cart!`);
+                              } catch (error) {
+                                console.error('Error adding item to cart:', error);
+                                toast.error(`Failed to add ${it.title} to cart`);
+                              } finally {
+                                setLoadingItems(prev => ({ ...prev, [it.handle]: false }));
+                              }
+                            }}
                           >
-                            Buy
+                            {loadingItems[it.handle] ? 'Adding...' : (!it.priceStripeId ? 'Unavailable' : 'Buy')}
                           </Button>
                         </div>
                       </li>
                     );
-                  })}
-                </ol>
+                    })}
+                  </ol>
+                )}
               </div>
             </div>
           </div>

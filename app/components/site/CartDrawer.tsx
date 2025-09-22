@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCartItems, getCartTotal, getCartItemCount, addToCart, type CartItem } from "@/lib/cart";
+import CheckoutButton from "@/components/checkout/CheckoutButton";
 
 export default function CartDrawer() {
   const [open, setOpen] = useState(false);
@@ -11,9 +12,18 @@ export default function CartDrawer() {
 
   // Initialize cart state after hydration
   useEffect(() => {
-    setItems(getCartItems());
-    setTotal(getCartTotal());
-    setCount(getCartItemCount());
+    const items = getCartItems();
+    const total = getCartTotal();
+    const count = getCartItemCount();
+    
+    setItems(items);
+    setTotal(total);
+    setCount(count);
+    
+    // Close drawer if cart is empty on page load (e.g., after successful payment)
+    if (items.length === 0) {
+      setOpen(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -21,7 +31,13 @@ export default function CartDrawer() {
       setItems(e.detail.items);
       setTotal(e.detail.total);
       setCount(e.detail.items.reduce((c: number, it: CartItem) => c + (it.qty || it.quantity || 0), 0));
-      setOpen(true);
+      
+      // Close drawer if cart is empty (e.g., after successful payment)
+      if (e.detail.items.length === 0) {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
     };
     const onToggle = () => setOpen((v) => !v);
 
@@ -100,7 +116,9 @@ export default function CartDrawer() {
                 <div className="text-sm text-muted-foreground">Subtotal</div>
                 <div className="text-base font-medium">${total.toFixed(2)}</div>
               </div>
-              <Button className="w-full rounded-sm" onClick={() => alert("Connect Stripe to enable checkout.")}>Checkout</Button>
+              <CheckoutButton className="w-full rounded-sm">
+                Checkout
+              </CheckoutButton>
             </div>
           </aside>
         </div>

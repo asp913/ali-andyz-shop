@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 
 interface Product {
@@ -12,6 +12,8 @@ interface Product {
   badge?: string;
   options?: string[];
   inventoryLeft?: number;
+  stripePriceId?: string;
+  handle?: string;
 }
 
 interface ProductCardProps {
@@ -164,6 +166,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     name: product.name,
                     price: product.price,
                     size,
+                    stripePriceId: product.stripePriceId,
                   },
                 })
               );
@@ -175,7 +178,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Button
             variant="outline"
             className="rounded-sm"
-            onClick={() => (window.location.href = `/product/${product.id}`)}
+            onClick={() => {
+              // All products go to product page
+              const url = `/product/${product.handle || product.id}`;
+              window.location.href = url;
+            }}
           >
             View
           </Button>
