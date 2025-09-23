@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const stripe = getStripe();
     const { searchParams } = request.nextUrl;
     const category = searchParams.get('category') || 'all';
-    const limit = parseInt(searchParams.get('limit') || '50');
+    const limit = parseInt(searchParams.get('limit') || '100');
     const active = searchParams.get('active') !== 'false';
 
     // Build query parameters
@@ -27,8 +27,27 @@ export async function GET(request: NextRequest) {
       expand: ['data.default_price'],
     };
 
-    // Get all products first, then filter by category
-    const products = await stripe.products.list(params);
+    // Get all products using pagination, then filter by category
+    let allProducts = [];
+    let hasMore = true;
+    let startingAfter = undefined;
+
+    while (hasMore) {
+      const paginatedParams = { ...params };
+      if (startingAfter) {
+        paginatedParams.starting_after = startingAfter;
+      }
+
+      const products = await stripe.products.list(paginatedParams);
+      allProducts = allProducts.concat(products.data);
+      hasMore = products.has_more;
+      
+      if (hasMore && products.data.length > 0) {
+        startingAfter = products.data[products.data.length - 1].id;
+      }
+    }
+
+    const products = { data: allProducts, has_more: false };
 
     // Transform Stripe products to our format
     const transformedProducts = products.data.map((product) => {

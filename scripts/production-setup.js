@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 
 /**
- * Create Capsules and Individual Items for All Categories
+ * Production Stripe Setup Script
  * 
- * This script creates one capsule with individual items for each category:
- * - Women's Activewear: Sunset Flow capsule
- * - Women's Ready to Wear: The Soft Landing Set capsule  
- * - Men's Activewear: Core Set capsule
- * - Men's Ready to Wear: Day Six: The Farewell Look capsule
+ * This is the ONLY script you need for production setup.
+ * It creates all capsules and individual items with the correct structure.
  * 
- * Each capsule will have 4-5 individual items that can be purchased separately
- * or as part of the bundle.
+ * Features:
+ * - Creates capsules for all 4 categories
+ * - Creates individual items for each capsule
+ * - Establishes proper parent-child relationships
+ * - Sets correct metadata for filtering and display
+ * - Handles inventory and pricing
+ * 
+ * Usage:
+ *   node scripts/production-setup.js
  */
 
 const Stripe = require('stripe');
@@ -20,8 +24,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20',
 });
 
-// Define capsules and their individual items for each category
-const capsulesData = {
+// Production capsules data - one capsule per category with individual items
+const productionCapsules = {
   'womens-activewear': {
     capsule: {
       id: 'wa-002',
@@ -111,39 +115,39 @@ const capsulesData = {
     },
     items: [
       {
-        id: 'soft-landing-sweater',
+        id: 'cream-knit-sweater',
         name: 'Cream Knit Sweater',
         price: 69,
         availableQuantity: 20,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        sizes: ['XS', 'S', 'M', 'L'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd68e72697db4444199d30efa27d3a218?format=webp&width=1600']
       },
       {
-        id: 'soft-landing-pants',
+        id: 'oat-trousers',
         name: 'Oat Trousers',
         price: 59,
         availableQuantity: 20,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        sizes: ['XS', 'S', 'M', 'L'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd68e72697db4444199d30efa27d3a218?format=webp&width=1600']
       },
       {
-        id: 'soft-landing-tank',
+        id: 'silk-tank-top',
         name: 'Silk Tank Top',
-        price: 39,
+        price: 29,
         availableQuantity: 20,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        sizes: ['XS', 'S', 'M', 'L'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd68e72697db4444199d30efa27d3a218?format=webp&width=1600']
       },
       {
-        id: 'soft-landing-scarf',
+        id: 'cashmere-scarf',
         name: 'Cashmere Scarf',
-        price: 29,
+        price: 49,
         availableQuantity: 20,
         requiredForBundle: false,
         bundleOnly: false,
@@ -151,9 +155,9 @@ const capsulesData = {
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd68e72697db4444199d30efa27d3a218?format=webp&width=1600']
       },
       {
-        id: 'soft-landing-bag',
+        id: 'leather-tote',
         name: 'Leather Tote',
-        price: 32,
+        price: 39,
         availableQuantity: 20,
         requiredForBundle: false,
         bundleOnly: false,
@@ -181,49 +185,49 @@ const capsulesData = {
     },
     items: [
       {
-        id: 'core-set-jacket',
+        id: 'leather-jacket',
         name: 'Leather Jacket',
         price: 69,
         availableQuantity: 30,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        sizes: ['S', 'M', 'L', 'XL'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F55dfe43cc044420db58ee28c28f3bf53?format=webp&width=800']
       },
       {
-        id: 'core-set-tee',
+        id: 'essential-tee',
         name: 'Essential Tee',
         price: 25,
         availableQuantity: 30,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        sizes: ['S', 'M', 'L', 'XL'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F55dfe43cc044420db58ee28c28f3bf53?format=webp&width=800']
       },
       {
-        id: 'core-set-pants',
+        id: 'cargo-pants',
         name: 'Cargo Pants',
-        price: 45,
+        price: 59,
         availableQuantity: 30,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        sizes: ['S', 'M', 'L', 'XL'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F55dfe43cc044420db58ee28c28f3bf53?format=webp&width=800']
       },
       {
-        id: 'core-set-sneakers',
+        id: 'canvas-sneakers',
         name: 'Canvas Sneakers',
-        price: 55,
+        price: 49,
         availableQuantity: 30,
-        requiredForBundle: true,
+        requiredForBundle: false,
         bundleOnly: false,
         sizes: ['8', '9', '10', '11', '12'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F55dfe43cc044420db58ee28c28f3bf53?format=webp&width=800']
       },
       {
-        id: 'core-set-cap',
+        id: 'baseball-cap',
         name: 'Baseball Cap',
-        price: 37,
+        price: 19,
         availableQuantity: 30,
         requiredForBundle: false,
         bundleOnly: false,
@@ -236,7 +240,7 @@ const capsulesData = {
     capsule: {
       id: 'mrt-001',
       name: 'Day Six: The Farewell Look — Capsule or Mix & Match',
-      description: 'Day Six: The Farewell Look — Capsule or Mix & Match. Bundle $359 · Value $448 · Save $89. A clean finale for the trip: soft knit, fresh cotton-linen shirt, tailored pleated trousers, and a minimal beanie. Wear together for polished ease, or mix each piece into your week. Size Guide — Need help? Text our curators — real humans.',
+      description: 'Day Six: The Farewell Look — Capsule or Mix & Match. Bundle $359 · Value $448 · Save $89. A clean finale for the trip: soft knit, fresh cotton-linen shirt, tailored pleated trousers, and a minimal beanie. Wear together for polished ease, or mix each piece into your week.',
       images: [
         'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F60565ccb4d5240dbbe8ed7f4d0b8525a?format=webp&width=1600',
         'https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Ff6a4631f841a4a9b9b55cb22f292f191?format=webp&width=1600'
@@ -247,54 +251,54 @@ const capsulesData = {
       badge: 'Capsule',
       handle: 'day-six-farewell-look-capsule',
       bundlePrice: 359,
-      totalQuantity: 15
+      totalQuantity: 20
     },
     items: [
       {
-        id: 'farewell-knit',
+        id: 'soft-knit-sweater',
         name: 'Soft Knit Sweater',
         price: 89,
-        availableQuantity: 15,
+        availableQuantity: 20,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        sizes: ['S', 'M', 'L', 'XL'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F60565ccb4d5240dbbe8ed7f4d0b8525a?format=webp&width=1600']
       },
       {
-        id: 'farewell-shirt',
+        id: 'cotton-linen-shirt',
         name: 'Cotton-Linen Shirt',
         price: 79,
-        availableQuantity: 15,
+        availableQuantity: 20,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        sizes: ['S', 'M', 'L', 'XL'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F60565ccb4d5240dbbe8ed7f4d0b8525a?format=webp&width=1600']
       },
       {
-        id: 'farewell-trousers',
+        id: 'pleated-trousers',
         name: 'Pleated Trousers',
-        price: 129,
-        availableQuantity: 15,
+        price: 99,
+        availableQuantity: 20,
         requiredForBundle: true,
         bundleOnly: false,
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        sizes: ['S', 'M', 'L', 'XL'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F60565ccb4d5240dbbe8ed7f4d0b8525a?format=webp&width=1600']
       },
       {
-        id: 'farewell-beanie',
+        id: 'minimal-beanie',
         name: 'Minimal Beanie',
         price: 29,
-        availableQuantity: 15,
-        requiredForBundle: true,
+        availableQuantity: 20,
+        requiredForBundle: false,
         bundleOnly: false,
         sizes: ['One Size'],
         images: ['https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F60565ccb4d5240dbbe8ed7f4d0b8525a?format=webp&width=1600']
       },
       {
-        id: 'farewell-shoes',
+        id: 'leather-loafers',
         name: 'Leather Loafers',
-        price: 122,
-        availableQuantity: 15,
+        price: 149,
+        availableQuantity: 20,
         requiredForBundle: false,
         bundleOnly: false,
         sizes: ['8', '9', '10', '11', '12'],
@@ -417,21 +421,21 @@ async function createIndividualItem(item, parentCapsuleId, category) {
   }
 }
 
-// Create all capsules and their items
-async function createAllCapsules() {
-  console.log('🚀 Creating capsules and individual items for all categories...\n');
+async function setupProductionCapsules() {
+  console.log('🚀 Setting up production capsules and individual items...\n');
 
   const results = {};
 
-  for (const [category, data] of Object.entries(capsulesData)) {
-    console.log(`\n📦 Creating ${category} capsule...\n`);
-    console.log(`🎁 Capsule: ${data.capsule.name}`);
-    console.log(`💰 Bundle Price: $${data.capsule.bundlePrice}`);
-    console.log(`📊 Individual Items: ${data.items.length}\n`);
+  for (const category in productionCapsules) {
+    const data = productionCapsules[category];
+    console.log(`\n📦 Creating ${category} capsule...`);
+    console.log(`\n🎁 Capsule: ${data.capsule.name}`);
+    console.log(`💰 Bundle Price: $${data.capsule.price}`);
+    console.log(`📊 Individual Items: ${data.items.length}`);
 
     try {
       // Step 1: Create individual items first
-      console.log(`📦 Step 1: Creating individual items for ${category}...\n`);
+      console.log(`\n📦 Step 1: Creating individual items for ${category}...`);
       const createdItems = [];
 
       for (const [index, item] of data.items.entries()) {
@@ -443,25 +447,22 @@ async function createAllCapsules() {
         await new Promise(resolve => setTimeout(resolve, 200));
       }
 
-      // Step 2: Create the capsule product
-      console.log(`\n🎁 Step 2: Creating ${category} capsule product...\n`);
+      // Step 2: Create the capsule product with individual item IDs
+      console.log(`\n🎁 Step 2: Creating ${category} capsule product...`);
 
-      // Update the capsule with the created individual item IDs
-      const capsuleWithItems = {
+      const capsuleResult = await createStripeProduct({
         ...data.capsule,
         individualItems: createdItems.filter(item => item.success).map(item => item.stripeProductId)
-      };
-
-      const capsuleResult = await createStripeProduct(capsuleWithItems);
+      });
 
       if (!capsuleResult.success) {
         console.error(`❌ Failed to create ${category} capsule product`);
-        results[category] = { success: false, error: 'Failed to create capsule' };
+        results[category] = { success: false, error: `Failed to create capsule product: ${capsuleResult.error}` };
         continue;
       }
 
       // Step 3: Update individual items with correct parent capsule ID
-      console.log(`\n🔗 Step 3: Updating individual items with parent capsule ID...\n`);
+      console.log('\n🔗 Step 3: Updating individual items with parent capsule ID...');
 
       for (const item of createdItems) {
         if (item.success) {
@@ -471,12 +472,12 @@ async function createAllCapsules() {
               metadata: {
                 productType: 'individual',
                 parentCapsuleId: capsuleResult.stripeProductId,
-                availableQuantity: originalItem?.availableQuantity.toString() || '20',
+                availableQuantity: originalItem?.availableQuantity.toString() || '25',
                 requiredForBundle: originalItem?.requiredForBundle.toString() || 'true',
                 bundleOnly: originalItem?.bundleOnly.toString() || 'false',
                 sizes: JSON.stringify(originalItem?.sizes || []),
                 category: category,
-                handle: item.id,
+                handle: originalItem?.handle || item.id,
               },
             });
 
@@ -489,7 +490,7 @@ async function createAllCapsules() {
       }
 
       // Step 4: Update capsule with individual item IDs in metadata
-      console.log(`\n🔗 Step 4: Updating capsule with individual item IDs...\n`);
+      console.log(`\n🔗 Step 4: Updating capsule with individual item IDs...`);
 
       try {
         await stripe.products.update(capsuleResult.stripeProductId, {
@@ -536,7 +537,7 @@ async function createAllCapsules() {
   }
 
   // Final summary
-  console.log('\n🎉 ALL CAPSULES CREATION COMPLETE!');
+  console.log('\n🎉 PRODUCTION SETUP COMPLETE!');
   console.log('\n📊 Final Summary:');
   console.log('================');
 
@@ -560,12 +561,12 @@ async function createAllCapsules() {
   console.log('   • Men\'s Activewear: http://localhost:3001/mens-activewear');
   console.log('   • Men\'s Ready to Wear: http://localhost:3001/mens-ready-to-wear');
 
-  console.log('\n✅ All capsules and individual items are now active in your Stripe account!');
+  console.log('\n✅ Production setup complete! All capsules and individual items are now active in your Stripe account!');
 }
 
 // Run the script
 if (require.main === module) {
-  createAllCapsules().catch(console.error);
+  setupProductionCapsules().catch(console.error);
 }
 
-module.exports = { createAllCapsules, capsulesData };
+module.exports = { setupProductionCapsules, productionCapsules };

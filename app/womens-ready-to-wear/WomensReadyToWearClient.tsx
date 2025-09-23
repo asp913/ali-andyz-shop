@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/site/ProductCard";
@@ -65,6 +65,51 @@ export default function WomensReadyToWearClient({ products, hasError = false }: 
     setSelectedColors([]);
     setSelectedPriceRange("all");
   };
+
+  // Extract available filter options from products
+  const availableSizes = useMemo(() => {
+    const sizes = new Set<string>();
+    products.forEach(product => {
+      if (product.options && Array.isArray(product.options)) {
+        product.options.forEach(option => {
+          if (option && typeof option === 'string') {
+            sizes.add(option);
+          }
+        });
+      }
+    });
+    return Array.from(sizes).sort();
+  }, [products]);
+
+  const availableColors = useMemo(() => {
+    const colors = new Set<string>();
+    products.forEach(product => {
+      const name = product.name.toLowerCase();
+      // Extract colors from product names
+      const colorKeywords = ['black', 'white', 'navy', 'olive', 'grey', 'gray', 'blue', 'red', 'green', 'brown', 'beige', 'cream', 'tan'];
+      colorKeywords.forEach(color => {
+        if (name.includes(color)) {
+          colors.add(color.charAt(0).toUpperCase() + color.slice(1));
+        }
+      });
+    });
+    return Array.from(colors).sort();
+  }, [products]);
+
+  const availableTypes = useMemo(() => {
+    const types = new Set<string>();
+    products.forEach(product => {
+      const name = product.name.toLowerCase();
+      // Extract types from product names
+      const typeKeywords = ['capsule', 'set', 'top', 'tank', 'bra', 'leggings', 'shorts', 'jacket', 'wrap', 'dress', 'sweater', 'trousers', 'blazer'];
+      typeKeywords.forEach(type => {
+        if (name.includes(type)) {
+          types.add(type.charAt(0).toUpperCase() + type.slice(1));
+        }
+      });
+    });
+    return Array.from(types).sort();
+  }, [products]);
 
   const sortedProducts = useMemo(() => {
     let filtered = [...products];
@@ -184,49 +229,61 @@ export default function WomensReadyToWearClient({ products, hasError = false }: 
               <div>
                 <h3 className="text-sm font-medium text-foreground mb-2">Size</h3>
                 <div className="space-y-2">
-                  {["XS", "S", "M", "L", "XL"].map((size) => (
-                    <label key={size} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedSizes.includes(size)}
-                        onChange={() => handleSizeChange(size)}
-                        className="rounded border-border"
-                      />
-                      <span className="text-sm text-muted-foreground">{size}</span>
-                    </label>
-                  ))}
+                  {availableSizes.length > 0 ? (
+                    availableSizes.map((size) => (
+                      <label key={size} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedSizes.includes(size)}
+                          onChange={() => handleSizeChange(size)}
+                          className="rounded border-border"
+                        />
+                        <span className="text-sm text-muted-foreground">{size}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <span className="text-sm text-muted-foreground">No sizes available</span>
+                  )}
                 </div>
               </div>
               <div>
                 <h3 className="text-sm font-medium text-foreground mb-2">Type</h3>
                 <div className="space-y-2">
-                  {["Dresses", "Tops", "Pants", "Jackets"].map((type) => (
-                    <label key={type} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedTypes.includes(type)}
-                        onChange={() => handleTypeChange(type)}
-                        className="rounded border-border"
-                      />
-                      <span className="text-sm text-muted-foreground">{type}</span>
-                    </label>
-                  ))}
+                  {availableTypes.length > 0 ? (
+                    availableTypes.map((type) => (
+                      <label key={type} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedTypes.includes(type)}
+                          onChange={() => handleTypeChange(type)}
+                          className="rounded border-border"
+                        />
+                        <span className="text-sm text-muted-foreground">{type}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <span className="text-sm text-muted-foreground">No types available</span>
+                  )}
                 </div>
               </div>
               <div>
                 <h3 className="text-sm font-medium text-foreground mb-2">Color</h3>
                 <div className="space-y-2">
-                  {["Black", "White", "Navy", "Pink", "Beige"].map((color) => (
-                    <label key={color} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedColors.includes(color)}
-                        onChange={() => handleColorChange(color)}
-                        className="rounded border-border"
-                      />
-                      <span className="text-sm text-muted-foreground">{color}</span>
-                    </label>
-                  ))}
+                  {availableColors.length > 0 ? (
+                    availableColors.map((color) => (
+                      <label key={color} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedColors.includes(color)}
+                          onChange={() => handleColorChange(color)}
+                          className="rounded border-border"
+                        />
+                        <span className="text-sm text-muted-foreground">{color}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <span className="text-sm text-muted-foreground">No colors available</span>
+                  )}
                 </div>
               </div>
               <div>

@@ -35,8 +35,27 @@ export async function fetchStripeProductsServer(category: string = 'all', includ
       expand: ['data.default_price'],
     };
 
-    // Get all products first, then filter by category
-    const products = await stripe.products.list(params);
+    // Get all products using pagination, then filter by category
+    let allProducts = [];
+    let hasMore = true;
+    let startingAfter = undefined;
+
+    while (hasMore) {
+      const paginatedParams = { ...params };
+      if (startingAfter) {
+        paginatedParams.starting_after = startingAfter;
+      }
+
+      const products = await stripe.products.list(paginatedParams);
+      allProducts = allProducts.concat(products.data);
+      hasMore = products.has_more;
+      
+      if (hasMore && products.data.length > 0) {
+        startingAfter = products.data[products.data.length - 1].id;
+      }
+    }
+
+    const products = { data: allProducts, has_more: false };
 
     // Transform Stripe products to our format
     const transformedProducts = products.data.map((product) => {
