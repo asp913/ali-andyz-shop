@@ -4,9 +4,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[context.production.environment]
-  NEXT_TELEMETRY_DISABLED = "1"
-
-[context.deploy-preview.environment]
-  NEXT_TELEMETRY_DISABLED = "1"
