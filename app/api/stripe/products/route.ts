@@ -83,6 +83,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       products: filteredProducts,
       hasMore: products.has_more,
+      timestamp: new Date().toISOString(),
+      totalProducts: filteredProducts.length
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Surrogate-Control': 'no-store'
+      }
     });
   } catch (error: any) {
     console.error('Error fetching Stripe products:', error);
