@@ -1,5 +1,5 @@
 [build]
-  command = "corepack enable && pnpm install --frozen-lockfile=false && pnpm build"
+  command = "npm install --no-audit --no-fund && npm run build"
   publish = ".next"
 
 [build.environment]
