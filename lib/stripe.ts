@@ -90,7 +90,7 @@ export async function fetchStripeProducts(category: string = 'all'): Promise<Str
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/stripe/products?category=${category}&limit=50`);
+    const response = await fetch(`${baseUrl}/api/stripe/products?category=${category}&limit=50&t=${Date.now()}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch products: ${response.statusText}`);
     }

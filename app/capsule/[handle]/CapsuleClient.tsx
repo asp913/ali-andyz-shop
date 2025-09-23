@@ -58,7 +58,7 @@ export default function CapsuleClient({ capsule }: CapsuleClientProps) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/stripe/products?category=all');
+        const response = await fetch(`/api/stripe/products?category=all&t=${Date.now()}`);
         const data = await response.json();
         setProducts(data.products || []);
       } catch (error) {
