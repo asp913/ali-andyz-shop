@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Filter } from "lucide-react";
 import ProductCard from "@/components/site/ProductCard";
@@ -130,20 +130,65 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
     };
   }, [products]);
 
+  // Extract available filter options from products
+  const availableSizes = useMemo(() => {
+    const sizes = new Set<string>();
+    products.forEach(product => {
+      if (product.options && Array.isArray(product.options)) {
+        product.options.forEach(option => {
+          if (option && typeof option === 'string') {
+            sizes.add(option);
+          }
+        });
+      }
+    });
+    return Array.from(sizes).sort();
+  }, [products]);
+
+  const availableColors = useMemo(() => {
+    const colors = new Set<string>();
+    products.forEach(product => {
+      const name = product.name.toLowerCase();
+      // Extract colors from product names
+      const colorKeywords = ['black', 'white', 'navy', 'olive', 'grey', 'gray', 'blue', 'red', 'green', 'brown', 'beige', 'cream', 'tan'];
+      colorKeywords.forEach(color => {
+        if (name.includes(color)) {
+          colors.add(color.charAt(0).toUpperCase() + color.slice(1));
+        }
+      });
+    });
+    return Array.from(colors).sort();
+  }, [products]);
+
+  const availableTypes = useMemo(() => {
+    const types = new Set<string>();
+    products.forEach(product => {
+      const name = product.name.toLowerCase();
+      // Extract types from product names
+      const typeKeywords = ['capsule', 'set', 'top', 'tank', 'bra', 'leggings', 'shorts', 'jacket', 'wrap', 'dress', 'sweater', 'trousers', 'blazer'];
+      typeKeywords.forEach(type => {
+        if (name.includes(type)) {
+          types.add(type.charAt(0).toUpperCase() + type.slice(1));
+        }
+      });
+    });
+    return Array.from(types).sort();
+  }, [products]);
+
   // Filter and sort products based on selected options
   useEffect(() => {
     let filtered = [...products];
     
-    // Apply filters
+    // Apply size filters
     if (selectedSizes.length > 0) {
       filtered = filtered.filter(product => 
         product.options?.some(option => selectedSizes.includes(option))
       );
     }
     
+    // Apply type filters
     if (selectedTypes.length > 0) {
       filtered = filtered.filter(product => {
-        // Simple type detection based on product name
         const productName = product.name.toLowerCase();
         return selectedTypes.some(type => 
           productName.includes(type.toLowerCase())
@@ -151,9 +196,9 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
       });
     }
     
+    // Apply color filters
     if (selectedColors.length > 0) {
       filtered = filtered.filter(product => {
-        // Simple color detection based on product name
         const productName = product.name.toLowerCase();
         return selectedColors.some(color => 
           productName.includes(color.toLowerCase())
@@ -188,7 +233,7 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
         filtered.sort((a, b) => b.price - a.price);
         break;
       case "newest":
-        // Assuming newer products have higher IDs or we could add a date field
+        // Sort by product ID (newer products typically have higher IDs)
         filtered.sort((a, b) => b.id.localeCompare(a.id));
         break;
       default:
@@ -272,19 +317,23 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                     Size
                   </h3>
                   <div className="space-y-2">
-                    {["XS", "S", "M", "L", "XL"].map((size) => (
-                      <label key={size} className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={selectedSizes.includes(size)}
-                          onChange={() => handleSizeChange(size)}
-                          className="rounded border-border"
-                        />
-                        <span className="text-sm text-muted-foreground">
-                          {size}
-                        </span>
-                      </label>
-                    ))}
+                    {availableSizes.length > 0 ? (
+                      availableSizes.map((size) => (
+                        <label key={size} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedSizes.includes(size)}
+                            onChange={() => handleSizeChange(size)}
+                            className="rounded border-border"
+                          />
+                          <span className="text-sm text-muted-foreground">
+                            {size}
+                          </span>
+                        </label>
+                      ))
+                    ) : (
+                      <span className="text-sm text-muted-foreground">No sizes available</span>
+                    )}
                   </div>
                 </div>
 
@@ -293,8 +342,8 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                     Type
                   </h3>
                   <div className="space-y-2">
-                    {["Tops", "Bottoms", "Outerwear", "Sports Bras"].map(
-                      (type) => (
+                    {availableTypes.length > 0 ? (
+                      availableTypes.map((type) => (
                         <label key={type} className="flex items-center gap-2">
                           <input
                             type="checkbox"
@@ -306,7 +355,9 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                             {type}
                           </span>
                         </label>
-                      ),
+                      ))
+                    ) : (
+                      <span className="text-sm text-muted-foreground">No types available</span>
                     )}
                   </div>
                 </div>
@@ -344,8 +395,8 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                     Color
                   </h3>
                   <div className="space-y-2">
-                    {["Black", "White", "Navy", "Olive", "Grey"].map(
-                      (color) => (
+                    {availableColors.length > 0 ? (
+                      availableColors.map((color) => (
                         <label key={color} className="flex items-center gap-2">
                           <input
                             type="checkbox"
@@ -357,7 +408,9 @@ export default function WomensActivewearClient({ products, hasError }: WomensAct
                             {color}
                           </span>
                         </label>
-                      ),
+                      ))
+                    ) : (
+                      <span className="text-sm text-muted-foreground">No colors available</span>
                     )}
                   </div>
                 </div>

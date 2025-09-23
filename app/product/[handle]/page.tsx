@@ -34,7 +34,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     
         // Fetch all products from Stripe
         const response = await fetchStripeProductsServer('all');
-        const product = response.products.find(p => p.handle === params.handle || p.id === params.handle);
+        // Prioritize handle lookup, fall back to ID only if handle doesn't exist
+        const product = response.products.find(p => p.handle === params.handle) || 
+                       response.products.find(p => p.id === params.handle);
     
     if (!product) {
       notFound();
@@ -44,7 +46,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         let capsuleDetails = null;
         if (product.productType === 'capsule') {
           try {
-            capsuleDetails = await getCapsuleDetailsFromStripe(params.handle);
+            capsuleDetails = await getCapsuleDetailsFromStripe(product.handle || params.handle);
           } catch (error) {
             console.error('Error fetching capsule details:', error);
           }

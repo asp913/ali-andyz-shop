@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/site/ProductCard";
@@ -65,6 +65,51 @@ export default function MensActivewearClient({ products, hasError = false }: Men
     setSelectedColors([]);
     setSelectedPriceRange("all");
   };
+  // Extract available filter options from products
+  const availableSizes = useMemo(() => {
+    const sizes = new Set<string>();
+    products.forEach(product => {
+      if (product.options && Array.isArray(product.options)) {
+        product.options.forEach(option => {
+          if (option && typeof option === 'string') {
+            sizes.add(option);
+          }
+        });
+      }
+    });
+    return Array.from(sizes).sort();
+  }, [products]);
+
+  const availableColors = useMemo(() => {
+    const colors = new Set<string>();
+    products.forEach(product => {
+      const name = product.name.toLowerCase();
+      // Extract colors from product names
+      const colorKeywords = ['black', 'white', 'navy', 'olive', 'grey', 'gray', 'blue', 'red', 'green', 'brown', 'beige', 'cream', 'tan'];
+      colorKeywords.forEach(color => {
+        if (name.includes(color)) {
+          colors.add(color.charAt(0).toUpperCase() + color.slice(1));
+        }
+      });
+    });
+    return Array.from(colors).sort();
+  }, [products]);
+
+  const availableTypes = useMemo(() => {
+    const types = new Set<string>();
+    products.forEach(product => {
+      const name = product.name.toLowerCase();
+      // Extract types from product names
+      const typeKeywords = ['capsule', 'set', 'top', 'tank', 'bra', 'leggings', 'shorts', 'jacket', 'wrap', 'dress', 'sweater', 'trousers', 'blazer'];
+      typeKeywords.forEach(type => {
+        if (name.includes(type)) {
+          types.add(type.charAt(0).toUpperCase() + type.slice(1));
+        }
+      });
+    });
+    return Array.from(types).sort();
+  }, [products]);
+
 
   const sortedProducts = useMemo(() => {
     let filtered = [...products];
