@@ -1,8 +1,15 @@
 import Link from "next/link";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
+import Link from "next/link";
+import { builder } from "@builder.io/sdk";
+import BuilderRenderer from "./components/builder/BuilderRenderer";
 
-export default function Home() {
+builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY || "");
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+function StaticHome() {
   return (
     <main className="min-h-screen bg-background relative">
       {/* Hero Section */}
@@ -116,7 +123,6 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Trust Signals (Luxury Reframe) */}
       <section className="py-16 px-8 bg-card">
         <div className="max-w-6xl mx-auto grid sm:grid-cols-3 gap-6 text-center">
@@ -143,4 +149,16 @@ export default function Home() {
       <ContactSection />
     </main>
   );
+}
+
+export default async function Home() {
+  const content = await builder
+    .get("page", { userAttributes: { urlPath: "/" } })
+    .toPromise();
+
+  if (content) {
+    return <BuilderRenderer content={content} />;
+  }
+
+  return <StaticHome />;
 }
