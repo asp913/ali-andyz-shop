@@ -43,6 +43,7 @@ export default function Header() {
     document.addEventListener("cart:updated", handleCartUpdate);
     return () => document.removeEventListener("cart:updated", handleCartUpdate);
   }, [mounted]);
+
   return (
     <header className="sticky top-0 z-40 bg-[hsl(var(--background))]/80 backdrop-blur border-b border-border">
       <div className="container mx-auto">
