@@ -1,7 +1,18 @@
 {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  "buildCommand": "corepack enable && pnpm install && pnpm build",
+  "installCommand": "corepack enable && pnpm install",
+>>>>>>> d2e7812 (chore: add pnpm-lock.yaml and resolve vercel.json conflict)
   "framework": "nextjs",
   "env": {
     "NEXT_TELEMETRY_DISABLED": "1"
   }
 }
 
+=======
+  "framework": "nextjs",
+  "installCommand": "pnpm install"
+}
+>>>>>>> 52399ea (chore: add pnpm-lock.yaml so Vercel installs deps)
