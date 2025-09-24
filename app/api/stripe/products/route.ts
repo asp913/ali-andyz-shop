@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
     };
 
     // Get all products using pagination, then filter by category
-    let allProducts = [];
+    let allProducts: Stripe.Product[] = [];
     let hasMore = true;
-    let startingAfter = undefined;
+    let startingAfter: string | undefined = undefined;
 
     while (hasMore) {
       const paginatedParams = { ...params };
