@@ -159,6 +159,7 @@ export const capsuleDetailsByProductId: Record<string, CapsuleDetails | undefine
     bundleValue: 228,
     priceRangeCopy: 'Price range $29–$69',
     sizeGuideHref: '/size-guide',
+    stripeProductId: 'prod_T6vdNceQzeqmbj',
     items: [
       { handle: 'ribbed-maxi-dress', title: 'Ribbed Maxi Dress', price: 69, priceStripeId: '', sizes: ['XS','S','M','L','XL'], inventoryLeft: 2, requiredForBundle: true },
       { handle: 'fluid-duster', title: 'Fluid Duster', price: 59, priceStripeId: '', sizes: ['XS','S','M','L','XL'], inventoryLeft: 2, requiredForBundle: true },
