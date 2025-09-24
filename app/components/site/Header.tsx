@@ -14,22 +14,43 @@ const nav = [
 ];
 
 export default function Header() {
-  const pathname = usePathname();
   const [count, setCount] = useState<number>(0);
+  const [isClient, setIsClient] = useState(false);
+  
+  // Safely get pathname
+  let pathname = '/';
+  try {
+    pathname = usePathname();
+  } catch (error) {
+    console.error('Error getting pathname:', error);
+  }
   
   // Initialize cart count after hydration
   useEffect(() => {
-    setCount(getCartItemCount());
+    setIsClient(true);
+    try {
+      setCount(getCartItemCount());
+    } catch (error) {
+      console.error('Error getting cart count:', error);
+      setCount(0);
+    }
   }, []);
 
   useEffect(() => {
+    if (!isClient) return;
+    
     const onUpdated = (e: any) => {
-      const items = e.detail.items as { qty?: number; quantity?: number }[];
-      setCount(items.reduce((c, it) => c + (it.qty || it.quantity || 0), 0));
+      try {
+        const items = e.detail.items as { qty?: number; quantity?: number }[];
+        setCount(items.reduce((c, it) => c + (it.qty || it.quantity || 0), 0));
+      } catch (error) {
+        console.error('Error updating cart count:', error);
+        setCount(0);
+      }
     };
     document.addEventListener("cart:updated", onUpdated as EventListener);
     return () => document.removeEventListener("cart:updated", onUpdated as EventListener);
-  }, []);
+  }, [isClient]);
   return (
     <header className="sticky top-0 z-40 bg-[hsl(var(--background))]/80 backdrop-blur border-b border-border">
       <div className="container mx-auto">
@@ -56,7 +77,7 @@ export default function Header() {
             </button>
             <button aria-label="Cart" className="relative p-2 rounded-full hover:bg-secondary" onClick={() => document.dispatchEvent(new Event("cart:toggle"))}>
               <ShoppingBag className="h-5 w-5" />
-              {count > 0 && (
+              {isClient && count > 0 && (
                 <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-1 rounded-full bg-primary text-primary-foreground border border-border">{count}</span>
               )}
             </button>
