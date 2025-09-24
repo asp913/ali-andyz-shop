@@ -428,7 +428,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 ### Stripe Configuration
-- API Version: `2024-06-20`
+- API Version: `2025-08-27.basil`
 - Currency: USD
 - Checkout Mode: Payment
 - Shipping: US and Canada only

@@ -6,7 +6,7 @@ function getStripe(): Stripe {
   if (!key) {
     throw new Error('Missing STRIPE_SECRET_KEY');
   }
-  return new Stripe(key, { apiVersion: '2024-06-20' });
+  return new Stripe(key, { apiVersion: '2025-08-27.basil' });
 }
 
 function getSiteUrl(request: NextRequest): string {
