@@ -1,7 +1,6 @@
 import Link from "next/link";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
-import Link from "next/link";
 import { builder } from "@builder.io/sdk";
 import BuilderRenderer from "./components/builder/BuilderRenderer";
 
