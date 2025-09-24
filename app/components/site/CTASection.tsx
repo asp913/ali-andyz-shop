@@ -10,7 +10,6 @@ export default function CTASection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Integrate with email service (Klaviyo, Mailchimp, etc.)
-    console.log("Newsletter signup:", email);
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 3000);
     setEmail("");

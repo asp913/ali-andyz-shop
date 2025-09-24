@@ -8,6 +8,7 @@ export type CartItem = {
   image?: string;
   variantId?: string;
   size?: string;
+  stripePriceId?: string;
 };
 
 const STORAGE_KEY = "cart";
@@ -57,7 +58,7 @@ export function addToCart(item: AddInput) {
   const delta = Number.isFinite(Number(deltaRaw)) ? Number(deltaRaw) : 1;
 
   const items = readCart();
-  const idx = items.findIndex((i) => i.id === item.id && i.variantId === item.variantId);
+  const idx = items.findIndex((i) => i.variantId === item.variantId);
 
   if (idx >= 0) {
     const prev = Number(items[idx].quantity ?? items[idx].qty ?? 0);
@@ -75,10 +76,51 @@ export function addToCart(item: AddInput) {
   }
 
   writeCart(items);
+  
+  // Dispatch cart updated event
+  if (typeof window !== 'undefined') {
+    document.dispatchEvent(new CustomEvent('cart:updated', {
+      detail: { items: readCart(), total: getCartTotal() }
+    }));
+  }
+}
+
+let cartInitialized = false;
+
+export function initializeCart() {
+  // Initialize cart in localStorage if not already present
+  if (typeof window !== 'undefined' && !localStorage.getItem('cart')) {
+    localStorage.setItem('cart', JSON.stringify([]));
+  }
+
+  // Set up event listener for add to cart events (only once)
+  if (typeof window !== 'undefined' && !cartInitialized) {
+    cartInitialized = true;
+    document.addEventListener('capsule:addToCart', (e: any) => {
+      const { variantId, qty, name, price, size, stripePriceId } = e.detail;
+      addToCart({ 
+        id: variantId, 
+        variantId, 
+        qty: qty || 1, 
+        name, 
+        price, 
+        size,
+        stripePriceId
+      });
+    });
+  }
 }
 
 // Optional helpers:
 // export function removeFromCart(id: string, variantId?: string) {
 //   writeCart(readCart().filter(i => !(i.id === id && i.variantId === variantId)));
 // }
-// export function clearCart() { writeCart([]); }
+export function clearCart() { 
+  writeCart([]);
+  // Dispatch cart updated event to update UI
+  if (isBrowser()) {
+    document.dispatchEvent(new CustomEvent("cart:updated", {
+      detail: { items: [], total: 0 }
+    }));
+  }
+}

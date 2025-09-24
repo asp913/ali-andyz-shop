@@ -1,1 +1,112 @@
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   * A different format will require also updating the theme in tailwind.config.ts.
+  */
+  :root {
+    /* Boutique-inspired warm neutrals */
+    --background: 36 38% 95%; /* soft sand */
+    --foreground: 226 15% 12%; /* near-black ink */
+
+    --card: 0 0% 100%;
+    --card-foreground: 226 15% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 226 15% 12%;
+
+    --primary: 226 15% 12%; /* buttons and headings */
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 36 30% 90%;
+    --secondary-foreground: 226 15% 12%;
+
+    --muted: 36 30% 90%;
+    --muted-foreground: 226 10% 35%;
+
+    --accent: 36 30% 90%;
+    --accent-foreground: 226 15% 12%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 36 18% 85%;
+    --input: 36 18% 85%;
+    --ring: 226 15% 12%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 36 38% 95%;
+    --sidebar-foreground: 226 15% 12%;
+    --sidebar-primary: 226 15% 12%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 36 30% 90%;
+    --sidebar-accent-foreground: 226 15% 12%;
+    --sidebar-border: 36 18% 85%;
+    --sidebar-ring: 36 38% 40%;
+
+    /* explicit brand tokens */
+    --brand-sand: 36 38% 95%;
+    --brand-tan: 35 40% 80%;
+    --brand-ink: 226 15% 12%;
+  }
+
+  .dark {
+    --background: 226 15% 12%;
+    --foreground: 0 0% 98%;
+
+    --card: 226 15% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 226 15% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 226 15% 12%;
+
+    --secondary: 225 9% 20%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 225 9% 20%;
+    --muted-foreground: 220 9% 65%;
+
+    --accent: 225 9% 20%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 225 9% 20%;
+    --input: 225 9% 20%;
+    --ring: 36 38% 70%;
+
+    --sidebar-background: 225 9% 12%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 36 38% 70%;
+    --sidebar-primary-foreground: 226 15% 12%;
+    --sidebar-accent: 225 9% 16%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 225 9% 16%;
+    --sidebar-ring: 36 38% 70%;
+
+    --brand-sand: 36 12% 18%;
+    --brand-tan: 36 20% 26%;
+    --brand-ink: 0 0% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}

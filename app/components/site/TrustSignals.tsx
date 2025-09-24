@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function TrustSignals() {
   return (
     <section className="py-16 px-8 bg-card">

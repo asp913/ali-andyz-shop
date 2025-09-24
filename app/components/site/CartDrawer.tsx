@@ -2,19 +2,42 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCartItems, getCartTotal, getCartItemCount, addToCart, type CartItem } from "@/lib/cart";
+import CheckoutButton from "@/components/checkout/CheckoutButton";
 
 export default function CartDrawer() {
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState<CartItem[]>(getCartItems());
-  const [total, setTotal] = useState<number>(getCartTotal());
-  const [count, setCount] = useState<number>(getCartItemCount());
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [count, setCount] = useState<number>(0);
+
+  // Initialize cart state after hydration
+  useEffect(() => {
+    const items = getCartItems();
+    const total = getCartTotal();
+    const count = getCartItemCount();
+    
+    setItems(items);
+    setTotal(total);
+    setCount(count);
+    
+    // Close drawer if cart is empty on page load (e.g., after successful payment)
+    if (items.length === 0) {
+      setOpen(false);
+    }
+  }, []);
 
   useEffect(() => {
     const onUpdated = (e: any) => {
       setItems(e.detail.items);
       setTotal(e.detail.total);
-      setCount(e.detail.items.reduce((c: number, it: CartItem) => c + it.quantity, 0));
-      setOpen(true);
+      setCount(e.detail.items.reduce((c: number, it: CartItem) => c + (it.qty || it.quantity || 0), 0));
+      
+      // Close drawer if cart is empty (e.g., after successful payment)
+      if (e.detail.items.length === 0) {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
     };
     const onToggle = () => setOpen((v) => !v);
 
@@ -29,13 +52,16 @@ export default function CartDrawer() {
   const adjustQty = (variantId: string, delta: number) => {
     const target = items.find((i) => i.variantId === variantId);
     if (!target) return;
-    const newQty = ((target as any).quantity ?? (target as any).qty ?? 0) + delta;
-    if (newQty <= 0) {
-      // remove by setting negative current qty
-      addToCart({ ...target, quantity: -(((target as any).quantity ?? (target as any).qty ?? 0)) });
-    } else {
-      addToCart({ ...target, quantity: delta });
-    }
+    
+    // Use the delta directly - addToCart will handle adding it to existing quantity
+    addToCart({ 
+      id: target.id,
+      variantId: target.variantId,
+      name: target.name,
+      price: target.price,
+      size: target.size,
+      qty: delta 
+    });
   };
 
   return (
@@ -61,20 +87,20 @@ export default function CartDrawer() {
                   <div key={it.variantId} className="flex items-start gap-3 border-b border-border pb-4">
                     <div className="flex-1">
                       <div className="font-medium text-foreground">{it.name}</div>
-                      {it.size && <div className="text-sm text-muted-foreground">Size: {it.size}</div>}
+                      <div className="text-sm text-muted-foreground">Size: {it.size}</div>
                       <div className="mt-1 text-sm">${it.price}</div>
                       <div className="mt-2 inline-flex items-center gap-2">
                         <button
                           className="px-2 py-1 border border-border rounded-sm text-sm"
-                          onClick={() => adjustQty(it.variantId || it.id, -1)}
+                          onClick={() => it.variantId && adjustQty(it.variantId, -1)}
                           aria-label={`Decrease quantity of ${it.name}`}
                         >
                           -
                         </button>
-                        <span className="min-w-[2ch] text-center">{it.quantity}</span>
+                        <span className="min-w-[2ch] text-center">{it.qty || it.quantity || 0}</span>
                         <button
                           className="px-2 py-1 border border-border rounded-sm text-sm"
-                          onClick={() => adjustQty(it.variantId || it.id, 1)}
+                          onClick={() => it.variantId && adjustQty(it.variantId, 1)}
                           aria-label={`Increase quantity of ${it.name}`}
                         >
                           +
@@ -90,7 +116,9 @@ export default function CartDrawer() {
                 <div className="text-sm text-muted-foreground">Subtotal</div>
                 <div className="text-base font-medium">${total.toFixed(2)}</div>
               </div>
-              <Button className="w-full rounded-sm" onClick={() => alert("Connect Stripe to enable checkout.")}>Checkout</Button>
+              <CheckoutButton className="w-full rounded-sm">
+                Checkout
+              </CheckoutButton>
             </div>
           </aside>
         </div>
