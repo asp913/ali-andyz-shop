@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { initializeCart } from "@/lib/cart";
-import Header from "./components/site/Header";
+import Header from "./components/site/HeaderStatic";
 import Footer from "./components/site/Footer";
 import CartDrawer from "./components/site/CartDrawer";
 import initBuilderBuyBridge from "./bridge/initBuilderBuyBridge";
@@ -38,7 +38,10 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <Header />
+        <div style={{ backgroundColor: 'yellow', padding: '10px', border: '2px solid red' }}>
+          <div>DEBUG: ClientLayout is rendering</div>
+          <Header />
+        </div>
         <CartDrawer />
         {children}
         <Footer />
