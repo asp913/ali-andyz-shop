@@ -18,3 +18,4 @@ export default async function HomePage() {
 
   return <BuilderPage model="page" content={content} />;
 }
+}
