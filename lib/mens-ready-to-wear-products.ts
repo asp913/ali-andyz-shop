@@ -40,7 +40,7 @@ export const mensReadyToWearProducts: Product[] = [
     badge: "Capsule",
     options: [],
     description:
-      "Heritage Field — Suede & Cord. Bundle $239 · Value $345 · Save $106. Warm earth tones with true suede texture and workwear ease. Built for weekends, sharp enough for dinners. What's inside (5 pieces): Real Suede Field Jacket (Nutmeg) — $129 — 100% suede, rib hem/cuffs, two chest pockets, YKK zip. Chevron Merino Crew (Taupe/Forest/Rust/Cream) — $49 — Extra-fine merino blend, fully-fashioned. 16-Wale Corduroy Utility Pant (Sand) — $69 — Straight leg, utility patch pockets, comfort stretch. Suede Cupsole Sneakers (Cocoa) — $59 — Low profile, rubber cupsole, leather lining. Leather Crossbody (Cocoa) — One size — $39 — Pebbled leather, zip pocket, adjustable strap.",
+      "Heritage Field — Suede & Cord. Bundle $239 · Value $345 · Save $106. Warm earth tones with true suede texture and workwear ease. Built for weekends, sharp enough for dinners. What's inside (5 pieces): Faux Suede Field Jacket (Nutmeg) — $129 — 100% suede, rib hem/cuffs, two chest pockets, YKK zip. Chevron Merino Crew (Taupe/Forest/Rust/Cream) — $49 — Extra-fine merino blend, fully-fashioned. 16-Wale Corduroy Utility Pant (Sand) — $69 — Straight leg, utility patch pockets, comfort stretch. Suede Cupsole Sneakers (Cocoa) — $59 — Low profile, rubber cupsole, leather lining. Leather Crossbody (Cocoa) — One size — $39 — Pebbled leather, zip pocket, adjustable strap.",
     images: [
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F9e6171f24e4e4a9691b8877bb08c1a0e?format=webp&width=1600",
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fcae117a4247040a89d44b1d164dd0a6c?format=webp&width=1600",
@@ -111,13 +111,13 @@ export const mensReadyToWearProducts: Product[] = [
     name: "Aviator Luxe Kit — Espresso & Black",
     price: 299,
     image:
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F77cece074cd744ff99d4f6565a8f7904?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F8b0fba45ec28476f8cc928c32316f837?format=webp&width=800",
     badge: "Capsule",
     options: [],
     description:
       "Aviator Luxe Kit — Espresso & Black. Monochrome polish meets winter-ready function. A rich espresso bomber, tobacco trousers, and black accents for a clean, city-smart silhouette. Bundle: $299 · Value $374 · Save $75. Price range (individual): $19–$129. SKU: MEN-AVIATOR-KIT. What's included (6 pcs): Leather Bomber Jacket (Espresso) — $129; Merino Crew Knit (Black) — $49; Tailored Trouser (Tobacco) — $69; Cashmere-Blend Scarf (Camel) — $29; Chelsea Boots (Black) — $79; Round UV Sunglasses (Black) — $19. Why it works: Cohesive espresso/black palette = instant elevation; Tailored trouser balances the bomber's structure; Camel scarf warms the look (and the palette). Fit & sizes: Jacket & Knit S–XXL; Trouser 28–38; Boots 7–13 (US); Scarf/Sunglasses one size.",
     images: [
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F77cece074cd744ff99d4f6565a8f7904?format=webp&width=1600",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F8b0fba45ec28476f8cc928c32316f837?format=webp&width=800",
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F143e829039ef42ce92f74e9044934968?format=webp&width=1600",
     ],
   },

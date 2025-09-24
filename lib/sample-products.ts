@@ -87,7 +87,7 @@ export const sampleProducts: Product[] = [
       "Black Tennis — Capsule or Mix & Match. Bundle $189 · Value $314 · Save $125. Price range: $25–$75. Elevate your game with court-to-club sophistication. Get the full capsule for seamless athletic elegance, or shop pieces individually to build your champion wardrobe. Premium black pieces designed for peak performance and timeless style. Save $75 vs. buying separately. Court-to-club versatility in timeless black. Premium performance fabrics with elegant design.",
     images: [
       "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fc8239d1dcbf341c28afd04355bb8abe5?format=webp&width=1600",
-      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F72bac85631b742eea63dbbf9fd3cf038?format=webp&width=800",
+      "https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2F0a65243126ac4b3a8cd0de54e115902a?format=webp&width=800",
     ],
     handle: "black-tennis-capsule",
   },

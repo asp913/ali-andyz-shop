@@ -33,7 +33,7 @@ export default function Hero() {
       </div>
       <div className="relative min-h-[34rem] lg:min-h-[44rem] bg-brand-tan">
         <img
-          src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fa0571368b4104835887bcada649dfca4?format=webp&width=1600"
+          src="https://cdn.builder.io/api/v1/image/assets%2F514b6cfd929047f0b5e645c455c5c65f%2Fd99ca277a4a044bfbe6fb8efd2902e3f?format=webp&width=800"
           alt="Aly + Andy Z hero editorial"
           className="absolute inset-0 h-full w-full object-contain object-center"
         />
