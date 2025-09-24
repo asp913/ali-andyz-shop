@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heart, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getCartItemCount } from "@/lib/cart";
 
 const nav = [
   { href: "/womens-activewear", label: "Women's Activewear" },
@@ -14,43 +13,36 @@ const nav = [
 ];
 
 export default function Header() {
-  const [count, setCount] = useState<number>(0);
-  const [isClient, setIsClient] = useState(false);
-  
-  // Safely get pathname
-  let pathname = '/';
-  try {
-    pathname = usePathname();
-  } catch (error) {
-    console.error('Error getting pathname:', error);
-  }
-  
-  // Initialize cart count after hydration
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
-    setIsClient(true);
-    try {
-      setCount(getCartItemCount());
-    } catch (error) {
-      console.error('Error getting cart count:', error);
-      setCount(0);
-    }
+    setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!isClient) return;
+    if (!mounted) return;
     
-    const onUpdated = (e: any) => {
+    const updateCount = () => {
       try {
-        const items = e.detail.items as { qty?: number; quantity?: number }[];
-        setCount(items.reduce((c, it) => c + (it.qty || it.quantity || 0), 0));
+        const cart = localStorage.getItem('cart');
+        if (cart) {
+          const items = JSON.parse(cart);
+          const total = items.reduce((sum: number, item: any) => sum + (item.quantity || item.qty || 0), 0);
+          setCount(total);
+        }
       } catch (error) {
-        console.error('Error updating cart count:', error);
-        setCount(0);
+        console.error('Error reading cart:', error);
       }
     };
-    document.addEventListener("cart:updated", onUpdated as EventListener);
-    return () => document.removeEventListener("cart:updated", onUpdated as EventListener);
-  }, [isClient]);
+
+    updateCount();
+    
+    const handleCartUpdate = () => updateCount();
+    document.addEventListener("cart:updated", handleCartUpdate);
+    return () => document.removeEventListener("cart:updated", handleCartUpdate);
+  }, [mounted]);
   return (
     <header className="sticky top-0 z-40 bg-[hsl(var(--background))]/80 backdrop-blur border-b border-border">
       <div className="container mx-auto">
@@ -77,7 +69,7 @@ export default function Header() {
             </button>
             <button aria-label="Cart" className="relative p-2 rounded-full hover:bg-secondary" onClick={() => document.dispatchEvent(new Event("cart:toggle"))}>
               <ShoppingBag className="h-5 w-5" />
-              {isClient && count > 0 && (
+              {mounted && count > 0 && (
                 <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-1 rounded-full bg-primary text-primary-foreground border border-border">{count}</span>
               )}
             </button>
