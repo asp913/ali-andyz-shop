@@ -116,7 +116,7 @@ export default function ProductClient({ product, capsuleDetails }: ProductClient
   }, [product]);
   
   // Dynamic: Show flat right image if product has multiple images
-  const showFlatRight = product.images && product.images.length > 1;
+  const showFlatRight = product.images && product.images.length > 1 && capsule?.items && capsule.items.length > 0;
   
   // Dynamic: Use second image if available, fallback to first image
   const flatRightSrc = product.images?.[1] || product.images?.[0] || product.image;
