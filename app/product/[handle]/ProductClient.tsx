@@ -338,6 +338,7 @@ export default function ProductClient({ product, capsuleDetails }: ProductClient
                       handle: item.handle,
                       sizes: item.sizes,
                       price: item.price,
+                      priceStripeId: item.priceStripeId,
                       requiredForBundle: item.requiredForBundle,
                       inventoryLeft: item.inventoryLeft ?? undefined,
                       defaultSize: item.sizes[0]

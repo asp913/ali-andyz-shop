@@ -19,6 +19,7 @@ export type Item = {
   handle: string;
   sizes: string[];
   price?: number;
+  priceStripeId?: string;
   imageUrl?: string;
   requiredForBundle?: boolean; // default true
   inventoryLeft?: number;
@@ -143,7 +144,7 @@ export default function BundleSizePicker(props: Props) {
         await onAddBundle({ bundlePrice, selections });
       } else {
         // Default behavior: post to bundle checkout endpoint.
-        await defaultBundleCheckout({ bundlePrice, selections });
+        await defaultBundleCheckout({ bundlePrice, selections, items });
       }
       setOpen(false);
     } catch (err) {
@@ -294,17 +295,22 @@ export default function BundleSizePicker(props: Props) {
 async function defaultBundleCheckout({
   bundlePrice,
   selections,
+  items,
 }: {
   bundlePrice: number;
   selections: { handle: string; title: string; size: string; qty: number }[];
+  items: Item[];
 }) {
+  // Create a map of handle -> priceStripeId for quick lookup
+  const priceMap = new Map(items.map(item => [item.handle, item.priceStripeId]));
+  
   // Attempt to use a single bundle price if configured in the backend.
   // We still send items + sizes for metadata and auditing.
-  const items = selections.map((s) => ({
+  const bundleItems = selections.map((s) => ({
     handle: s.handle,
     title: s.title,
     size: s.size || null,
-    priceStripeId: null,
+    priceStripeId: priceMap.get(s.handle) || null,
     requiredForBundle: true,
   }));
 
@@ -314,7 +320,7 @@ async function defaultBundleCheckout({
     body: JSON.stringify({
       capsule: document.title,
       bundlePrice,
-      items,
+      items: bundleItems,
     }),
   });
 
