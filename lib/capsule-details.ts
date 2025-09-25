@@ -729,21 +729,35 @@ export async function getCapsuleDetailsFromStripe(capsuleHandleOrId: string): Pr
     // Log all individual products
     const individualProducts = allProducts.filter(p => p.productType === 'individual');
 
-    // Find all individual items associated with this capsule
-    const individualItems: CapsuleItem[] = allProducts
-      .filter(p => 
-        p.productType === 'individual' && 
-        p.metadata?.parentCapsuleId === mainCapsuleProduct.id
-      )
-      .map(p => ({
-        handle: p.handle,
-        title: p.name,
-        price: p.price,
-        priceStripeId: p.stripePriceId,
-        sizes: p.metadata?.sizes ? JSON.parse(p.metadata.sizes) : [],
-        inventoryLeft: p.metadata?.availableQuantity ? parseInt(p.metadata.availableQuantity) : null,
-        requiredForBundle: p.metadata?.requiredForBundle === 'true',
-      }));
+    // Get the items array from capsule metadata (array of handles)
+    const capsuleItemHandles = mainCapsuleProduct.metadata?.items ? 
+      JSON.parse(mainCapsuleProduct.metadata.items) : [];
+
+    // Find all individual items by their handles
+    const individualItems: CapsuleItem[] = capsuleItemHandles
+      .map((handle: string) => {
+        const product = allProducts.find(p => 
+          p.productType === 'individual' && 
+          p.metadata?.handle === handle
+        );
+        
+        if (!product) {
+          console.warn(`Item with handle "${handle}" not found in Stripe products`);
+          return null;
+        }
+        
+        return {
+          handle: product.handle,
+          title: product.name,
+          price: product.price,
+          priceStripeId: product.stripePriceId,
+          sizes: product.metadata?.sizes ? 
+            product.metadata.sizes.split(',').map(s => s.trim().replace(/[\[\]'"]/g, '')) : [],
+          inventoryLeft: product.metadata?.inventoryLeft ? parseInt(product.metadata.inventoryLeft) : null,
+          requiredForBundle: product.metadata?.requiredForBundle === 'true',
+        };
+      })
+      .filter((item): item is CapsuleItem => item !== null);
 
     return {
       productId: mainCapsuleProduct.id,
