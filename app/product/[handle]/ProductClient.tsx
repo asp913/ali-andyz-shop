@@ -305,7 +305,7 @@ export default function ProductClient({ product, capsuleDetails }: ProductClient
         </div>
       </section>
 
-      {capsule && (
+      {capsule && capsule.items && capsule.items.length > 0 && (
         <section className="px-8 pb-12">
           <div className="max-w-6xl mx-auto">
             <div className="grid gap-8 md:grid-cols-2">
