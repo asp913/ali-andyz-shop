@@ -85,14 +85,17 @@ export function initBuilderBuyBridge() {
       const itemsAttr = btn.getAttribute('data-items') || '[]';
       let items: Array<{handle:string; title:string; priceId?:string; sizes?:string[]; required?:boolean}> = [];
       try { items = JSON.parse(itemsAttr) } catch {}
-      // Bundle checkout does not require per-item size selection
+      const missing = items
+        .filter(i => i.required !== false && i.sizes && i.sizes[0] !== 'OneSize' && !getSelectedSize(i.handle))
+        .map(i => i.title);
+      if (missing.length) { alert(`Please select sizes for: ${missing.join(', ')}`); return; }
       post('/api/checkout/bundle', {
         capsule: capsuleTitle,
         bundlePrice,
         items: items.map(i => ({
           handle: i.handle,
           title: i.title,
-          size: i.sizes?.[0] === 'OneSize' ? 'OneSize' : null,
+          size: i.sizes?.[0] === 'OneSize' ? 'OneSize' : (getSelectedSize(i.handle) || null),
           priceStripeId: i.priceId || null,
           requiredForBundle: i.required !== false,
         })),
