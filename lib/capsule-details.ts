@@ -22,6 +22,13 @@ export type CapsuleDetails = {
   price: number;
   priceStripeId: string;
   items: CapsuleItem[];
+  // New Stripe metadata fields
+  capsuleTitle?: string;
+  capsuleSubtitle?: string;
+  bundlePrice?: number;
+  bundleValue?: number;
+  priceRangeCopy?: string;
+  sizeGuideHref?: string;
 };
 
 // Map product.id -> capsule details
@@ -745,11 +752,18 @@ export async function getCapsuleDetailsFromStripe(capsuleHandleOrId: string): Pr
       images: mainCapsuleProduct.images,
       category: mainCapsuleProduct.category,
       badge: mainCapsuleProduct.badge,
-      options: mainCapsuleProduct.options,
+      options: mainCapsuleProduct.options ? mainCapsuleProduct.options.map(opt => ({ name: 'Size', values: [opt] })) : [],
       productType: 'capsule',
       price: mainCapsuleProduct.price,
       priceStripeId: mainCapsuleProduct.stripePriceId,
       items: individualItems,
+      // New Stripe metadata fields
+      capsuleTitle: mainCapsuleProduct.metadata?.capsuleTitle,
+      capsuleSubtitle: mainCapsuleProduct.metadata?.capsuleSubtitle,
+      bundlePrice: mainCapsuleProduct.metadata?.bundlePrice ? parseInt(mainCapsuleProduct.metadata.bundlePrice) : undefined,
+      bundleValue: mainCapsuleProduct.metadata?.bundleValue ? parseInt(mainCapsuleProduct.metadata.bundleValue) : undefined,
+      priceRangeCopy: mainCapsuleProduct.metadata?.priceRangeCopy,
+      sizeGuideHref: mainCapsuleProduct.metadata?.sizeGuideHref,
     };
   } catch (error) {
     console.error('Error fetching capsule details from Stripe:', error);

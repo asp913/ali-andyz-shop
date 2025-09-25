@@ -16,6 +16,7 @@ export type StripeProduct = {
   active: boolean;
   created: number;
   updated: number;
+  metadata?: Record<string, string>;
 };
 
 export type StripeProductsResponse = {

@@ -44,6 +44,13 @@ interface ProductClientProps {
       inventoryLeft?: number | null;
       requiredForBundle: boolean;
     }>;
+    // New Stripe metadata fields
+    capsuleTitle?: string;
+    capsuleSubtitle?: string;
+    bundlePrice?: number;
+    bundleValue?: number;
+    priceRangeCopy?: string;
+    sizeGuideHref?: string;
   } | null;
 }
 
@@ -303,16 +310,24 @@ export default function ProductClient({ product, capsuleDetails }: ProductClient
           <div className="max-w-6xl mx-auto">
             <div className="grid gap-8 md:grid-cols-2">
               <div className="space-y-4">
-                <h2 className="text-2xl lg:text-3xl font-light text-foreground">{capsule.name}</h2>
-                <p className="text-muted-foreground">{capsule.description}</p>
+                <h2 className="text-2xl lg:text-3xl font-light text-foreground">
+                  {capsule.capsuleTitle || capsule.name}
+                </h2>
+                {capsule.capsuleSubtitle && (
+                  <p className="text-muted-foreground text-lg">{capsule.capsuleSubtitle}</p>
+                )}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-sm border border-border p-4">
                     <div className="text-sm text-muted-foreground">Bundle Price</div>
-                    <div className="text-xl font-light text-foreground">${capsule.price}</div>
+                    <div className="text-xl font-light text-foreground">
+                      ${capsule.bundlePrice || capsule.price}
+                    </div>
                   </div>
                   <div className="rounded-sm border border-border p-4">
                     <div className="text-sm text-muted-foreground">Bundle Value</div>
-                    <div className="text-xl font-light text-foreground">${capsule.items.reduce((sum, item) => sum + item.price, 0)}</div>
+                    <div className="text-xl font-light text-foreground">
+                      ${capsule.bundleValue || capsule.items.reduce((sum, item) => sum + item.price, 0)}
+                    </div>
                   </div>
                 </div>
                 <div className="mt-2 space-y-2">
@@ -337,13 +352,17 @@ export default function ProductClient({ product, capsuleDetails }: ProductClient
                       }
                     }}
                   >
-                    Buy Bundle — ${capsule.price}
+                    Buy Bundle — ${capsule.bundlePrice || capsule.price}
                   </Button>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
-                <div className="text-sm text-muted-foreground mt-2">Price range: ${Math.min(...capsule.items.map(i => i.price))}–${Math.max(...capsule.items.map(i => i.price))}</div>
+                {capsule.priceRangeCopy ? (
+                  <div className="text-sm text-muted-foreground mt-2">{capsule.priceRangeCopy}</div>
+                ) : (
+                  <div className="text-sm text-muted-foreground mt-2">Price range: ${Math.min(...capsule.items.map(i => i.price))}–${Math.max(...capsule.items.map(i => i.price))}</div>
+                )}
                 <div>
-                  <a href={product.category?.includes('mens') ? '/size-guide#men' : '/size-guide#women'} className="underline hover:no-underline text-sm">Size Guide</a>
+                  <a href={capsule.sizeGuideHref || (product.category?.includes('mens') ? '/size-guide#men' : '/size-guide#women')} className="underline hover:no-underline text-sm">Size Guide</a>
                 </div>
               </div>
 
