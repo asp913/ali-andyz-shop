@@ -7,6 +7,7 @@ import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
 import { getCapsuleDetails } from "@/lib/capsule-details";
 import Link from "next/link";
+import BundleSizePicker from "@/components/builder/BundleSizePicker";
 
 interface ProductClientProps {
   product: {
@@ -368,15 +369,49 @@ export default function ProductClient({ product }: ProductClientProps) {
                     </div>
                   </div>
                   <div className="mt-2 space-y-2">
-                    <Button
-                      className="rounded-sm"
-                      data-bundle
-                      data-capsule-title={capsule.capsuleTitle}
-                      data-bundle-price={String(capsule.bundlePrice)}
-                      data-items={bundleItemsAttr}
-                    >
-                      {(productId === 'ma-001' || productId === 'ma-002' || productId === 'ma-003' || productId === 'ma-004' || productId === 'ma-005' || productId === 'ma-006' || productId === 'ma-007' || productId === 'ma-008') ? `Add Full Capsule — $${capsule.bundlePrice}` : `Buy Bundle — $${capsule.bundlePrice}`}
-                    </Button>
+                    <BundleSizePicker
+                      items={capsule.items.map((i) => ({
+                        title: i.title,
+                        handle: i.handle,
+                        sizes: i.sizes,
+                        price: i.price,
+                        requiredForBundle: i.requiredForBundle,
+                        inventoryLeft: typeof i.inventoryLeft === 'number' ? i.inventoryLeft : undefined,
+                      }))}
+                      bundlePrice={capsule.bundlePrice}
+                      trigger={
+                        <Button className="rounded-sm">
+                          {(productId === 'ma-001' || productId === 'ma-002' || productId === 'ma-003' || productId === 'ma-004' || productId === 'ma-005' || productId === 'ma-006' || productId === 'ma-007' || productId === 'ma-008') ? `Add Full Capsule — $${capsule.bundlePrice}` : `Buy Bundle — $${capsule.bundlePrice}`}
+                        </Button>
+                      }
+                      onAddBundle={async ({ bundlePrice, selections }) => {
+                        const items = selections.map((sel) => {
+                          const src = capsule.items.find((ci) => ci.handle === sel.handle);
+                          return {
+                            handle: sel.handle,
+                            title: sel.title,
+                            size: sel.size || null,
+                            priceStripeId: src?.priceStripeId || null,
+                            requiredForBundle: src?.requiredForBundle !== false,
+                          };
+                        });
+                        const res = await fetch('/api/checkout/bundle', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ capsule: capsule.capsuleTitle, bundlePrice, items }),
+                        });
+                        const txt = await res.text();
+                        let data: any = undefined;
+                        try { data = txt ? JSON.parse(txt) : undefined; } catch {}
+                        if (!res.ok) {
+                          const msg = (data && data.error) || txt || 'Bundle checkout error';
+                          throw new Error(msg);
+                        }
+                        const url = data?.url;
+                        if (!url) throw new Error('Checkout response did not include a URL');
+                        window.location.href = url;
+                      }}
+                    />
                   </div>
                   <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
                   <div className="text-sm text-muted-foreground mt-2">{capsule.priceRangeCopy}</div>
