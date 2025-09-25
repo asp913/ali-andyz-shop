@@ -582,23 +582,30 @@ export default function ProductClient({ product }: ProductClientProps) {
                             items,
                           }),
                         });
-                        const txt = await res.text();
+
+                        // safe response read: try text, fallback to clone, handle parse
                         let data: any = undefined;
                         try {
-                          data = txt ? JSON.parse(txt) : undefined;
-                        } catch {}
+                          const txt = await res.text();
+                          try { data = txt ? JSON.parse(txt) : undefined; } catch {}
+                        } catch (err) {
+                          // maybe body stream already read; try clone
+                          try {
+                            const clone = res.clone();
+                            const txt2 = await clone.text();
+                            try { data = txt2 ? JSON.parse(txt2) : undefined; } catch {}
+                          } catch (e) {
+                            data = undefined;
+                          }
+                        }
+
                         if (!res.ok) {
-                          const msg =
-                            (data && data.error) ||
-                            txt ||
-                            "Bundle checkout error";
+                          const msg = (data && data.error) || JSON.stringify(data) || "Bundle checkout error";
                           throw new Error(msg);
                         }
+
                         const url = data?.url;
-                        if (!url)
-                          throw new Error(
-                            "Checkout response did not include a URL",
-                          );
+                        if (!url) throw new Error("Checkout response did not include a URL");
                         window.location.href = url;
                       }}
                     />
