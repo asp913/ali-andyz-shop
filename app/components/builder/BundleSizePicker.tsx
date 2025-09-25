@@ -322,17 +322,22 @@ async function defaultBundleCheckout({
   let data: any = undefined;
   try {
     const txt = await res.text();
-    try { data = txt ? JSON.parse(txt) : undefined; } catch {}
+    try {
+      data = txt ? JSON.parse(txt) : undefined;
+    } catch {}
   } catch (err) {
     try {
       const clone = res.clone();
       const txt2 = await clone.text();
-      try { data = txt2 ? JSON.parse(txt2) : undefined; } catch {}
+      try {
+        data = txt2 ? JSON.parse(txt2) : undefined;
+      } catch {}
     } catch {}
   }
 
   if (!res.ok) {
-    const msg = (data && data.error) || JSON.stringify(data) || "Bundle checkout error";
+    const msg =
+      (data && data.error) || JSON.stringify(data) || "Bundle checkout error";
     throw new Error(msg);
   }
   const url = data?.url;

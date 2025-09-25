@@ -15,12 +15,12 @@ import Footer from "./components/site/Footer";
 import CartDrawer from "./components/site/CartDrawer";
 import initBuilderBuyBridge from "./bridge/initBuilderBuyBridge";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-const cormorant = Cormorant_Garamond({ 
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-display",
@@ -28,10 +28,14 @@ const cormorant = Cormorant_Garamond({
 
 const queryClient = new QueryClient();
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   useEffect(() => {
     initializeCart();
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       initBuilderBuyBridge();
     }
   }, []);

@@ -4,7 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
 
-const DesignYourOwnCapsule = dynamic(() => import("@/components/site/DesignYourOwnCapsule"), { ssr: false });
+const DesignYourOwnCapsule = dynamic(
+  () => import("@/components/site/DesignYourOwnCapsule"),
+  { ssr: false },
+);
 
 export const metadata: Metadata = {
   title: "Design Your Own Capsule | Ali + Andy Z",
@@ -24,8 +27,8 @@ export default function DesignCapsulePage() {
               Design Your Own Capsule
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Create a personalized capsule wardrobe with our carefully curated pieces. 
-              Mix and match to express your unique style.
+              Create a personalized capsule wardrobe with our carefully curated
+              pieces. Mix and match to express your unique style.
             </p>
           </div>
 
