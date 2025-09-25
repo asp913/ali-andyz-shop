@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import TrustSignals from "@/components/site/TrustSignals";
 import CTASection from "@/components/site/CTASection";
 import ContactSection from "@/components/site/ContactSection";
+import BundleSizePicker from "@/components/builder/BundleSizePicker";
 import { addToCart } from "@/lib/cart";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -331,29 +332,24 @@ export default function ProductClient({ product, capsuleDetails }: ProductClient
                   </div>
                 </div>
                 <div className="mt-2 space-y-2">
-                  <Button
-                    className="rounded-sm w-full sm:w-auto"
-                    onClick={() => {
-                      try {
-                        addToCart({
-                          id: `${product.handle}:bundle`,
-                          variantId: `${product.handle}:bundle`,
-                          name: capsule.name,
-                          price: capsule.price,
-                          qty: 1,
-                          size: 'Bundle',
-                          image: product.images?.[0] || product.image,
-                          stripePriceId: product.stripePriceId,
-                        });
-                        toast.success(`${capsule.name} bundle added to cart!`);
-                      } catch (error) {
-                        console.error('Error adding bundle to cart:', error);
-                        toast.error(`Failed to add ${capsule.name} bundle to cart`);
-                      }
-                    }}
+                  <BundleSizePicker
+                    items={capsule.items.map(item => ({
+                      title: item.title,
+                      handle: item.handle,
+                      sizes: item.sizes,
+                      price: item.price,
+                      requiredForBundle: item.requiredForBundle,
+                      inventoryLeft: item.inventoryLeft ?? undefined,
+                      defaultSize: item.sizes[0]
+                    }))}
+                    bundlePrice={capsule.bundlePrice || capsule.price}
+                    title={`Choose sizes for ${capsule.name}`}
+                    subtitle="Select a size for each item in your bundle"
                   >
-                    Buy Bundle — ${capsule.bundlePrice || capsule.price}
-                  </Button>
+                    <Button className="rounded-sm w-full sm:w-auto">
+                      Buy Bundle — ${capsule.bundlePrice || capsule.price}
+                    </Button>
+                  </BundleSizePicker>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
                 {capsule.priceRangeCopy ? (
