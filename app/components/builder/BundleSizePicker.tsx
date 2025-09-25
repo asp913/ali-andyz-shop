@@ -97,7 +97,7 @@ export default function BundleSizePicker(props: Props) {
       const next = { ...prev };
       for (const it of items || []) {
         if (next[it.handle]) continue;
-        const def = it.defaultSize || (it.sizes?.[0] || "");
+        const def = it.defaultSize || it.sizes?.[0] || "";
         if (def) next[it.handle] = def;
       }
       return next;
@@ -106,7 +106,7 @@ export default function BundleSizePicker(props: Props) {
 
   const requiredItems = useMemo(
     () => (items || []).filter((i) => i.requiredForBundle !== false),
-    [items]
+    [items],
   );
 
   const missing = useMemo(() => {
@@ -132,7 +132,7 @@ export default function BundleSizePicker(props: Props) {
     const selections = requiredItems.map((it) => ({
       handle: it.handle,
       title: it.title,
-      size: it.sizes[0] === "OneSize" ? "OneSize" : (sizes[it.handle] || ""),
+      size: it.sizes[0] === "OneSize" ? "OneSize" : sizes[it.handle] || "",
       qty: 1,
     }));
 
@@ -162,7 +162,9 @@ export default function BundleSizePicker(props: Props) {
         ) : trigger ? (
           <span>{trigger}</span>
         ) : (
-          <Button className="rounded-sm">{i18n.addBundle} — ${bundlePrice}</Button>
+          <Button className="rounded-sm">
+            {i18n.addBundle} — ${bundlePrice}
+          </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
@@ -177,10 +179,14 @@ export default function BundleSizePicker(props: Props) {
 
         <div className="space-y-4 max-h-[60vh] overflow-auto pr-1">
           {(items || []).map((it) => {
-            const isOneSize = it.sizes.length === 1 && it.sizes[0] === "OneSize";
+            const isOneSize =
+              it.sizes.length === 1 && it.sizes[0] === "OneSize";
             const sel = sizes[it.handle] || (isOneSize ? "OneSize" : "");
             return (
-              <div key={it.handle} className="border border-border rounded-sm p-3">
+              <div
+                key={it.handle}
+                className="border border-border rounded-sm p-3"
+              >
                 <div className="flex items-start gap-3">
                   {it.imageUrl ? (
                     <img
@@ -192,7 +198,9 @@ export default function BundleSizePicker(props: Props) {
                   ) : null}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="font-medium text-foreground truncate">{it.title}</div>
+                      <div className="font-medium text-foreground truncate">
+                        {it.title}
+                      </div>
                       {typeof it.price === "number" ? (
                         <div className="text-foreground">${it.price}</div>
                       ) : null}
@@ -200,11 +208,15 @@ export default function BundleSizePicker(props: Props) {
 
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       {isOneSize ? (
-                        <span className="text-xs text-muted-foreground">{i18n.oneSize}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {i18n.oneSize}
+                        </span>
                       ) : (
                         (it.sizes || []).map((s) => {
                           const disabled = Boolean(
-                            it.inventoryBySize && typeof it.inventoryBySize[s] === "number" && it.inventoryBySize[s] <= 0
+                            it.inventoryBySize &&
+                              typeof it.inventoryBySize[s] === "number" &&
+                              it.inventoryBySize[s] <= 0,
                           );
                           return (
                             <button
@@ -217,7 +229,7 @@ export default function BundleSizePicker(props: Props) {
                                 sel === s
                                   ? "bg-foreground text-background border-foreground"
                                   : "bg-background text-foreground border-border hover:bg-muted",
-                                disabled && "opacity-50 cursor-not-allowed"
+                                disabled && "opacity-50 cursor-not-allowed",
                               )}
                               aria-label={`Select size ${s} for ${it.title}`}
                               data-size-for={it.handle}
@@ -230,8 +242,11 @@ export default function BundleSizePicker(props: Props) {
                       )}
                     </div>
 
-                    {typeof it.inventoryLeft === "number" && it.inventoryLeft <= 5 ? (
-                      <div className="mt-2 text-xs text-orange-600">Only {it.inventoryLeft} left!</div>
+                    {typeof it.inventoryLeft === "number" &&
+                    it.inventoryLeft <= 5 ? (
+                      <div className="mt-2 text-xs text-orange-600">
+                        Only {it.inventoryLeft} left!
+                      </div>
                     ) : null}
                   </div>
                 </div>
@@ -305,7 +320,9 @@ async function defaultBundleCheckout({
 
   const txt = await res.text();
   let data: any = undefined;
-  try { data = txt ? JSON.parse(txt) : undefined; } catch {}
+  try {
+    data = txt ? JSON.parse(txt) : undefined;
+  } catch {}
   if (!res.ok) {
     const msg = (data && data.error) || txt || "Bundle checkout error";
     throw new Error(msg);
