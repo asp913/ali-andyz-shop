@@ -2,12 +2,17 @@ import { Metadata } from "next";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import DesignYourOwnCapsule from "@/components/site/DesignYourOwnCapsule";
+import dynamic from "next/dynamic";
+
+const DesignYourOwnCapsule = dynamic(() => import("@/components/site/DesignYourOwnCapsule"), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Design Your Own Capsule | Ali + Andy Z",
   description: "Create a custom capsule wardrobe with our curated pieces.",
 };
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default function DesignCapsulePage() {
   return (
