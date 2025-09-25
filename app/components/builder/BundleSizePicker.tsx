@@ -318,13 +318,21 @@ async function defaultBundleCheckout({
     }),
   });
 
-  const txt = await res.text();
+  // safe response read: try text, fallback to clone
   let data: any = undefined;
   try {
-    data = txt ? JSON.parse(txt) : undefined;
-  } catch {}
+    const txt = await res.text();
+    try { data = txt ? JSON.parse(txt) : undefined; } catch {}
+  } catch (err) {
+    try {
+      const clone = res.clone();
+      const txt2 = await clone.text();
+      try { data = txt2 ? JSON.parse(txt2) : undefined; } catch {}
+    } catch {}
+  }
+
   if (!res.ok) {
-    const msg = (data && data.error) || txt || "Bundle checkout error";
+    const msg = (data && data.error) || JSON.stringify(data) || "Bundle checkout error";
     throw new Error(msg);
   }
   const url = data?.url;
