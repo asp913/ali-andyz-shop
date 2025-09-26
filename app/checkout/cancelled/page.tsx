@@ -19,11 +19,6 @@ export default function CheckoutCancelledPage() {
               Continue Shopping
             </Button>
           </Link>
-          <Link href="/cart">
-            <Button variant="outline" className="w-full">
-              Return to Cart
-            </Button>
-          </Link>
         </div>
       </div>
     </div>

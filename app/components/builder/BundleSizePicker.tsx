@@ -30,6 +30,7 @@ export type Item = {
 export type Props = {
   items: Item[];
   bundlePrice: number;
+  bundlePriceId?: string; // Stripe price ID for the bundle/capsule
   trigger?: React.ReactNode; // optional custom trigger node
   onAddBundle?: (payload: {
     bundlePrice: number;
@@ -66,6 +67,7 @@ export default function BundleSizePicker(props: Props) {
   const {
     items,
     bundlePrice,
+    bundlePriceId,
     trigger,
     onAddBundle,
     title = "Choose your sizes",
@@ -144,7 +146,7 @@ export default function BundleSizePicker(props: Props) {
         await onAddBundle({ bundlePrice, selections });
       } else {
         // Default behavior: post to bundle checkout endpoint.
-        await defaultBundleCheckout({ bundlePrice, selections, items });
+        await defaultBundleCheckout({ bundlePrice, bundlePriceId, selections, items });
       }
       setOpen(false);
     } catch (err) {
@@ -294,23 +296,24 @@ export default function BundleSizePicker(props: Props) {
 
 async function defaultBundleCheckout({
   bundlePrice,
+  bundlePriceId,
   selections,
   items,
 }: {
   bundlePrice: number;
+  bundlePriceId?: string;
   selections: { handle: string; title: string; size: string; qty: number }[];
   items: Item[];
 }) {
   // Create a map of handle -> priceStripeId for quick lookup
   const priceMap = new Map(items.map(item => [item.handle, item.priceStripeId]));
   
-  // Attempt to use a single bundle price if configured in the backend.
-  // We still send items + sizes for metadata and auditing.
+  // Use bundle price ID if available, otherwise fall back to individual items
   const bundleItems = selections.map((s) => ({
     handle: s.handle,
     title: s.title,
     size: s.size || null,
-    priceStripeId: priceMap.get(s.handle) || null,
+    priceStripeId: bundlePriceId || priceMap.get(s.handle) || null,
     requiredForBundle: true,
   }));
 
@@ -320,6 +323,7 @@ async function defaultBundleCheckout({
     body: JSON.stringify({
       capsule: document.title,
       bundlePrice,
+      bundlePriceId, // Pass the bundle price ID
       items: bundleItems,
     }),
   });
@@ -331,9 +335,15 @@ async function defaultBundleCheckout({
   } catch {}
   if (!res.ok) {
     const msg = (data && data.error) || txt || "Bundle checkout error";
-    throw new Error(msg);
+    console.error("Bundle checkout failed:", msg);
+    alert(`Bundle checkout failed: ${msg}`);
+    return; // Don't redirect on error
   }
   const url = data?.url;
-  if (!url) throw new Error("Checkout response did not include a URL");
+  if (!url) {
+    console.error("No checkout URL received");
+    alert("Checkout failed: No URL received");
+    return;
+  }
   window.location.href = url;
 }

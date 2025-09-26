@@ -332,25 +332,37 @@ export default function ProductClient({ product, capsuleDetails }: ProductClient
                   </div>
                 </div>
                 <div className="mt-2 space-y-2">
-                  <BundleSizePicker
-                    items={capsule.items.map(item => ({
-                      title: item.title,
-                      handle: item.handle,
-                      sizes: item.sizes,
-                      price: item.price,
-                      priceStripeId: item.priceStripeId,
-                      requiredForBundle: item.requiredForBundle,
-                      inventoryLeft: item.inventoryLeft ?? undefined,
-                      defaultSize: item.sizes[0]
-                    }))}
-                    bundlePrice={capsule.bundlePrice || capsule.price}
-                    title={`Choose sizes for ${capsule.name}`}
-                    subtitle="Select a size for each item in your bundle"
-                  >
-                    <Button className="rounded-sm w-full sm:w-auto">
-                      Buy Bundle — ${capsule.bundlePrice || capsule.price}
-                    </Button>
-                  </BundleSizePicker>
+                  {capsule.items.some(item => item.priceStripeId && item.priceStripeId.trim() !== '') ? (
+                    <BundleSizePicker
+                      items={capsule.items.map(item => ({
+                        title: item.title,
+                        handle: item.handle,
+                        sizes: item.sizes,
+                        price: item.price,
+                        priceStripeId: item.priceStripeId,
+                        requiredForBundle: item.requiredForBundle,
+                        inventoryLeft: item.inventoryLeft ?? undefined,
+                        defaultSize: item.sizes[0]
+                      }))}
+                      bundlePrice={capsule.bundlePrice || capsule.price}
+                      bundlePriceId={capsule.priceStripeId}
+                      title={`Choose sizes for ${capsule.name}`}
+                      subtitle="Select a size for each item in your bundle"
+                    >
+                      <Button className="rounded-sm w-full sm:w-auto">
+                        Buy Bundle — ${capsule.bundlePrice || capsule.price}
+                      </Button>
+                    </BundleSizePicker>
+                  ) : (
+                    <div className="text-center p-4 border border-border rounded-sm">
+                      <p className="text-sm text-muted-foreground mb-2">
+                        Bundle purchasing is not available at the moment.
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Individual items can still be purchased below.
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground">Curated in small runs. Please allow ~21 days for delivery.</div>
                 {capsule.priceRangeCopy ? (

@@ -16,16 +16,21 @@ function getSiteUrl(request: NextRequest): string {
 export async function POST(request: NextRequest) {
   try {
     const stripe = getStripe();
-    const { capsule, bundlePrice, items } = await request.json() as {
+    const { capsule, bundlePrice, bundlePriceId, items } = await request.json() as {
       capsule: string;
       bundlePrice: number;
+      bundlePriceId?: string;
       items: Array<{ handle: string; title: string; size: string | null; priceStripeId: string | null; requiredForBundle: boolean }>;
     };
     
     const BUNDLE_PRICE_ID = process.env.STRIPE_BUNDLE_PRICE_ID || '';
 
     let line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
-    if (BUNDLE_PRICE_ID) {
+    
+    // Priority: 1) bundlePriceId parameter, 2) STRIPE_BUNDLE_PRICE_ID env var, 3) individual items
+    if (bundlePriceId) {
+      line_items = [{ price: bundlePriceId, quantity: 1 }];
+    } else if (BUNDLE_PRICE_ID) {
       line_items = [{ price: BUNDLE_PRICE_ID, quantity: 1 }];
     } else {
       const missing = (items || [])
